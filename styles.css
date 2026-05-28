@@ -400,6 +400,8 @@ body{background:var(--bg);color:var(--white);font-family:var(--font);min-height:
 }
 .app-revealed { animation: slideUp .35s ease; }
 
+.profile-action-row:active { background: rgba(255,255,255,.04); }
+
 /* ── STORE INFO PAGE ── */
 .info-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:14px;margin:0 14px 12px}
 .info-card h3{font-size:14px;font-weight:700;margin-bottom:10px}
