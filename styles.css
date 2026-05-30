@@ -402,6 +402,11 @@ body{background:var(--bg);color:var(--white);font-family:var(--font);min-height:
 
 .profile-action-row:active { background: rgba(255,255,255,.04); }
 
+/* ── PROFILE ADMIN TABS ── */
+.padm-tab{padding:9px 13px;font-size:12px;font-weight:600;color:var(--gray);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;flex-shrink:0;transition:color .15s}
+.padm-tab.active{color:var(--accent);border-color:var(--accent)}
+.padm-panel{display:none}.padm-panel.active{display:block}
+
 /* ── STORE INFO PAGE ── */
 .info-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:14px;margin:0 14px 12px}
 .info-card h3{font-size:14px;font-weight:700;margin-bottom:10px}
