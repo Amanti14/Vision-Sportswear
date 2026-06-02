@@ -11,27 +11,19 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════════
-     LOGIN SCREEN (shown first)
-════════════════════════════════ -->
+<!-- LOGIN SCREEN -->
 <div id="login-screen">
   <div class="login-glow"></div>
-
   <div class="login-logo-wrap">
     <div class="login-logo-bg" id="login-logo-inner">⚽</div>
     <div class="login-badge">✓</div>
   </div>
-
   <div class="login-brand" id="login-brand-name">emart<span>zon</span></div>
   <div class="login-tagline" id="login-tagline">Official Football Jerseys · Sportswear</div>
-
-  <!-- Loading state (default) -->
   <div class="login-loading" id="login-loading">
     <div class="login-spinner"></div>
     <p>Connecting to Telegram…</p>
   </div>
-
-  <!-- Telegram user detected -->
   <div id="login-tg-found" style="display:none;width:100%">
     <div class="tg-user-card">
       <div class="tg-user-row">
@@ -40,9 +32,7 @@
           <div class="tg-name" id="tg-name-el">—</div>
           <div class="tg-handle" id="tg-handle-el">@—</div>
         </div>
-        <div style="margin-left:auto">
-          <div class="tg-verified">✓ Verified</div>
-        </div>
+        <div style="margin-left:auto"><div class="tg-verified">✓ Verified</div></div>
       </div>
       <div class="tg-id-row">
         <div class="tg-id-lbl">Telegram ID</div>
@@ -52,30 +42,32 @@
     <button class="login-continue-btn" onclick="enterApp()">
       Continue as <span id="tg-first-name-btn">me</span> →
     </button>
-    <div class="login-disclaimer">
-      Your Telegram account is used for login only.<br>
-      <span>No password needed</span> — your identity is verified by Telegram.
-    </div>
+    <div class="login-disclaimer">Your Telegram account is used for login only.<br><span>No password needed</span> — verified by Telegram.</div>
   </div>
-
-  <!-- No Telegram detected (browser preview) -->
   <div id="login-notg" style="display:none" class="login-notg">
     <div class="notg-icon">📱</div>
     <div class="notg-title">Open in Telegram</div>
-    <div class="notg-desc">This app requires your Telegram account to sign in. It only works inside the Telegram app.</div>
+    <div class="notg-desc">This app works inside the Telegram app only.</div>
     <div class="notg-steps">
       <div class="notg-step"><div class="notg-num">1</div><div class="notg-step-text">Open <b>Telegram</b> on your phone</div></div>
       <div class="notg-step"><div class="notg-num">2</div><div class="notg-step-text">Search for <b>@EmartzonSportswearBot</b></div></div>
-      <div class="notg-step"><div class="notg-num">3</div><div class="notg-step-text">Tap <b>Start</b> then tap <b>🛍 Shop Now</b></div></div>
+      <div class="notg-step"><div class="notg-num">3</div><div class="notg-step-text">Tap <b>Start</b> then <b>🛍 Shop Now</b></div></div>
     </div>
     <button class="notg-open-btn" onclick="window.open('https://t.me/emartzonsportswear_bot','_blank')">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.026 9.54c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.889.681z"/></svg>
       Open in Telegram
     </button>
+    <div style="width:100%;display:flex;align-items:center;gap:10px;margin:12px 0">
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+      <span style="font-size:11px;color:var(--gray)">or</span>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+    </div>
+    <button onclick="enterPreviewMode()" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:13px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">👁 Preview as Guest</button>
+    <div style="font-size:11px;color:var(--gray);margin-top:8px;text-align:center;line-height:1.5">Preview mode lets you browse without a Telegram account.</div>
   </div>
 </div>
 
-<!-- ═══ HEADER ═══ -->
+<!-- HEADER -->
 <div class="hdr" id="main-hdr">
   <div class="logo" onclick="goShop()">
     <div id="hdr-logo-img" class="logo-emoji">⚽</div>
@@ -85,17 +77,12 @@
     </div>
   </div>
   <div class="hdr-right">
-    <div class="hdr-btn" id="admin-hdr-btn" onclick="showAdmin()" title="Admin" style="display:none">⚙️</div>
-    <div class="hdr-btn" onclick="showCart()">
-      🛒
-      <div class="cart-badge" id="cart-badge" style="display:none">0</div>
-    </div>
+    <div class="hdr-btn" id="admin-hdr-btn" onclick="showAdmin()" style="display:none">⚙️</div>
+    <div class="hdr-btn" onclick="showCart()">🛒<div class="cart-badge" id="cart-badge" style="display:none">0</div></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════
-     SHOP PAGE
-════════════════════════════════ -->
+<!-- SHOP PAGE -->
 <div class="page active" id="page-shop">
   <div class="scroll">
     <div class="hero" id="hero-section">
@@ -105,48 +92,36 @@
       <button class="hero-btn" onclick="document.getElementById('cats-bar').scrollIntoView({behavior:'smooth'})">Shop Now →</button>
       <div id="hero-img-container"></div>
     </div>
-
-    <!-- League filter tabs -->
     <div class="sec-title" id="shop-sec-title">Leagues</div>
     <div class="cats" id="cats-bar"></div>
-
-    <!-- Breadcrumb trail -->
-    <div id="shop-breadcrumb" style="display:none;padding:0 14px 10px;display:flex;align-items:center;gap:5px;flex-wrap:wrap"></div>
-
-    <!-- Dynamic grid -->
+    <div id="shop-breadcrumb" class="bc-wrap" style="display:none"></div>
     <div id="products-grid"></div>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════
-     DETAIL PAGE
-════════════════════════════════ -->
+<!-- DETAIL PAGE -->
 <div class="page" id="page-detail">
   <div class="pg-hdr">
-    <button class="back-btn" id="det-back-btn" onclick="detGoBack()">← Back</button>
+    <button class="back-btn" onclick="detGoBack()">← Back</button>
     <h2 id="det-title">Product</h2>
   </div>
   <div class="scroll2" id="det-content"></div>
 </div>
 
-<!-- ═══════════════════════════════
-     CART PAGE
-════════════════════════════════ -->
+<!-- CART PAGE -->
 <div class="page" id="page-cart">
   <div class="pg-hdr"><h2>🛒 My Cart</h2></div>
   <div class="scroll2" id="cart-content"></div>
 </div>
 
-<!-- ═══════════════════════════════
-     CHECKOUT PAGE
-════════════════════════════════ -->
+<!-- CHECKOUT PAGE -->
 <div class="page" id="page-checkout">
   <div class="pg-hdr">
     <button class="back-btn" onclick="showCart()">← Cart</button>
     <h2>Checkout</h2>
   </div>
-  <div class="scroll2" id="checkout-scroll">
+  <div class="scroll2">
     <div style="height:14px"></div>
     <div class="form-sec">
       <h3>📦 Delivery Method</h3>
@@ -182,9 +157,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════
-     SUCCESS PAGE
-════════════════════════════════ -->
+<!-- SUCCESS PAGE -->
 <div class="page" id="page-success">
   <div class="success-pg">
     <div class="success-icon">✅</div>
@@ -195,175 +168,25 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════
-     STORE INFO PAGE
-════════════════════════════════ -->
+<!-- STORE INFO PAGE -->
 <div class="page" id="page-info">
   <div class="pg-hdr"><h2>ℹ️ Store Info</h2></div>
   <div class="scroll2">
     <div style="height:14px"></div>
     <div class="info-card" id="store-info-card"></div>
-    <div class="info-card">
-      <h3>⚽ About Us</h3>
-      <p id="about-text" style="font-size:13px;color:var(--gray);line-height:1.6"></p>
-    </div>
+    <div class="info-card"><h3>⚽ About Us</h3><p id="about-text" style="font-size:13px;color:var(--gray);line-height:1.6"></p></div>
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════
-     ADMIN PAGE
-════════════════════════════════ -->
-<div class="page" id="page-admin">
-  <div class="pg-hdr">
-    <button class="back-btn" onclick="goShop()">← Exit Admin</button>
-    <h2>⚙️ Admin Panel</h2>
-  </div>
-  <div class="adm-tabs">
-    <div class="adm-tab active" onclick="switchAdmTab(0,this)">Products</div>
-    <div class="adm-tab" onclick="switchAdmTab(1,this)">Categories</div>
-    <div class="adm-tab" onclick="switchAdmTab(2,this)">Shipping</div>
-    <div class="adm-tab" onclick="switchAdmTab(3,this)">Store</div>
-    <div class="adm-tab" onclick="switchAdmTab(4,this)">Theme</div>
-    <div class="adm-tab" onclick="switchAdmTab(5,this)">Hero</div>
-  </div>
-  <div style="height:calc(100vh - 112px);overflow-y:auto;scrollbar-width:none" id="adm-scroll">
-
-    <!-- TAB 0: PRODUCTS -->
-    <div class="adm-panel active" id="adm-tab-0">
-      <div class="adm-banner"><div class="adm-banner-icon">💡</div><div>Tap any product to edit. Add images via URL (e.g. from Google Drive, Imgur, etc.) or use an emoji fallback.</div></div>
-      <button class="btn-add" onclick="adminAddProduct()">＋ Add New Product</button>
-      <div id="adm-products-list"></div>
-    </div>
-
-    <!-- TAB 1: CATEGORIES -->
-    <div class="adm-panel" id="adm-tab-1">
-      <div class="adm-banner"><div class="adm-banner-icon">💡</div><div>Edit or add category names. These appear as filter tabs in the shop. The "all" category always shows all products.</div></div>
-      <div id="adm-cats-list"></div>
-      <button class="btn-add" onclick="adminAddCat()">＋ Add Category</button>
-      <div style="height:14px"></div>
-      <div class="adm-card">
-        <div class="adm-card-title" style="margin-bottom:10px">Available Sizes</div>
-        <div class="sizes-edit" id="adm-sizes-edit"></div>
-        <div class="adm-row">
-          <input id="new-size-inp" style="flex:1;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;font-family:var(--font)" placeholder="e.g. 3XL">
-          <button class="btn-save" onclick="adminAddSize()">Add</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 2: SHIPPING -->
-    <div class="adm-panel" id="adm-tab-2">
-      <div class="adm-banner"><div class="adm-banner-icon">💡</div><div>Edit shipping method names, descriptions, prices, and icons. Set price to 0 for free.</div></div>
-      <div id="adm-shipping-list"></div>
-      <button class="btn-add" onclick="adminAddShipping()">＋ Add Shipping Method</button>
-    </div>
-
-    <!-- TAB 3: STORE INFO -->
-    <div class="adm-panel" id="adm-tab-3">
-      <div class="adm-card">
-        <div class="adm-card-title" style="margin-bottom:12px">🏪 Store Details</div>
-        <div class="adm-field"><label>Store Name</label><input id="cfg-store-name" type="text"></div>
-        <div class="adm-field"><label>Tagline / Subtitle</label><input id="cfg-store-sub" type="text"></div>
-        <div class="adm-field"><label>Phone Number</label><input id="cfg-phone" type="text"></div>
-        <div class="adm-field"><label>Email</label><input id="cfg-email" type="text"></div>
-        <div class="adm-field"><label>Store Address</label><input id="cfg-address" type="text"></div>
-        <div class="adm-field"><label>Opening Hours</label><input id="cfg-hours" type="text"></div>
-        <div class="adm-field"><label>About Text</label><textarea id="cfg-about" rows="3"></textarea></div>
-        <button class="btn-save" onclick="saveStoreInfo()">Save Store Info</button>
-      </div>
-      <div class="adm-card">
-        <div class="adm-card-title" style="margin-bottom:12px">🖼 Logo</div>
-        <div class="adm-field"><label>Logo Image URL (leave blank to use emoji)</label>
-          <input id="cfg-logo-url" type="url" placeholder="https://i.imgur.com/...">
-          <div class="img-url-hint">Tip: upload to imgur.com and paste the direct image link</div>
-        </div>
-        <div class="adm-field"><label>Logo Emoji (fallback if no URL)</label><input id="cfg-logo-emoji" type="text" placeholder="⚽" maxlength="4"></div>
-        <div class="adm-field"><label>Brand Name (first part)</label><input id="cfg-brand1" type="text"></div>
-        <div class="adm-field"><label>Brand Name (accent part)</label><input id="cfg-brand2" type="text"></div>
-        <button class="btn-save" onclick="saveLogo()">Save Logo</button>
-      </div>
-      <div class="adm-card">
-        <div class="adm-card-title" style="margin-bottom:10px">⚙️ Admin Access</div>
-        <div class="adm-field"><label>Admin PIN (4–8 digits)</label><input id="cfg-pin" type="password" inputmode="numeric" maxlength="8" placeholder="Current PIN required to change"></div>
-        <div class="adm-field"><label>New PIN</label><input id="cfg-new-pin" type="password" inputmode="numeric" maxlength="8"></div>
-        <button class="btn-save" onclick="savePIN()">Change PIN</button>
-      </div>
-    </div>
-
-    <!-- TAB 4: THEME -->
-    <div class="adm-panel" id="adm-tab-4">
-      <div class="adm-card">
-        <div class="adm-card-title" style="margin-bottom:12px">🎨 Colors</div>
-        <div class="adm-field"><label>Accent / Brand Color</label>
-          <div class="color-row"><input type="color" id="clr-accent" oninput="liveColor('--accent',this.value)"><span id="clr-accent-hex">#f5a623</span></div>
-        </div>
-        <div class="adm-field"><label>Background</label>
-          <div class="color-row"><input type="color" id="clr-bg" oninput="liveColor('--bg',this.value)"><span id="clr-bg-hex">#0a0a0a</span></div>
-        </div>
-        <div class="adm-field"><label>Card Background</label>
-          <div class="color-row"><input type="color" id="clr-card" oninput="liveColor('--card',this.value)"><span id="clr-card-hex">#1a1a1a</span></div>
-        </div>
-        <div class="adm-field"><label>Header / Nav Background</label>
-          <div class="color-row"><input type="color" id="clr-dark" oninput="liveColor('--dark',this.value)"><span id="clr-dark-hex">#111111</span></div>
-        </div>
-        <div class="adm-field"><label>Text Color</label>
-          <div class="color-row"><input type="color" id="clr-white" oninput="liveColor('--white',this.value)"><span id="clr-white-hex">#ffffff</span></div>
-        </div>
-        <div class="adm-field"><label>Border Color</label>
-          <div class="color-row"><input type="color" id="clr-border" oninput="liveColor('--border',this.value)"><span id="clr-border-hex">#2a2a2a</span></div>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:4px">
-          <button class="btn-save" onclick="saveTheme()">Save Theme</button>
-          <button class="btn-outline" onclick="resetTheme()">Reset</button>
-        </div>
-      </div>
-      <div class="adm-card">
-        <div class="adm-card-title" style="margin-bottom:10px">💱 Currency</div>
-        <div class="adm-2col">
-          <div class="adm-field"><label>Currency Symbol</label><input id="cfg-currency" type="text" placeholder="ETB" maxlength="5"></div>
-          <div class="adm-field"><label>Position</label>
-            <select id="cfg-cur-pos">
-              <option value="before">Before (ETB 100)</option>
-              <option value="after">After (100 ETB)</option>
-            </select>
-          </div>
-        </div>
-        <button class="btn-save" onclick="saveCurrency()">Save</button>
-      </div>
-    </div>
-
-    <!-- TAB 5: HERO -->
-    <div class="adm-panel" id="adm-tab-5">
-      <div class="adm-card">
-        <div class="adm-card-title" style="margin-bottom:12px">🖼 Hero Banner</div>
-        <div class="adm-field"><label>Tag Line (small pill)</label><input id="hero-tag-inp" type="text" placeholder="⚽ New Season 2024/25"></div>
-        <div class="adm-field"><label>Headline (line 1)</label><input id="hero-h1a-inp" type="text" placeholder="Official"></div>
-        <div class="adm-field"><label>Headline (line 2 — accent color)</label><input id="hero-h1b-inp" type="text" placeholder="Football Jerseys"></div>
-        <div class="adm-field"><label>Subtitle</label><input id="hero-sub-inp" type="text" placeholder="Authentic kits from top leagues worldwide"></div>
-        <div class="adm-field"><label>Hero Image URL (optional)</label>
-          <input id="hero-img-inp" type="url" placeholder="https://...">
-          <div class="img-url-hint">Displays as a small image on the right side of the hero banner</div>
-        </div>
-        <button class="btn-save" onclick="saveHero()">Save Hero</button>
-      </div>
-    </div>
-
-  </div><!-- end adm-scroll -->
-</div><!-- end page-admin -->
-
-<!-- ═══════════════════════════════
-     PROFILE PAGE
-════════════════════════════════ -->
+<!-- PROFILE PAGE -->
 <div class="page" id="page-profile">
   <div class="pg-hdr" id="profile-pg-hdr">
     <h2>👤 My Profile</h2>
-    <!-- role badge shown in header for admin/owner -->
     <div id="profile-hdr-badge" style="margin-left:auto"></div>
   </div>
   <div class="scroll2" id="profile-scroll">
-
-    <!-- ── HERO CARD ── -->
+    <!-- hero card -->
     <div style="margin:14px 14px 12px;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--border);border-radius:18px;padding:22px 18px 18px;position:relative;overflow:hidden">
       <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(245,166,35,.1) 0%,transparent 70%);pointer-events:none"></div>
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),transparent)"></div>
@@ -376,112 +199,58 @@
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px">
-          <div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Telegram ID</div>
-          <div id="profile-id" style="font-size:12px;font-weight:600;font-family:monospace;color:var(--light)">—</div>
-        </div>
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px">
-          <div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Language</div>
-          <div id="profile-lang" style="font-size:13px;font-weight:600;color:var(--light)">—</div>
-        </div>
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px">
-          <div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Orders</div>
-          <div id="profile-order-count" style="font-size:13px;font-weight:700;color:var(--accent)">0</div>
-        </div>
-        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px">
-          <div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Total Spent</div>
-          <div id="profile-total-spent" style="font-size:13px;font-weight:700;color:var(--accent)">—</div>
-        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Telegram ID</div><div id="profile-id" style="font-size:12px;font-weight:600;font-family:monospace;color:var(--light)">—</div></div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Language</div><div id="profile-lang" style="font-size:13px;font-weight:600;color:var(--light)">—</div></div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Orders</div><div id="profile-order-count" style="font-size:13px;font-weight:700;color:var(--accent)">0</div></div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px"><div style="font-size:10px;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px">Total Spent</div><div id="profile-total-spent" style="font-size:13px;font-weight:700;color:var(--accent)">—</div></div>
       </div>
     </div>
-
-    <!-- ── QUICK ACTIONS ── -->
+    <!-- quick actions -->
     <div style="margin:0 14px 12px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">
       <div style="padding:10px 14px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)">Quick Actions</div>
-      <div class="profile-action-row" onclick="goShop()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)">
-        <div style="font-size:20px;width:24px;text-align:center">🛍</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:600">Continue Shopping</div><div style="font-size:11px;color:var(--gray)">Browse all jerseys</div></div>
-        <div style="color:var(--gray);font-size:18px">›</div>
-      </div>
-      <div class="profile-action-row" onclick="showCart()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)">
-        <div style="font-size:20px;width:24px;text-align:center">🛒</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:600">My Cart</div><div id="profile-cart-count" style="font-size:11px;color:var(--gray)">0 items</div></div>
-        <div style="color:var(--gray);font-size:18px">›</div>
-      </div>
-      <div class="profile-action-row" onclick="showInfo()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px">
-        <div style="font-size:20px;width:24px;text-align:center">🏪</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:600">Store Info</div><div style="font-size:11px;color:var(--gray)">Location, hours & contact</div></div>
-        <div style="color:var(--gray);font-size:18px">›</div>
-      </div>
+      <div class="profile-action-row" onclick="goShop()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)"><div style="font-size:20px;width:24px;text-align:center">🛍</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Continue Shopping</div><div style="font-size:11px;color:var(--gray)">Browse all jerseys</div></div><div style="color:var(--gray);font-size:18px">›</div></div>
+      <div class="profile-action-row" onclick="showCart()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)"><div style="font-size:20px;width:24px;text-align:center">🛒</div><div style="flex:1"><div style="font-size:13px;font-weight:600">My Cart</div><div id="profile-cart-count" style="font-size:11px;color:var(--gray)">0 items</div></div><div style="color:var(--gray);font-size:18px">›</div></div>
+      <div class="profile-action-row" onclick="showInfo()" style="cursor:pointer;display:flex;align-items:center;gap:12px;padding:13px 14px"><div style="font-size:20px;width:24px;text-align:center">🏪</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Store Info</div><div style="font-size:11px;color:var(--gray)">Location, hours & contact</div></div><div style="color:var(--gray);font-size:18px">›</div></div>
     </div>
-
-    <!-- ── ORDER HISTORY ── -->
+    <!-- order history -->
     <div style="margin:0 14px 12px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden">
       <div style="padding:10px 14px;font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)">Order History</div>
       <div id="profile-orders-list"></div>
     </div>
-
-    <!-- ════════════════════════════════
-         ADMIN SETTINGS SECTION
-         (only visible to admins/owner)
-    ═════════════════════════════════ -->
+    <!-- admin settings (admins/owner only) -->
     <div id="profile-admin-section" style="display:none;margin:0 14px 12px">
-
-      <!-- Admin section header -->
       <div style="display:flex;align-items:center;gap:8px;padding:14px 0 10px">
         <div style="flex:1;height:1px;background:var(--border)"></div>
         <div style="font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.5px;white-space:nowrap">⚙️ ADMIN SETTINGS</div>
         <div style="flex:1;height:1px;background:var(--border)"></div>
       </div>
-
-      <!-- Admin tab bar -->
       <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--card);border-radius:12px 12px 0 0;overflow:hidden;overflow-x:auto;scrollbar-width:none">
         <div class="padm-tab active" onclick="switchProfileAdminTab(0,this)">Products</div>
-        <div class="padm-tab" onclick="switchProfileAdminTab(1,this)">Categories</div>
-        <div class="padm-tab" onclick="switchProfileAdminTab(2,this)">Shipping</div>
-        <div class="padm-tab" onclick="switchProfileAdminTab(3,this)">Store</div>
-        <div class="padm-tab" onclick="switchProfileAdminTab(4,this)">Theme</div>
-        <div class="padm-tab" onclick="switchProfileAdminTab(5,this)">Hero</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(1,this)">Shipping</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(2,this)">Store</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(3,this)">Theme</div>
+        <div class="padm-tab" onclick="switchProfileAdminTab(4,this)">Hero</div>
       </div>
-
       <div style="background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;overflow:hidden">
-
-        <!-- PADM TAB 0: PRODUCTS -->
+        <!-- Products -->
         <div class="padm-panel active" id="padm-panel-0" style="padding:12px">
-          <div style="font-size:11px;color:var(--gray);margin-bottom:10px;line-height:1.5">Tap any product to edit its image, name, price, badge or description.</div>
-          <button class="btn-add" onclick="padmAddProd()" style="margin-bottom:10px">＋ Add New Product</button>
+          <div style="font-size:11px;color:var(--gray);margin-bottom:10px;line-height:1.5">Tap a product to edit its image URL, price, badge or description. Products are organized by league → team.</div>
           <div id="padm-products-list"></div>
         </div>
-
-        <!-- PADM TAB 1: CATEGORIES -->
+        <!-- Shipping -->
         <div class="padm-panel" id="padm-panel-1" style="padding:12px">
-          <div style="font-size:11px;color:var(--gray);margin-bottom:10px">Edit category names and IDs shown in the shop filter bar.</div>
-          <div id="padm-cats-list"></div>
-          <button class="btn-add" onclick="padmAddCat()" style="margin-bottom:10px">＋ Add Category</button>
-          <div style="font-size:12px;font-weight:700;color:var(--light);margin-bottom:8px">Sizes</div>
-          <div class="sizes-edit" id="padm-sizes-edit"></div>
-          <div style="display:flex;gap:7px">
-            <input id="padm-new-size" style="flex:1;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:8px 10px;border-radius:8px;font-size:13px;outline:none;font-family:var(--font)" placeholder="e.g. 3XL">
-            <button class="btn-save" onclick="padmAddSize()">Add</button>
-          </div>
-        </div>
-
-        <!-- PADM TAB 2: SHIPPING -->
-        <div class="padm-panel" id="padm-panel-2" style="padding:12px">
-          <div style="font-size:11px;color:var(--gray);margin-bottom:10px">Edit shipping methods, icons, descriptions and prices.</div>
           <div id="padm-shipping-list"></div>
           <button class="btn-add" onclick="padmAddShipping()">＋ Add Method</button>
         </div>
-
-        <!-- PADM TAB 3: STORE INFO -->
-        <div class="padm-panel" id="padm-panel-3" style="padding:12px">
+        <!-- Store -->
+        <div class="padm-panel" id="padm-panel-2" style="padding:12px">
           <div class="adm-field"><label>Store Name</label><input id="padm-store-name" type="text"></div>
           <div class="adm-field"><label>Tagline</label><input id="padm-store-sub" type="text"></div>
           <div class="adm-field"><label>Phone</label><input id="padm-phone" type="text"></div>
           <div class="adm-field"><label>Email</label><input id="padm-email" type="text"></div>
           <div class="adm-field"><label>Address</label><input id="padm-address" type="text"></div>
           <div class="adm-field"><label>Hours</label><input id="padm-hours" type="text"></div>
-          <div class="adm-field"><label>About Text</label><textarea id="padm-about" rows="3"></textarea></div>
+          <div class="adm-field"><label>About</label><textarea id="padm-about" rows="3"></textarea></div>
           <button class="btn-save" onclick="padmSaveStore()" style="margin-bottom:12px;width:100%">Save Store Info</button>
           <hr style="border:none;border-top:1px solid var(--border);margin-bottom:12px">
           <div class="adm-field"><label>Logo Image URL</label><input id="padm-logo-url" type="url" placeholder="https://..."></div>
@@ -490,9 +259,8 @@
           <div class="adm-field"><label>Brand Name Part 2 (accent)</label><input id="padm-brand2" type="text"></div>
           <button class="btn-save" onclick="padmSaveLogo()" style="width:100%">Save Logo</button>
         </div>
-
-        <!-- PADM TAB 4: THEME -->
-        <div class="padm-panel" id="padm-panel-4" style="padding:12px">
+        <!-- Theme -->
+        <div class="padm-panel" id="padm-panel-3" style="padding:12px">
           <div class="adm-field"><label>Accent Color</label><div class="color-row"><input type="color" id="padm-clr-accent" oninput="liveColor('--accent',this.value)"><span id="padm-clr-accent-hex"></span></div></div>
           <div class="adm-field"><label>Background</label><div class="color-row"><input type="color" id="padm-clr-bg" oninput="liveColor('--bg',this.value)"><span id="padm-clr-bg-hex"></span></div></div>
           <div class="adm-field"><label>Card Color</label><div class="color-row"><input type="color" id="padm-clr-card" oninput="liveColor('--card',this.value)"><span id="padm-clr-card-hex"></span></div></div>
@@ -502,14 +270,10 @@
             <div class="adm-field"><label>Currency</label><input id="padm-currency" type="text" maxlength="5"></div>
             <div class="adm-field"><label>Position</label><select id="padm-cur-pos"><option value="before">Before (ETB 100)</option><option value="after">After (100 ETB)</option></select></div>
           </div>
-          <div style="display:flex;gap:8px">
-            <button class="btn-save" onclick="padmSaveTheme()" style="flex:1">Save Theme</button>
-            <button class="btn-outline" onclick="padmResetTheme()">Reset</button>
-          </div>
+          <div style="display:flex;gap:8px"><button class="btn-save" onclick="padmSaveTheme()" style="flex:1">Save Theme</button><button class="btn-outline" onclick="padmResetTheme()">Reset</button></div>
         </div>
-
-        <!-- PADM TAB 5: HERO BANNER -->
-        <div class="padm-panel" id="padm-panel-5" style="padding:12px">
+        <!-- Hero -->
+        <div class="padm-panel" id="padm-panel-4" style="padding:12px">
           <div class="adm-field"><label>Tag Pill</label><input id="padm-hero-tag" type="text"></div>
           <div class="adm-field"><label>Headline Line 1</label><input id="padm-hero-h1a" type="text"></div>
           <div class="adm-field"><label>Headline Line 2 (accent)</label><input id="padm-hero-h1b" type="text"></div>
@@ -517,142 +281,89 @@
           <div class="adm-field"><label>Hero Image URL</label><input id="padm-hero-img" type="url" placeholder="https://..."></div>
           <button class="btn-save" onclick="padmSaveHero()" style="width:100%">Save Hero</button>
         </div>
-
-      </div><!-- end inner panels box -->
-    </div><!-- end profile-admin-section -->
-
-    <!-- ════════════════════════════════
-         OWNER: MANAGE ADMINS
-         (only visible to owner)
-    ═════════════════════════════════ -->
+      </div>
+    </div>
+    <!-- owner controls -->
     <div id="profile-owner-section" style="display:none;margin:0 14px 12px">
       <div style="display:flex;align-items:center;gap:8px;padding:6px 0 10px">
         <div style="flex:1;height:1px;background:var(--border)"></div>
-        <div style="font-size:11px;color:var(--orange, #f5a623);font-weight:700;letter-spacing:.5px;white-space:nowrap;color:var(--accent)">👑 OWNER CONTROLS</div>
+        <div style="font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.5px;white-space:nowrap">👑 OWNER CONTROLS</div>
         <div style="flex:1;height:1px;background:var(--border)"></div>
       </div>
-
       <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:12px">
-        <div style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
-          <div>
-            <div style="font-size:13px;font-weight:700">Manage Admins</div>
-            <div style="font-size:11px;color:var(--gray);margin-top:2px">Give shop editing access to trusted accounts</div>
-          </div>
-        </div>
-
-        <!-- Owner ID display -->
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border)"><div style="font-size:13px;font-weight:700">Manage Admins</div><div style="font-size:11px;color:var(--gray);margin-top:2px">Give shop editing access to trusted accounts</div></div>
         <div style="padding:12px 14px;background:rgba(245,166,35,.06);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px">
           <div style="font-size:20px">👑</div>
-          <div>
-            <div style="font-size:12px;font-weight:700">You (Owner)</div>
-            <div id="owner-id-display" style="font-size:11px;font-family:monospace;color:var(--accent)">—</div>
-          </div>
+          <div><div style="font-size:12px;font-weight:700">You (Owner)</div><div id="owner-id-display" style="font-size:11px;font-family:monospace;color:var(--accent)">—</div></div>
           <div style="margin-left:auto;font-size:11px;color:var(--gray)">Full Access</div>
         </div>
-
-        <!-- Admin list -->
         <div id="admin-ids-list"></div>
-
-        <!-- Add admin -->
         <div style="padding:12px 14px;border-top:1px solid var(--border)">
-          <div style="font-size:12px;color:var(--gray);margin-bottom:8px;line-height:1.5">Add a Telegram user ID. They must open the app after being added to get admin access.</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:8px;line-height:1.5">Add a Telegram user ID to grant admin access.</div>
           <div style="display:flex;gap:8px;margin-bottom:6px">
-            <input id="new-admin-id-inp" type="number" inputmode="numeric" placeholder="Telegram User ID (e.g. 123456789)" style="flex:1;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:10px;border-radius:9px;font-size:13px;outline:none;font-family:monospace" onkeydown="if(event.key==='Enter')addAdmin()">
+            <input id="new-admin-id-inp" type="number" inputmode="numeric" placeholder="Telegram User ID" style="flex:1;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:10px;border-radius:9px;font-size:13px;outline:none;font-family:monospace" onkeydown="if(event.key==='Enter')addAdmin()">
             <button class="btn-save" onclick="addAdmin()">Add</button>
           </div>
-          <div style="font-size:11px;color:var(--gray)">💡 To find a user's ID, ask them to open the app — their ID is shown on their profile card.</div>
+          <div style="font-size:11px;color:var(--gray)">💡 User IDs are shown on each user's profile card inside the app.</div>
         </div>
       </div>
-
-      <!-- Owner: Your ID copy card -->
       <div style="background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.2);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:center;margin-bottom:12px">
         <div style="font-size:18px">🪪</div>
-        <div style="flex:1">
-          <div style="font-size:12px;color:var(--gray);margin-bottom:2px">Your Telegram ID (share with no one)</div>
-          <div id="owner-my-id-copy" style="font-size:14px;font-weight:700;font-family:monospace;color:var(--accent)">—</div>
-        </div>
+        <div style="flex:1"><div style="font-size:12px;color:var(--gray);margin-bottom:2px">Your Telegram ID</div><div id="owner-my-id-copy" style="font-size:14px;font-weight:700;font-family:monospace;color:var(--accent)">—</div></div>
         <button onclick="copyOwnerId()" style="background:var(--card2);border:1px solid var(--border);color:var(--white);padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer">Copy</button>
       </div>
     </div>
-
-    <!-- Security note -->
     <div style="margin:0 14px 20px;background:rgba(35,157,219,.07);border:1px solid rgba(35,157,219,.2);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start">
       <div style="font-size:18px;flex-shrink:0">🔒</div>
-      <div style="font-size:12px;color:var(--gray);line-height:1.6">Your identity is verified by Telegram. No password is stored. Next time you open this app, you'll be logged in automatically.</div>
+      <div style="font-size:12px;color:var(--gray);line-height:1.6">Your identity is verified by Telegram. No password stored. Next time you open this app, you'll be logged in automatically.</div>
     </div>
-
     <div style="height:20px"></div>
   </div>
 </div>
 
-<!-- ═══ BOTTOM NAV ═══ -->
+<!-- BOTTOM NAV -->
 <div class="bot-nav">
   <div class="nav-item active" id="nav-shop" onclick="goShop()"><div class="nav-icon">🏠</div><div class="nav-lbl">Shop</div></div>
   <div class="nav-item" id="nav-search" onclick="goSearch()"><div class="nav-icon">🔍</div><div class="nav-lbl">Search</div></div>
   <div class="nav-item" id="nav-cart" onclick="showCart()"><div class="nav-icon">🛒</div><div class="nav-lbl">Cart</div></div>
   <div class="nav-item" id="nav-info" onclick="showInfo()"><div class="nav-icon">🏪</div><div class="nav-lbl">Store</div></div>
-  <div class="nav-item" id="nav-profile" onclick="showProfile()">
-    <div class="nav-icon" id="nav-profile-icon">👤</div>
-    <div class="nav-lbl">Profile</div>
-  </div>
+  <div class="nav-item" id="nav-profile" onclick="showProfile()"><div class="nav-icon" id="nav-profile-icon">👤</div><div class="nav-lbl">Profile</div></div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     PRODUCT EDIT MODAL (fullscreen overlay)
-════════════════════════════════════════ -->
+<!-- PRODUCT EDIT MODAL -->
 <div id="prod-modal" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:500;overflow-y:auto;padding-bottom:20px">
   <div class="pg-hdr" style="position:sticky;top:0;z-index:10">
     <button class="back-btn" onclick="closeProdModal()">← Cancel</button>
     <h2 id="prod-modal-title">Edit Product</h2>
-    <button class="btn-save" id="prod-modal-save-btn" onclick="saveProdModal()" style="margin-left:auto">Save</button>
+    <button class="btn-save" onclick="saveProdModal()" style="margin-left:auto">Save</button>
   </div>
   <div style="padding:14px">
     <div class="adm-field">
       <label>Product Image URL</label>
       <div class="img-preview" id="prod-modal-preview">🎽</div>
       <input id="pm-img" type="url" placeholder="https://i.imgur.com/..." oninput="previewProdImg(this.value)">
-      <div class="img-url-hint">Paste any direct image URL (Imgur, Google Drive direct link, etc.)</div>
+      <div class="img-url-hint">Paste any direct image URL (Imgur, etc.)</div>
     </div>
-    <div class="adm-field"><label>Emoji (used if no image URL)</label><input id="pm-emoji" type="text" placeholder="⚽" maxlength="4" oninput="if(!document.getElementById('pm-img').value) document.getElementById('prod-modal-preview').textContent=this.value||'🎽'"></div>
-    <div class="adm-field"><label>Product Name</label><input id="pm-name" type="text" placeholder="Manchester City Home Kit"></div>
-    <div class="adm-field"><label>League / Category Label</label><input id="pm-league" type="text" placeholder="Premier League"></div>
-    <div class="adm-field"><label>Category (for filter)</label><select id="pm-cat"></select></div>
-    <div class="adm-2col">
-      <div class="adm-field"><label>Price</label><input id="pm-price" type="number" placeholder="1850" min="0"></div>
-      <div class="adm-field"><label>Badge</label>
-        <select id="pm-badge">
-          <option value="">None</option>
-          <option value="new">NEW</option>
-          <option value="hot">HOT</option>
-          <option value="sale">SALE</option>
-          <option value="local">LOCAL</option>
-        </select>
-      </div>
+    <div class="adm-field"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="⚽" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'🎽'"></div>
+    <div class="adm-field"><label>Kit Type / Name</label><input id="pm-name" type="text" placeholder="Home Kit"></div>
+    <div class="adm-field">
+      <label>Price</label>
+      <input id="pm-price" type="number" placeholder="1850" min="0">
     </div>
-    <div class="adm-field"><label>Description</label><textarea id="pm-desc" rows="3" placeholder="Official 2024/25 home jersey..."></textarea></div>
+    <div class="adm-field"><label>Badge</label>
+      <select id="pm-badge"><option value="">None</option><option value="new">NEW</option><option value="hot">HOT</option><option value="sale">SALE</option><option value="local">LOCAL</option></select>
+    </div>
+    <div class="adm-field"><label>Description</label><textarea id="pm-desc" rows="3" placeholder="Official 2024/25 jersey..."></textarea></div>
     <div style="display:flex;gap:8px;margin-top:6px">
       <button class="btn-del" id="prod-modal-del-btn" onclick="deleteProdModal()">🗑 Delete</button>
     </div>
   </div>
 </div>
 
-<!-- PIN MODAL -->
-<div id="pin-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:600;display:none;align-items:center;justify-content:center">
-  <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;width:280px;text-align:center">
-    <div style="font-size:32px;margin-bottom:12px">🔐</div>
-    <div style="font-size:16px;font-weight:700;margin-bottom:6px">Admin Access</div>
-    <div style="font-size:12px;color:var(--gray);margin-bottom:14px">Enter PIN to open admin panel</div>
-    <input id="pin-inp" type="password" inputmode="numeric" maxlength="8" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:12px;border-radius:9px;font-size:18px;text-align:center;letter-spacing:6px;outline:none;font-family:var(--font)" placeholder="••••" onkeydown="if(event.key==='Enter')checkPIN()">
-    <div id="pin-error" style="font-size:12px;color:var(--danger);margin-top:8px;display:none">Incorrect PIN</div>
-    <button onclick="checkPIN()" style="width:100%;background:var(--accent);color:var(--bg);border:none;padding:12px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px">Unlock</button>
-    <button onclick="hidePinModal()" style="width:100%;background:none;border:none;color:var(--gray);padding:8px;font-size:12px;cursor:pointer;margin-top:6px">Cancel</button>
-  </div>
-</div>
-
 <script>
-// ═══════════════════════════════════════════════════
-//   DEFAULT CONFIG — everything lives here
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════
+// DEFAULT CONFIG
+// ═══════════════════════════════════════════
 const DEFAULT_CONFIG = {
   pin: "1234",
   ownerTelegramId: "",
@@ -667,718 +378,654 @@ const DEFAULT_CONFIG = {
   email: "info@emartzon.com",
   address: "Bole Road, Near Edna Mall, Addis Ababa",
   hours: "Mon–Sat 9AM–7PM",
-  about: "Ethiopia's #1 destination for authentic football jerseys. We carry official kits from the Premier League, La Liga, Serie A, Champions League, and National Teams.",
+  about: "Ethiopia's #1 destination for authentic football jerseys. Official kits from Premier League, La Liga, Bundesliga, Ligue 1, Serie A, Champions League and National Teams.",
   currency: "ETB",
   currencyPos: "before",
-  hero: {
-    tag: "⚽ New Season 2024/25",
-    h1a: "Official",
-    h1b: "Football Jerseys",
-    sub: "Authentic kits from top leagues worldwide",
-    imgUrl: ""
-  },
-  theme: {
-    "--accent": "#f5a623",
-    "--bg": "#0a0a0a",
-    "--card": "#1a1a1a",
-    "--dark": "#111111",
-    "--white": "#ffffff",
-    "--border": "#2a2a2a"
-  },
+  hero: { tag:"⚽ New Season 2024/25", h1a:"Official", h1b:"Football Jerseys", sub:"Authentic kits from top leagues worldwide", imgUrl:"" },
+  theme: { "--accent":"#f5a623","--bg":"#0a0a0a","--card":"#1a1a1a","--dark":"#111111","--white":"#ffffff","--border":"#2a2a2a" },
   sizes: ["XS","S","M","L","XL","XXL"],
-
-  // ── LEAGUES ──────────────────────────────────────
-  // Each league has teams; each team has products (kits + accessories)
+  shipping: [
+    { id:"delivery", icon:"🚚", name:"Home Delivery",    desc:"3–5 business days",           price:80  },
+    { id:"pickup",   icon:"🏪", name:"Pick from Store",  desc:"Ready in 1–2 hours · Addis",  price:0   },
+    { id:"express",  icon:"⚡", name:"Express Delivery", desc:"Same day delivery",            price:180 },
+  ],
   leagues: [
     {
-      id: "premier", label: "Premier League", emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-      teams: [
-        {
-          id: "mancity", name: "Manchester City", emoji: "🔵", crest: "",
-          products: [
-            { id:101, kitType:"Home Kit",    emoji:"🔵", imgUrl:"", price:1850, badge:"new",  desc:"Official Man City 2024/25 home jersey. Sky blue with white trim." },
-            { id:102, kitType:"Away Kit",    emoji:"⚫", imgUrl:"", price:1800, badge:"",    desc:"Man City away kit. Dark navy with gold details." },
-            { id:103, kitType:"Third Kit",   emoji:"🟠", imgUrl:"", price:1800, badge:"",    desc:"Man City third kit. Bold orange design." },
-            { id:104, kitType:"Goalkeeper",  emoji:"🟡", imgUrl:"", price:1750, badge:"",    desc:"Man City GK jersey 2024/25." },
-            { id:105, kitType:"Training Top",emoji:"🩵", imgUrl:"", price:1200, badge:"",    desc:"Official Man City training top." },
-            { id:106, kitType:"Shorts",      emoji:"👖", imgUrl:"", price:750,  badge:"",    desc:"Matching Man City home shorts." },
-          ]
-        },
-        {
-          id: "arsenal", name: "Arsenal", emoji: "🔴", crest: "",
-          products: [
-            { id:111, kitType:"Home Kit",    emoji:"🔴", imgUrl:"", price:1850, badge:"",    desc:"Arsenal 2024/25 home jersey. Classic red with white sleeves." },
-            { id:112, kitType:"Away Kit",    emoji:"🟡", imgUrl:"", price:1800, badge:"new", desc:"Arsenal away kit. Yellow with navy details." },
-            { id:113, kitType:"Third Kit",   emoji:"⚫", imgUrl:"", price:1800, badge:"",    desc:"Arsenal third kit. Dark navy." },
-            { id:114, kitType:"Goalkeeper",  emoji:"🟢", imgUrl:"", price:1750, badge:"",    desc:"Arsenal GK jersey 2024/25." },
-            { id:115, kitType:"Training Top",emoji:"🔴", imgUrl:"", price:1200, badge:"",    desc:"Official Arsenal training top." },
-            { id:116, kitType:"Shorts",      emoji:"⚪", imgUrl:"", price:750,  badge:"",    desc:"Matching Arsenal home shorts." },
-          ]
-        },
-        {
-          id: "chelsea", name: "Chelsea", emoji: "💙", crest: "",
-          products: [
-            { id:121, kitType:"Home Kit",    emoji:"💙", imgUrl:"", price:1850, badge:"",    desc:"Chelsea 2024/25 home. Royal blue with white trim." },
-            { id:122, kitType:"Away Kit",    emoji:"🟡", imgUrl:"", price:1800, badge:"",    desc:"Chelsea away kit. Bright yellow design." },
-            { id:123, kitType:"Third Kit",   emoji:"⚫", imgUrl:"", price:1800, badge:"",    desc:"Chelsea third kit in dark grey." },
-            { id:124, kitType:"Goalkeeper",  emoji:"🟢", imgUrl:"", price:1750, badge:"",    desc:"Chelsea GK jersey 2024/25." },
-            { id:125, kitType:"Training Top",emoji:"💙", imgUrl:"", price:1200, badge:"",    desc:"Official Chelsea training top." },
-          ]
-        },
-        {
-          id: "liverpool", name: "Liverpool", emoji: "❤️", crest: "",
-          products: [
-            { id:131, kitType:"Home Kit",    emoji:"❤️", imgUrl:"", price:1850, badge:"hot", desc:"Liverpool 2024/25 home. Classic all-red." },
-            { id:132, kitType:"Away Kit",    emoji:"🤍", imgUrl:"", price:1800, badge:"",    desc:"Liverpool away kit. White with red details." },
-            { id:133, kitType:"Third Kit",   emoji:"🟢", imgUrl:"", price:1800, badge:"",    desc:"Liverpool third kit. Teal green." },
-            { id:134, kitType:"Goalkeeper",  emoji:"🟡", imgUrl:"", price:1750, badge:"",    desc:"Liverpool GK jersey 2024/25." },
-            { id:135, kitType:"Training Top",emoji:"❤️", imgUrl:"", price:1200, badge:"",    desc:"Official Liverpool training top." },
-          ]
-        },
-        {
-          id: "manutd", name: "Man United", emoji: "🔴", crest: "",
-          products: [
-            { id:141, kitType:"Home Kit",    emoji:"🔴", imgUrl:"", price:1850, badge:"",    desc:"Man United 2024/25 home. Classic red with black collar." },
-            { id:142, kitType:"Away Kit",    emoji:"⚫", imgUrl:"", price:1800, badge:"",    desc:"Man United away kit. Black with red accents." },
-            { id:143, kitType:"Third Kit",   emoji:"💙", imgUrl:"", price:1800, badge:"",    desc:"Man United third kit. Blue design." },
-            { id:144, kitType:"Training Top",emoji:"🔴", imgUrl:"", price:1200, badge:"",    desc:"Official Man United training top." },
-          ]
-        },
-        {
-          id: "spurs", name: "Tottenham", emoji: "⚪", crest: "",
-          products: [
-            { id:151, kitType:"Home Kit",    emoji:"⚪", imgUrl:"", price:1800, badge:"",    desc:"Spurs 2024/25 home. White with navy collar." },
-            { id:152, kitType:"Away Kit",    emoji:"🟡", imgUrl:"", price:1750, badge:"",    desc:"Spurs away kit in yellow." },
-            { id:153, kitType:"Third Kit",   emoji:"💜", imgUrl:"", price:1750, badge:"",    desc:"Spurs third kit. Purple design." },
-          ]
-        },
+      id:"premier", label:"Premier League", emoji:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      teams:[
+        { id:"arsenal",    name:"Arsenal",            emoji:"🔴", color:"#EF0107", crest:"",
+          products:[
+            {id:101,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1850,badge:"new", desc:"Arsenal 2024/25 home. Classic red with white sleeves. Adidas Climacool."},
+            {id:102,kitType:"Away Kit",     emoji:"🟡",imgUrl:"",price:1800,badge:"",   desc:"Arsenal away. Yellow with navy details."},
+            {id:103,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1800,badge:"",   desc:"Arsenal third kit. Dark navy design."},
+            {id:104,kitType:"Goalkeeper",   emoji:"🟢",imgUrl:"",price:1750,badge:"",   desc:"Arsenal GK jersey 2024/25."},
+            {id:105,kitType:"Training Top", emoji:"🔴",imgUrl:"",price:1200,badge:"",   desc:"Official Arsenal training top."},
+            {id:106,kitType:"Shorts",       emoji:"⚪",imgUrl:"",price:750, badge:"",   desc:"Arsenal home shorts."},
+          ]},
+        { id:"mancity",    name:"Manchester City",    emoji:"🩵", color:"#6CABDD", crest:"",
+          products:[
+            {id:111,kitType:"Home Kit",     emoji:"🩵",imgUrl:"",price:1850,badge:"hot",desc:"Man City 2024/25. Sky blue with white trim."},
+            {id:112,kitType:"Away Kit",     emoji:"⚫",imgUrl:"",price:1800,badge:"",   desc:"Man City away. Dark navy with gold details."},
+            {id:113,kitType:"Third Kit",    emoji:"🟠",imgUrl:"",price:1800,badge:"",   desc:"Man City third. Bold orange design."},
+            {id:114,kitType:"Goalkeeper",   emoji:"🟡",imgUrl:"",price:1750,badge:"",   desc:"Man City GK jersey 2024/25."},
+            {id:115,kitType:"Training Top", emoji:"🩵",imgUrl:"",price:1200,badge:"",   desc:"Official Man City training top."},
+            {id:116,kitType:"Shorts",       emoji:"⚪",imgUrl:"",price:750, badge:"",   desc:"Man City home shorts."},
+          ]},
+        { id:"manutd",     name:"Manchester United",  emoji:"🔴", color:"#DA020E", crest:"",
+          products:[
+            {id:121,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1850,badge:"",   desc:"Man United 2024/25. Classic red with black collar."},
+            {id:122,kitType:"Away Kit",     emoji:"⚫",imgUrl:"",price:1800,badge:"",   desc:"Man United away. Black with red accents."},
+            {id:123,kitType:"Third Kit",    emoji:"💙",imgUrl:"",price:1800,badge:"",   desc:"Man United third. Blue design."},
+            {id:124,kitType:"Training Top", emoji:"🔴",imgUrl:"",price:1200,badge:"",   desc:"Official Man United training top."},
+            {id:125,kitType:"Shorts",       emoji:"⚪",imgUrl:"",price:750, badge:"",   desc:"Man United home shorts."},
+          ]},
+        { id:"chelsea",    name:"Chelsea",            emoji:"💙", color:"#034694", crest:"",
+          products:[
+            {id:131,kitType:"Home Kit",     emoji:"💙",imgUrl:"",price:1850,badge:"",   desc:"Chelsea 2024/25. Royal blue with white trim."},
+            {id:132,kitType:"Away Kit",     emoji:"🟡",imgUrl:"",price:1800,badge:"",   desc:"Chelsea away. Bright yellow design."},
+            {id:133,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1800,badge:"",   desc:"Chelsea third. Dark grey."},
+            {id:134,kitType:"Goalkeeper",   emoji:"🟢",imgUrl:"",price:1750,badge:"",   desc:"Chelsea GK jersey 2024/25."},
+            {id:135,kitType:"Training Top", emoji:"💙",imgUrl:"",price:1200,badge:"",   desc:"Official Chelsea training top."},
+          ]},
+        { id:"liverpool",  name:"Liverpool",          emoji:"❤️", color:"#C8102E", crest:"",
+          products:[
+            {id:141,kitType:"Home Kit",     emoji:"❤️",imgUrl:"",price:1850,badge:"hot",desc:"Liverpool 2024/25. Classic all-red."},
+            {id:142,kitType:"Away Kit",     emoji:"🤍",imgUrl:"",price:1800,badge:"",   desc:"Liverpool away. White with red details."},
+            {id:143,kitType:"Third Kit",    emoji:"🟢",imgUrl:"",price:1800,badge:"",   desc:"Liverpool third. Teal green."},
+            {id:144,kitType:"Goalkeeper",   emoji:"🟡",imgUrl:"",price:1750,badge:"",   desc:"Liverpool GK jersey 2024/25."},
+            {id:145,kitType:"Training Top", emoji:"❤️",imgUrl:"",price:1200,badge:"",   desc:"Official Liverpool training top."},
+          ]},
+        { id:"spurs",      name:"Tottenham Hotspur",  emoji:"⚪", color:"#132257", crest:"",
+          products:[
+            {id:151,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1800,badge:"",   desc:"Spurs 2024/25. White with navy collar."},
+            {id:152,kitType:"Away Kit",     emoji:"🟡",imgUrl:"",price:1750,badge:"",   desc:"Spurs away. Yellow design."},
+            {id:153,kitType:"Third Kit",    emoji:"💜",imgUrl:"",price:1750,badge:"",   desc:"Spurs third. Purple design."},
+            {id:154,kitType:"Shorts",       emoji:"⚪",imgUrl:"",price:700, badge:"",   desc:"Spurs home shorts."},
+          ]},
+        { id:"newcastle",  name:"Newcastle United",   emoji:"⚫", color:"#241F20", crest:"",
+          products:[
+            {id:161,kitType:"Home Kit",     emoji:"⚫",imgUrl:"",price:1800,badge:"",   desc:"Newcastle 2024/25. Black and white stripes."},
+            {id:162,kitType:"Away Kit",     emoji:"🟡",imgUrl:"",price:1750,badge:"new",desc:"Newcastle away. Yellow design."},
+            {id:163,kitType:"Third Kit",    emoji:"💙",imgUrl:"",price:1750,badge:"",   desc:"Newcastle third. Blue design."},
+          ]},
+        { id:"astonvilla", name:"Aston Villa",        emoji:"🟣", color:"#95BFE5", crest:"",
+          products:[
+            {id:171,kitType:"Home Kit",     emoji:"🟣",imgUrl:"",price:1800,badge:"",   desc:"Aston Villa 2024/25. Claret and blue."},
+            {id:172,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"Aston Villa away. White design."},
+            {id:173,kitType:"Third Kit",    emoji:"🟡",imgUrl:"",price:1750,badge:"",   desc:"Aston Villa third. Yellow design."},
+          ]},
+        { id:"westham",    name:"West Ham United",    emoji:"🔴", color:"#7A263A", crest:"",
+          products:[
+            {id:181,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1750,badge:"",   desc:"West Ham 2024/25. Claret and blue."},
+            {id:182,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"West Ham away. White design."},
+            {id:183,kitType:"Third Kit",    emoji:"💙",imgUrl:"",price:1700,badge:"",   desc:"West Ham third. Blue design."},
+          ]},
       ]
     },
     {
-      id: "laliga", label: "La Liga", emoji: "🇪🇸",
-      teams: [
-        {
-          id: "realmadrid", name: "Real Madrid", emoji: "⚪", crest: "",
-          products: [
-            { id:201, kitType:"Home Kit",    emoji:"⚪", imgUrl:"", price:1950, badge:"hot", desc:"Real Madrid 2024/25 home. Iconic all-white." },
-            { id:202, kitType:"Away Kit",    emoji:"💜", imgUrl:"", price:1900, badge:"",    desc:"Real Madrid away kit. Purple design." },
-            { id:203, kitType:"Third Kit",   emoji:"⚫", imgUrl:"", price:1900, badge:"",    desc:"Real Madrid third kit. Black with gold." },
-            { id:204, kitType:"Goalkeeper",  emoji:"🟢", imgUrl:"", price:1850, badge:"",    desc:"Real Madrid GK jersey." },
-            { id:205, kitType:"Training Top",emoji:"⚪", imgUrl:"", price:1300, badge:"",    desc:"Official Real Madrid training top." },
-            { id:206, kitType:"Shorts",      emoji:"⚪", imgUrl:"", price:800,  badge:"",    desc:"Real Madrid home shorts." },
-          ]
-        },
-        {
-          id: "barcelona", name: "Barcelona", emoji: "🔵", crest: "",
-          products: [
-            { id:211, kitType:"Home Kit",    emoji:"🔵", imgUrl:"", price:1900, badge:"",    desc:"Barcelona 2024/25 home. Classic blaugrana stripes." },
-            { id:212, kitType:"Away Kit",    emoji:"🟡", imgUrl:"", price:1850, badge:"new", desc:"Barcelona away kit. Yellow with dark details." },
-            { id:213, kitType:"Third Kit",   emoji:"⚫", imgUrl:"", price:1850, badge:"",    desc:"Barcelona third kit. Dark design." },
-            { id:214, kitType:"Goalkeeper",  emoji:"🟠", imgUrl:"", price:1800, badge:"",    desc:"Barcelona GK jersey." },
-            { id:215, kitType:"Training Top",emoji:"🔵", imgUrl:"", price:1300, badge:"",    desc:"Official Barcelona training top." },
-          ]
-        },
-        {
-          id: "atletico", name: "Atlético Madrid", emoji: "🔴", crest: "",
-          products: [
-            { id:221, kitType:"Home Kit",    emoji:"🔴", imgUrl:"", price:1800, badge:"",    desc:"Atlético Madrid 2024/25 home. Red and white stripes." },
-            { id:222, kitType:"Away Kit",    emoji:"⚫", imgUrl:"", price:1750, badge:"",    desc:"Atlético Madrid away. Dark design." },
-            { id:223, kitType:"Third Kit",   emoji:"🔵", imgUrl:"", price:1750, badge:"",    desc:"Atlético Madrid third kit." },
-          ]
-        },
-        {
-          id: "sevilla", name: "Sevilla", emoji: "⚪", crest: "",
-          products: [
-            { id:231, kitType:"Home Kit",    emoji:"⚪", imgUrl:"", price:1700, badge:"",    desc:"Sevilla 2024/25 home. Classic all-white." },
-            { id:232, kitType:"Away Kit",    emoji:"⚫", imgUrl:"", price:1650, badge:"",    desc:"Sevilla away kit." },
-          ]
-        },
+      id:"laliga", label:"La Liga", emoji:"🇪🇸",
+      teams:[
+        { id:"realmadrid", name:"Real Madrid",        emoji:"⚪", color:"#FEBE10", crest:"",
+          products:[
+            {id:201,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1950,badge:"hot",desc:"Real Madrid 2024/25. Iconic all-white."},
+            {id:202,kitType:"Away Kit",     emoji:"💜",imgUrl:"",price:1900,badge:"",   desc:"Real Madrid away. Purple design."},
+            {id:203,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1900,badge:"",   desc:"Real Madrid third. Black with gold."},
+            {id:204,kitType:"Goalkeeper",   emoji:"🟢",imgUrl:"",price:1850,badge:"",   desc:"Real Madrid GK jersey."},
+            {id:205,kitType:"Training Top", emoji:"⚪",imgUrl:"",price:1300,badge:"",   desc:"Official Real Madrid training top."},
+            {id:206,kitType:"Shorts",       emoji:"⚪",imgUrl:"",price:800, badge:"",   desc:"Real Madrid home shorts."},
+          ]},
+        { id:"barcelona",  name:"Barcelona",          emoji:"🔵", color:"#A50044", crest:"",
+          products:[
+            {id:211,kitType:"Home Kit",     emoji:"🔵",imgUrl:"",price:1900,badge:"",   desc:"Barcelona 2024/25. Classic blaugrana stripes."},
+            {id:212,kitType:"Away Kit",     emoji:"🟡",imgUrl:"",price:1850,badge:"new",desc:"Barcelona away. Yellow with dark details."},
+            {id:213,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1850,badge:"",   desc:"Barcelona third. Dark design."},
+            {id:214,kitType:"Goalkeeper",   emoji:"🟠",imgUrl:"",price:1800,badge:"",   desc:"Barcelona GK jersey."},
+            {id:215,kitType:"Training Top", emoji:"🔵",imgUrl:"",price:1300,badge:"",   desc:"Official Barcelona training top."},
+          ]},
+        { id:"atletico",   name:"Atlético Madrid",    emoji:"🔴", color:"#CE3524", crest:"",
+          products:[
+            {id:221,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1800,badge:"",   desc:"Atlético Madrid 2024/25. Red and white stripes."},
+            {id:222,kitType:"Away Kit",     emoji:"⚫",imgUrl:"",price:1750,badge:"",   desc:"Atlético Madrid away. Dark design."},
+            {id:223,kitType:"Third Kit",    emoji:"💙",imgUrl:"",price:1750,badge:"",   desc:"Atlético Madrid third kit."},
+            {id:224,kitType:"Shorts",       emoji:"🔴",imgUrl:"",price:750, badge:"",   desc:"Atlético Madrid home shorts."},
+          ]},
+        { id:"sevilla",    name:"Sevilla",            emoji:"⚪", color:"#D4AF37", crest:"",
+          products:[
+            {id:231,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"Sevilla 2024/25. Classic all-white."},
+            {id:232,kitType:"Away Kit",     emoji:"⚫",imgUrl:"",price:1650,badge:"",   desc:"Sevilla away kit."},
+            {id:233,kitType:"Third Kit",    emoji:"🔴",imgUrl:"",price:1650,badge:"",   desc:"Sevilla third. Red design."},
+          ]},
+        { id:"villarreal", name:"Villarreal",         emoji:"🟡", color:"#FFF200", crest:"",
+          products:[
+            {id:241,kitType:"Home Kit",     emoji:"🟡",imgUrl:"",price:1700,badge:"",   desc:"Villarreal 2024/25. Yellow submarine kit."},
+            {id:242,kitType:"Away Kit",     emoji:"💙",imgUrl:"",price:1650,badge:"",   desc:"Villarreal away. Blue design."},
+            {id:243,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1650,badge:"",   desc:"Villarreal third. Dark design."},
+          ]},
+        { id:"sociedad",   name:"Real Sociedad",      emoji:"💙", color:"#0070B8", crest:"",
+          products:[
+            {id:251,kitType:"Home Kit",     emoji:"💙",imgUrl:"",price:1700,badge:"",   desc:"Real Sociedad 2024/25. Blue and white stripes."},
+            {id:252,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1650,badge:"",   desc:"Real Sociedad away. White design."},
+          ]},
       ]
     },
     {
-      id: "serie", label: "Serie A", emoji: "🇮🇹",
-      teams: [
-        {
-          id: "juventus", name: "Juventus", emoji: "⚫", crest: "",
-          products: [
-            { id:301, kitType:"Home Kit",    emoji:"⚫", imgUrl:"", price:1750, badge:"sale",desc:"Juventus 2024/25 home. Iconic black and white stripes." },
-            { id:302, kitType:"Away Kit",    emoji:"⚪", imgUrl:"", price:1700, badge:"",    desc:"Juventus away kit. White design." },
-            { id:303, kitType:"Third Kit",   emoji:"🟡", imgUrl:"", price:1700, badge:"",    desc:"Juventus third kit. Yellow accent." },
-            { id:304, kitType:"Training Top",emoji:"⚫", imgUrl:"", price:1200, badge:"",    desc:"Official Juventus training top." },
-          ]
-        },
-        {
-          id: "acmilan", name: "AC Milan", emoji: "🔴", crest: "",
-          products: [
-            { id:311, kitType:"Home Kit",    emoji:"🔴", imgUrl:"", price:1750, badge:"",    desc:"AC Milan 2024/25 home. Red and black stripes." },
-            { id:312, kitType:"Away Kit",    emoji:"⚪", imgUrl:"", price:1700, badge:"",    desc:"AC Milan away kit. White." },
-            { id:313, kitType:"Third Kit",   emoji:"⚫", imgUrl:"", price:1700, badge:"new", desc:"AC Milan third kit. All black." },
-          ]
-        },
-        {
-          id: "inter", name: "Inter Milan", emoji: "💙", crest: "",
-          products: [
-            { id:321, kitType:"Home Kit",    emoji:"💙", imgUrl:"", price:1750, badge:"",    desc:"Inter Milan 2024/25 home. Blue and black stripes." },
-            { id:322, kitType:"Away Kit",    emoji:"⚪", imgUrl:"", price:1700, badge:"",    desc:"Inter Milan away kit." },
-            { id:323, kitType:"Third Kit",   emoji:"🟢", imgUrl:"", price:1700, badge:"",    desc:"Inter Milan third kit." },
-          ]
-        },
-        {
-          id: "napoli", name: "Napoli", emoji: "💙", crest: "",
-          products: [
-            { id:331, kitType:"Home Kit",    emoji:"💙", imgUrl:"", price:1700, badge:"",    desc:"Napoli 2024/25 home. Azure blue." },
-            { id:332, kitType:"Away Kit",    emoji:"⚪", imgUrl:"", price:1650, badge:"",    desc:"Napoli away kit. White design." },
-          ]
-        },
+      id:"bundesliga", label:"Bundesliga", emoji:"🇩🇪",
+      teams:[
+        { id:"bayernm",    name:"Bayern Munich",      emoji:"🔴", color:"#DC052D", crest:"",
+          products:[
+            {id:301,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1900,badge:"hot",desc:"Bayern Munich 2024/25. Classic red."},
+            {id:302,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1850,badge:"",   desc:"Bayern away. White design."},
+            {id:303,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1850,badge:"",   desc:"Bayern third. Black design."},
+            {id:304,kitType:"Goalkeeper",   emoji:"🟢",imgUrl:"",price:1800,badge:"",   desc:"Bayern GK jersey 2024/25."},
+            {id:305,kitType:"Training Top", emoji:"🔴",imgUrl:"",price:1300,badge:"",   desc:"Official Bayern training top."},
+            {id:306,kitType:"Shorts",       emoji:"🔴",imgUrl:"",price:800, badge:"",   desc:"Bayern home shorts."},
+          ]},
+        { id:"dortmund",   name:"Borussia Dortmund",  emoji:"🟡", color:"#FDE100", crest:"",
+          products:[
+            {id:311,kitType:"Home Kit",     emoji:"🟡",imgUrl:"",price:1850,badge:"new",desc:"Dortmund 2024/25. Yellow and black."},
+            {id:312,kitType:"Away Kit",     emoji:"⚫",imgUrl:"",price:1800,badge:"",   desc:"Dortmund away. Black design."},
+            {id:313,kitType:"Third Kit",    emoji:"🟠",imgUrl:"",price:1800,badge:"",   desc:"Dortmund third. Orange design."},
+            {id:314,kitType:"Training Top", emoji:"🟡",imgUrl:"",price:1250,badge:"",   desc:"Official Dortmund training top."},
+          ]},
+        { id:"leverkusen", name:"Bayer Leverkusen",   emoji:"🔴", color:"#E32221", crest:"",
+          products:[
+            {id:321,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1800,badge:"",   desc:"Leverkusen 2024/25. Red and black stripes."},
+            {id:322,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"Leverkusen away. White design."},
+            {id:323,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1750,badge:"new",desc:"Leverkusen third. Dark design."},
+          ]},
+        { id:"leipzig",    name:"RB Leipzig",         emoji:"🔴", color:"#DD0741", crest:"",
+          products:[
+            {id:331,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1800,badge:"",   desc:"RB Leipzig 2024/25. Red and white."},
+            {id:332,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"RB Leipzig away. White design."},
+            {id:333,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1750,badge:"",   desc:"RB Leipzig third. Dark design."},
+          ]},
+        { id:"gladbach",   name:"Borussia M'gladbach",emoji:"⚪", color:"#000000", crest:"",
+          products:[
+            {id:341,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"M'gladbach 2024/25. Black and white stripes."},
+            {id:342,kitType:"Away Kit",     emoji:"🟢",imgUrl:"",price:1700,badge:"",   desc:"M'gladbach away. Green design."},
+          ]},
+        { id:"eintracht",  name:"Eintracht Frankfurt",emoji:"🔴", color:"#E1000F", crest:"",
+          products:[
+            {id:351,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1750,badge:"",   desc:"Frankfurt 2024/25. Red, white and black."},
+            {id:352,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"Frankfurt away. White design."},
+            {id:353,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1700,badge:"",   desc:"Frankfurt third. Dark design."},
+          ]},
       ]
     },
     {
-      id: "ucl", label: "Champions League", emoji: "🏆",
-      teams: [
-        {
-          id: "psg", name: "PSG", emoji: "🔵", crest: "",
-          products: [
-            { id:401, kitType:"Home Kit",       emoji:"🔵", imgUrl:"", price:2000, badge:"new",  desc:"PSG 2024/25 home. Navy with red and white trim." },
-            { id:402, kitType:"Away Kit",        emoji:"⚪", imgUrl:"", price:1950, badge:"",    desc:"PSG away kit. White design." },
-            { id:403, kitType:"UCL Edition",     emoji:"🏆", imgUrl:"", price:2100, badge:"hot", desc:"PSG Champions League special edition." },
-            { id:404, kitType:"Training Top",    emoji:"🔵", imgUrl:"", price:1400, badge:"",    desc:"Official PSG UCL training top." },
-          ]
-        },
-        {
-          id: "dortmund", name: "Borussia Dortmund", emoji: "🟡", crest: "",
-          products: [
-            { id:411, kitType:"Home Kit",    emoji:"🟡", imgUrl:"", price:1850, badge:"",    desc:"Dortmund 2024/25 home. Yellow and black." },
-            { id:412, kitType:"Away Kit",    emoji:"⚫", imgUrl:"", price:1800, badge:"",    desc:"Dortmund away kit. Black." },
-            { id:413, kitType:"UCL Edition", emoji:"🏆", imgUrl:"", price:1950, badge:"new", desc:"Dortmund UCL special edition." },
-          ]
-        },
-        {
-          id: "bayern", name: "Bayern Munich", emoji: "🔴", crest: "",
-          products: [
-            { id:421, kitType:"Home Kit",    emoji:"🔴", imgUrl:"", price:1900, badge:"",    desc:"Bayern Munich 2024/25 home. Classic red." },
-            { id:422, kitType:"Away Kit",    emoji:"⚪", imgUrl:"", price:1850, badge:"",    desc:"Bayern away kit. White." },
-            { id:423, kitType:"UCL Edition", emoji:"🏆", imgUrl:"", price:2000, badge:"",    desc:"Bayern UCL special edition." },
-          ]
-        },
+      id:"ligue1", label:"Ligue 1", emoji:"🇫🇷",
+      teams:[
+        { id:"psg",        name:"PSG",                emoji:"🔵", color:"#004170", crest:"",
+          products:[
+            {id:401,kitType:"Home Kit",     emoji:"🔵",imgUrl:"",price:2000,badge:"hot",desc:"PSG 2024/25. Navy with red and white trim."},
+            {id:402,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1950,badge:"",   desc:"PSG away. White design."},
+            {id:403,kitType:"Third Kit",    emoji:"🟡",imgUrl:"",price:1950,badge:"new",desc:"PSG third. Gold design."},
+            {id:404,kitType:"Goalkeeper",   emoji:"🟢",imgUrl:"",price:1900,badge:"",   desc:"PSG GK jersey 2024/25."},
+            {id:405,kitType:"Training Top", emoji:"🔵",imgUrl:"",price:1400,badge:"",   desc:"Official PSG training top."},
+            {id:406,kitType:"Shorts",       emoji:"🔵",imgUrl:"",price:900, badge:"",   desc:"PSG home shorts."},
+          ]},
+        { id:"marseille",  name:"Olympique Marseille",emoji:"⚪", color:"#2FAEE0", crest:"",
+          products:[
+            {id:411,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1800,badge:"",   desc:"Marseille 2024/25. Classic white."},
+            {id:412,kitType:"Away Kit",     emoji:"💙",imgUrl:"",price:1750,badge:"",   desc:"Marseille away. Blue design."},
+            {id:413,kitType:"Third Kit",    emoji:"🟠",imgUrl:"",price:1750,badge:"",   desc:"Marseille third. Orange design."},
+          ]},
+        { id:"monaco",     name:"AS Monaco",          emoji:"🔴", color:"#E8112D", crest:"",
+          products:[
+            {id:421,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1800,badge:"",   desc:"Monaco 2024/25. Red and white diagonal."},
+            {id:422,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"Monaco away. White design."},
+            {id:423,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1750,badge:"",   desc:"Monaco third. Dark design."},
+          ]},
+        { id:"lyon",       name:"Olympique Lyon",     emoji:"🔴", color:"#0046A8", crest:"",
+          products:[
+            {id:431,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"Lyon 2024/25. White with red and blue trim."},
+            {id:432,kitType:"Away Kit",     emoji:"💙",imgUrl:"",price:1700,badge:"",   desc:"Lyon away. Blue design."},
+            {id:433,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1700,badge:"",   desc:"Lyon third. Dark design."},
+          ]},
+        { id:"lille",      name:"LOSC Lille",         emoji:"🔴", color:"#D4002C", crest:"",
+          products:[
+            {id:441,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1750,badge:"",   desc:"Lille 2024/25. Red and dark design."},
+            {id:442,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"Lille away. White design."},
+          ]},
+        { id:"nice",       name:"OGC Nice",           emoji:"🔴", color:"#E80020", crest:"",
+          products:[
+            {id:451,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1700,badge:"",   desc:"Nice 2024/25. Red and black stripes."},
+            {id:452,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1650,badge:"",   desc:"Nice away. White design."},
+          ]},
       ]
     },
     {
-      id: "national", label: "National Teams", emoji: "🌍",
-      teams: [
-        {
-          id: "ethiopia", name: "Ethiopia 🇪🇹", emoji: "🟢", crest: "",
-          products: [
-            { id:501, kitType:"Home Kit",    emoji:"🟢", imgUrl:"", price:1450, badge:"local",desc:"Ethiopia Walia Ibex 2024. Green with yellow and red trim." },
-            { id:502, kitType:"Away Kit",    emoji:"🟡", imgUrl:"", price:1400, badge:"",    desc:"Ethiopia away kit. Yellow design." },
-            { id:503, kitType:"Training Top",emoji:"🟢", imgUrl:"", price:1000, badge:"",    desc:"Official Ethiopia national team training top." },
-          ]
-        },
-        {
-          id: "brazil", name: "Brazil 🇧🇷", emoji: "🟡", crest: "",
-          products: [
-            { id:511, kitType:"Home Kit",    emoji:"🟡", imgUrl:"", price:1750, badge:"",    desc:"Brazil 2024. Iconic yellow and green." },
-            { id:512, kitType:"Away Kit",    emoji:"💙", imgUrl:"", price:1700, badge:"",    desc:"Brazil away kit. Blue design." },
-            { id:513, kitType:"Third Kit",   emoji:"⚪", imgUrl:"", price:1700, badge:"",    desc:"Brazil third kit. White." },
-          ]
-        },
-        {
-          id: "france", name: "France 🇫🇷", emoji: "💙", crest: "",
-          products: [
-            { id:521, kitType:"Home Kit",    emoji:"💙", imgUrl:"", price:1750, badge:"",    desc:"France 2024 home. Dark blue." },
-            { id:522, kitType:"Away Kit",    emoji:"⚪", imgUrl:"", price:1700, badge:"new", desc:"France away kit. White." },
-          ]
-        },
-        {
-          id: "argentina", name: "Argentina 🇦🇷", emoji: "🩵", crest: "",
-          products: [
-            { id:531, kitType:"Home Kit",    emoji:"🩵", imgUrl:"", price:1800, badge:"hot", desc:"Argentina 2024 home. Blue and white stripes." },
-            { id:532, kitType:"Away Kit",    emoji:"💜", imgUrl:"", price:1750, badge:"",    desc:"Argentina away kit." },
-          ]
-        },
-        {
-          id: "england", name: "England 🏴󠁧󠁢󠁥󠁮󠁧󠁿", emoji: "⚪", crest: "",
-          products: [
-            { id:541, kitType:"Home Kit",    emoji:"⚪", imgUrl:"", price:1750, badge:"",    desc:"England 2024 home. White with red cross trim." },
-            { id:542, kitType:"Away Kit",    emoji:"🔵", imgUrl:"", price:1700, badge:"",    desc:"England away kit. Blue." },
-          ]
-        },
+      id:"serie_a", label:"Serie A", emoji:"🇮🇹",
+      teams:[
+        { id:"juventus",   name:"Juventus",           emoji:"⚫", color:"#000000", crest:"",
+          products:[
+            {id:501,kitType:"Home Kit",     emoji:"⚫",imgUrl:"",price:1750,badge:"sale",desc:"Juventus 2024/25. Iconic black and white stripes."},
+            {id:502,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"Juventus away. White design."},
+            {id:503,kitType:"Third Kit",    emoji:"🟡",imgUrl:"",price:1700,badge:"",   desc:"Juventus third. Yellow accent."},
+            {id:504,kitType:"Training Top", emoji:"⚫",imgUrl:"",price:1200,badge:"",   desc:"Official Juventus training top."},
+          ]},
+        { id:"acmilan",    name:"AC Milan",           emoji:"🔴", color:"#FB090B", crest:"",
+          products:[
+            {id:511,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1750,badge:"",   desc:"AC Milan 2024/25. Red and black stripes."},
+            {id:512,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"AC Milan away. White design."},
+            {id:513,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1700,badge:"new",desc:"AC Milan third. All black."},
+            {id:514,kitType:"Goalkeeper",   emoji:"🟡",imgUrl:"",price:1650,badge:"",   desc:"AC Milan GK jersey."},
+          ]},
+        { id:"inter",      name:"Inter Milan",        emoji:"💙", color:"#010E80", crest:"",
+          products:[
+            {id:521,kitType:"Home Kit",     emoji:"💙",imgUrl:"",price:1750,badge:"",   desc:"Inter Milan 2024/25. Blue and black stripes."},
+            {id:522,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"Inter Milan away. White design."},
+            {id:523,kitType:"Third Kit",    emoji:"🟢",imgUrl:"",price:1700,badge:"",   desc:"Inter Milan third. Green design."},
+            {id:524,kitType:"Goalkeeper",   emoji:"🟠",imgUrl:"",price:1650,badge:"",   desc:"Inter Milan GK jersey."},
+          ]},
+        { id:"napoli",     name:"Napoli",             emoji:"💙", color:"#12A0C3", crest:"",
+          products:[
+            {id:531,kitType:"Home Kit",     emoji:"💙",imgUrl:"",price:1700,badge:"",   desc:"Napoli 2024/25. Azure blue."},
+            {id:532,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1650,badge:"",   desc:"Napoli away. White design."},
+            {id:533,kitType:"Third Kit",    emoji:"🟡",imgUrl:"",price:1650,badge:"",   desc:"Napoli third. Yellow design."},
+          ]},
+        { id:"roma",       name:"AS Roma",            emoji:"🔴", color:"#9B1915", crest:"",
+          products:[
+            {id:541,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1700,badge:"",   desc:"AS Roma 2024/25. Iconic giallorossi."},
+            {id:542,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1650,badge:"",   desc:"Roma away. White design."},
+            {id:543,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1650,badge:"",   desc:"Roma third. Dark design."},
+          ]},
+        { id:"lazio",      name:"SS Lazio",           emoji:"🩵", color:"#87D8F7", crest:"",
+          products:[
+            {id:551,kitType:"Home Kit",     emoji:"🩵",imgUrl:"",price:1700,badge:"",   desc:"Lazio 2024/25. Sky blue."},
+            {id:552,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1650,badge:"",   desc:"Lazio away. White design."},
+            {id:553,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1650,badge:"",   desc:"Lazio third. Dark design."},
+          ]},
+        { id:"atalanta",   name:"Atalanta",           emoji:"⚫", color:"#1E64AA", crest:"",
+          products:[
+            {id:561,kitType:"Home Kit",     emoji:"⚫",imgUrl:"",price:1700,badge:"",   desc:"Atalanta 2024/25. Black and blue stripes."},
+            {id:562,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1650,badge:"new",desc:"Atalanta away. White design."},
+          ]},
       ]
     },
-  ],
-
-  // Legacy flat products kept for admin modal compatibility (auto-derived from leagues)
-  get products() {
-    const all = [];
-    (this.leagues||[]).forEach(lg => {
-      (lg.teams||[]).forEach(team => {
-        (team.products||[]).forEach(p => {
-          all.push({ ...p, teamId: team.id, teamName: team.name, leagueId: lg.id, leagueName: lg.label, cat: lg.id, league: lg.label });
-        });
-      });
-    });
-    return all;
-  },
-
-  shipping: [
-    { id:"delivery", icon:"🚚", name:"Home Delivery", desc:"3–5 business days", price:80 },
-    { id:"pickup",   icon:"🏪", name:"Pick from Store", desc:"Ready in 1–2 hours · Addis Ababa", price:0 },
-    { id:"express",  icon:"⚡", name:"Express Delivery", desc:"Same day delivery", price:180 },
+    {
+      id:"ucl", label:"Champions League", emoji:"🏆",
+      teams:[
+        { id:"ucl_realmadrid", name:"Real Madrid",    emoji:"⚪", color:"#FEBE10", crest:"",
+          products:[
+            {id:601,kitType:"UCL Edition",  emoji:"🏆",imgUrl:"",price:2200,badge:"hot",desc:"Real Madrid UCL special edition 2024/25."},
+            {id:602,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1950,badge:"",   desc:"Real Madrid UCL home kit."},
+            {id:603,kitType:"Training Top", emoji:"⚪",imgUrl:"",price:1400,badge:"",   desc:"Real Madrid UCL training top."},
+          ]},
+        { id:"ucl_mancity",    name:"Manchester City",emoji:"🩵", color:"#6CABDD", crest:"",
+          products:[
+            {id:611,kitType:"UCL Edition",  emoji:"🏆",imgUrl:"",price:2100,badge:"new",desc:"Man City UCL special edition 2024/25."},
+            {id:612,kitType:"Home Kit",     emoji:"🩵",imgUrl:"",price:1850,badge:"",   desc:"Man City UCL home kit."},
+          ]},
+        { id:"ucl_psg",        name:"PSG",            emoji:"🔵", color:"#004170", crest:"",
+          products:[
+            {id:621,kitType:"UCL Edition",  emoji:"🏆",imgUrl:"",price:2100,badge:"hot",desc:"PSG Champions League special edition."},
+            {id:622,kitType:"Home Kit",     emoji:"🔵",imgUrl:"",price:2000,badge:"",   desc:"PSG UCL home kit."},
+          ]},
+        { id:"ucl_dortmund",   name:"Borussia Dortmund",emoji:"🟡",color:"#FDE100", crest:"",
+          products:[
+            {id:631,kitType:"UCL Edition",  emoji:"🏆",imgUrl:"",price:1950,badge:"new",desc:"Dortmund UCL special edition."},
+            {id:632,kitType:"Home Kit",     emoji:"🟡",imgUrl:"",price:1850,badge:"",   desc:"Dortmund UCL home kit."},
+          ]},
+        { id:"ucl_bayernm",    name:"Bayern Munich",  emoji:"🔴", color:"#DC052D", crest:"",
+          products:[
+            {id:641,kitType:"UCL Edition",  emoji:"🏆",imgUrl:"",price:2000,badge:"",   desc:"Bayern Munich UCL special edition."},
+            {id:642,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1900,badge:"",   desc:"Bayern UCL home kit."},
+          ]},
+        { id:"ucl_arsenal",    name:"Arsenal",        emoji:"🔴", color:"#EF0107", crest:"",
+          products:[
+            {id:651,kitType:"UCL Edition",  emoji:"🏆",imgUrl:"",price:1950,badge:"new",desc:"Arsenal UCL special edition 2024/25."},
+            {id:652,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1850,badge:"",   desc:"Arsenal UCL home kit."},
+          ]},
+      ]
+    },
+    {
+      id:"national", label:"National Teams", emoji:"🌍",
+      teams:[
+        { id:"ethiopia",   name:"Ethiopia",           emoji:"🟢", color:"#078930", crest:"",
+          products:[
+            {id:701,kitType:"Home Kit",     emoji:"🟢",imgUrl:"",price:1450,badge:"local",desc:"Ethiopia Walia Ibex 2024. Green with yellow and red trim."},
+            {id:702,kitType:"Away Kit",     emoji:"🟡",imgUrl:"",price:1400,badge:"",    desc:"Ethiopia away. Yellow design."},
+            {id:703,kitType:"Training Top", emoji:"🟢",imgUrl:"",price:1000,badge:"",    desc:"Official Ethiopia national team training top."},
+            {id:704,kitType:"Shorts",       emoji:"🟢",imgUrl:"",price:650, badge:"",    desc:"Ethiopia national team shorts."},
+          ]},
+        { id:"brazil",     name:"Brazil",             emoji:"🟡", color:"#009C3B", crest:"",
+          products:[
+            {id:711,kitType:"Home Kit",     emoji:"🟡",imgUrl:"",price:1750,badge:"",   desc:"Brazil 2024. Iconic yellow and green."},
+            {id:712,kitType:"Away Kit",     emoji:"💙",imgUrl:"",price:1700,badge:"",   desc:"Brazil away. Blue design."},
+            {id:713,kitType:"Third Kit",    emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"Brazil third. White design."},
+            {id:714,kitType:"Training Top", emoji:"🟡",imgUrl:"",price:1200,badge:"",   desc:"Brazil training top."},
+          ]},
+        { id:"argentina",  name:"Argentina",          emoji:"🩵", color:"#74ACDF", crest:"",
+          products:[
+            {id:721,kitType:"Home Kit",     emoji:"🩵",imgUrl:"",price:1800,badge:"hot",desc:"Argentina 2024. Blue and white stripes."},
+            {id:722,kitType:"Away Kit",     emoji:"💜",imgUrl:"",price:1750,badge:"",   desc:"Argentina away. Purple design."},
+            {id:723,kitType:"Third Kit",    emoji:"⚫",imgUrl:"",price:1750,badge:"",   desc:"Argentina third. Dark design."},
+          ]},
+        { id:"france",     name:"France",             emoji:"💙", color:"#002395", crest:"",
+          products:[
+            {id:731,kitType:"Home Kit",     emoji:"💙",imgUrl:"",price:1750,badge:"",   desc:"France 2024. Dark blue."},
+            {id:732,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"new",desc:"France away. White design."},
+            {id:733,kitType:"Third Kit",    emoji:"🔴",imgUrl:"",price:1700,badge:"",   desc:"France third. Red design."},
+          ]},
+        { id:"england",    name:"England",            emoji:"⚪", color:"#CF091A", crest:"",
+          products:[
+            {id:741,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"England 2024. White with red cross trim."},
+            {id:742,kitType:"Away Kit",     emoji:"💙",imgUrl:"",price:1700,badge:"",   desc:"England away. Blue design."},
+          ]},
+        { id:"germany",    name:"Germany",            emoji:"⚪", color:"#000000", crest:"",
+          products:[
+            {id:751,kitType:"Home Kit",     emoji:"⚪",imgUrl:"",price:1750,badge:"",   desc:"Germany 2024. White with black accents."},
+            {id:752,kitType:"Away Kit",     emoji:"⚫",imgUrl:"",price:1700,badge:"",   desc:"Germany away. Dark design."},
+          ]},
+        { id:"spain",      name:"Spain",              emoji:"🔴", color:"#AA151B", crest:"",
+          products:[
+            {id:761,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1750,badge:"",   desc:"Spain 2024. Classic red."},
+            {id:762,kitType:"Away Kit",     emoji:"💙",imgUrl:"",price:1700,badge:"",   desc:"Spain away. Blue design."},
+          ]},
+        { id:"portugal",   name:"Portugal",           emoji:"🔴", color:"#006600", crest:"",
+          products:[
+            {id:771,kitType:"Home Kit",     emoji:"🔴",imgUrl:"",price:1750,badge:"hot",desc:"Portugal 2024. Red and green."},
+            {id:772,kitType:"Away Kit",     emoji:"⚪",imgUrl:"",price:1700,badge:"",   desc:"Portugal away. White design."},
+          ]},
+      ]
+    },
   ],
 };
 
-// ── STATE ──────────────────────────────────────────
-let cfg = JSON.parse(localStorage.getItem('emartzon_cfg') || 'null') || deepClone(DEFAULT_CONFIG);
+// ═══════════════════════════════════════════
+// STATE — always use fresh leagues from DEFAULT_CONFIG
+// ═══════════════════════════════════════════
+function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+let savedCfg = JSON.parse(localStorage.getItem('emartzon_cfg') || 'null');
+let cfg;
+if (savedCfg) {
+  cfg = Object.assign({}, DEFAULT_CONFIG, savedCfg, { leagues: DEFAULT_CONFIG.leagues });
+} else {
+  cfg = deepClone(DEFAULT_CONFIG);
+  // Remove the getter so deepClone works
+  delete cfg.products;
+}
+
 let cart = [];
 let orderHistory = JSON.parse(localStorage.getItem('emartzon_orders') || '[]');
-let curProduct = null;
-let selSize = "M";
-let selQty = 1;
-let curShipping = null;
-let editingProdIdx = -1;
-let searchActive = false;
+let curProduct = null, selSize = "M", selQty = 1, curShipping = null;
+let shopState = { leagueId:'all', teamId:null, kitFilter:'all' };
+let editingTeamId = null, editingLeagueId = null, editingProdId = null;
+let tgUser = null;
 
-function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
 function save(){ localStorage.setItem('emartzon_cfg', JSON.stringify(cfg)); }
 function saveOrders(){ localStorage.setItem('emartzon_orders', JSON.stringify(orderHistory)); }
 function fmt(n){ return cfg.currencyPos==='after' ? n.toLocaleString()+' '+cfg.currency : cfg.currency+' '+n.toLocaleString(); }
-function nextId(){ return Math.max(0,...cfg.products.map(p=>p.id))+1; }
 
-// ── ROLE HELPERS ──────────────────────────────────
-function myId(){ return tgUser ? String(tgUser.id) : null; }
-function isOwner(){
-  if (!tgUser) return false;
-  // Auto-claim ownership if no owner set yet (first run)
-  if (!cfg.ownerTelegramId) return true;
-  return String(tgUser.id) === String(cfg.ownerTelegramId);
-}
-function isAdmin(){
-  if (!tgUser) return false;
-  if (isOwner()) return true;
-  return (cfg.adminIds||[]).map(String).includes(String(tgUser.id));
-}
-function claimOwnership(){
-  // Called once when owner opens app and no owner is set
-  if (!cfg.ownerTelegramId && tgUser) {
-    cfg.ownerTelegramId = String(tgUser.id);
-    if (!cfg.adminIds) cfg.adminIds = [];
-    save();
-  }
-}
+// Role helpers
+function isOwner(){ if(!tgUser) return false; if(!cfg.ownerTelegramId) return true; return String(tgUser.id)===String(cfg.ownerTelegramId); }
+function isAdmin(){ if(!tgUser) return false; if(isOwner()) return true; return (cfg.adminIds||[]).map(String).includes(String(tgUser.id)); }
+function claimOwnership(){ if(!cfg.ownerTelegramId && tgUser){ cfg.ownerTelegramId=String(tgUser.id); if(!cfg.adminIds) cfg.adminIds=[]; save(); } }
 
-// ── TELEGRAM USER STATE ───────────────────────────
-let tgUser = null; // populated after login
+// ═══════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════
+window.addEventListener('load', () => { applyTheme(); initLogin(); });
 
-// ── INIT ───────────────────────────────────────────
-window.addEventListener('load', () => {
-  applyTheme();
-  initLogin();
-});
-
-function initLogin() {
-  // Update login logo to match brand
+function initLogin(){
   const li = document.getElementById('login-logo-inner');
-  if (cfg.logoUrl) {
-    li.innerHTML = `<img src="${cfg.logoUrl}" alt="logo" onerror="this.parentNode.textContent='${cfg.logoEmoji||'⚽'}'">`;
-  } else {
-    li.textContent = cfg.logoEmoji || '⚽';
+  if(cfg.logoUrl){ li.innerHTML=`<img src="${cfg.logoUrl}" onerror="this.parentNode.textContent='${cfg.logoEmoji||'⚽'}'">` }
+  else { li.textContent=cfg.logoEmoji||'⚽'; }
+  document.getElementById('login-brand-name').innerHTML=`${cfg.brandName1||'emart'}<span>${cfg.brandName2||'zon'}</span>`;
+  document.getElementById('login-tagline').textContent=cfg.storeSub||'Official Football Jerseys';
+
+  function tryTelegram(){
+    try{
+      const tg=window.Telegram?.WebApp;
+      if(tg){ tg.ready(); try{tg.expand();}catch(e){} try{tg.setHeaderColor('#0a0a0a');tg.setBackgroundColor('#0a0a0a');}catch(e){} const u=tg.initDataUnsafe?.user; if(u&&u.id){ tgUser=u; const saved=localStorage.getItem('emartzon_user_id'); if(saved&&saved===String(u.id)){ document.getElementById('login-screen').style.display='none'; bootApp(); } else { showTgUser(u); } return true; } }
+    }catch(e){}
+    return false;
   }
-  document.getElementById('login-brand-name').innerHTML = `${cfg.brandName1||'emart'}<span>${cfg.brandName2||'zon'}</span>`;
-  document.getElementById('login-tagline').textContent = cfg.storeSub || 'Official Football Jerseys · Sportswear';
-
-  // Try Telegram WebApp immediately — no delay if user already known
-  try {
-    const tg = window.Telegram?.WebApp;
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      tg.ready();
-      tg.expand();
-      try { tg.setHeaderColor('#0a0a0a'); tg.setBackgroundColor('#0a0a0a'); } catch(e){}
-      const u = tg.initDataUnsafe.user;
-      tgUser = u;
-
-      // Check if this user has opened the app before (auto-login)
-      const savedUserId = localStorage.getItem('emartzon_user_id');
-      if (savedUserId && savedUserId === String(u.id)) {
-        // Already logged in before — skip login screen instantly
-        document.getElementById('login-screen').style.display = 'none';
-        bootApp();
-      } else {
-        // First time — show the login card briefly, then let them tap Continue
-        showTgUser(u);
-      }
-    } else {
-      // Slight delay then show fallback
-      setTimeout(showNotTelegram, 900);
-    }
-  } catch(e) {
-    setTimeout(showNotTelegram, 900);
-  }
+  if(!tryTelegram()) setTimeout(()=>{ if(!tryTelegram()) showNotTelegram(); }, 500);
 }
 
-function showTgUser(u) {
-  document.getElementById('login-loading').style.display = 'none';
-  document.getElementById('login-notg').style.display = 'none';
-  document.getElementById('login-tg-found').style.display = 'block';
-
-  // Name
-  const full = [u.first_name, u.last_name].filter(Boolean).join(' ');
-  document.getElementById('tg-name-el').textContent = full || 'Telegram User';
-  document.getElementById('tg-handle-el').textContent = u.username ? '@' + u.username : 'No username';
-  document.getElementById('tg-id-el').textContent = u.id;
-  document.getElementById('tg-first-name-btn').textContent = u.first_name || 'me';
-
-  // Avatar — use initials since Telegram Mini Apps don't expose photo_url directly
-  const avatarEl = document.getElementById('tg-avatar-el');
-  const initials = ((u.first_name||'?')[0] + (u.last_name ? u.last_name[0] : '')).toUpperCase();
-  // Try photo_url if available (some clients expose it)
-  if (u.photo_url) {
-    avatarEl.innerHTML = `<img src="${u.photo_url}" alt="${initials}" onerror="this.parentNode.textContent='${initials}'">`;
-  } else {
-    avatarEl.textContent = initials;
-  }
+function showTgUser(u){
+  document.getElementById('login-loading').style.display='none';
+  document.getElementById('login-notg').style.display='none';
+  document.getElementById('login-tg-found').style.display='block';
+  const full=[u.first_name,u.last_name].filter(Boolean).join(' ');
+  document.getElementById('tg-name-el').textContent=full||'Telegram User';
+  document.getElementById('tg-handle-el').textContent=u.username?'@'+u.username:'No username';
+  document.getElementById('tg-id-el').textContent=u.id;
+  document.getElementById('tg-first-name-btn').textContent=u.first_name||'me';
+  const av=document.getElementById('tg-avatar-el');
+  const ini=((u.first_name||'?')[0]+(u.last_name?u.last_name[0]:'')).toUpperCase();
+  if(u.photo_url){ av.innerHTML=`<img src="${u.photo_url}" onerror="this.parentNode.textContent='${ini}'">`; } else { av.textContent=ini; }
 }
 
-function showNotTelegram() {
-  document.getElementById('login-loading').style.display = 'none';
-  document.getElementById('login-tg-found').style.display = 'none';
-  document.getElementById('login-notg').style.display = 'block';
+function showNotTelegram(){
+  document.getElementById('login-loading').style.display='none';
+  document.getElementById('login-tg-found').style.display='none';
+  document.getElementById('login-notg').style.display='block';
 }
 
-function enterApp() {
-  // Save this user's Telegram ID so next open skips login
-  if (tgUser) localStorage.setItem('emartzon_user_id', String(tgUser.id));
-
-  const screen = document.getElementById('login-screen');
-  screen.style.transition = 'opacity .35s ease, transform .35s ease';
-  screen.style.opacity = '0';
-  screen.style.transform = 'scale(.97)';
-  setTimeout(() => {
-    screen.style.display = 'none';
-    bootApp();
-  }, 350);
+function enterPreviewMode(){
+  tgUser={id:'guest_'+Date.now(),first_name:'Guest',last_name:'',username:null,language_code:'en'};
+  const s=document.getElementById('login-screen'); s.style.transition='opacity .3s'; s.style.opacity='0';
+  setTimeout(()=>{ s.style.display='none'; bootApp(); },300);
 }
 
-function bootApp() {
-  // Claim ownership if this is the very first run
+function enterApp(){
+  if(tgUser) localStorage.setItem('emartzon_user_id',String(tgUser.id));
+  const s=document.getElementById('login-screen'); s.style.transition='opacity .35s ease,transform .35s ease'; s.style.opacity='0'; s.style.transform='scale(.97)';
+  setTimeout(()=>{ s.style.display='none'; bootApp(); },350);
+}
+
+function bootApp(){
   claimOwnership();
-
-  renderHeader();
-  renderHero();
-  renderCats();
-  renderShopGrid();
-  updateBreadcrumb();
-  updateShopTitle();
-  renderShipOpts();
-  renderPickupCard();
-  populateAdminForms();
-  curShipping = cfg.shipping[0];
+  renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
+  renderShipOpts(); renderPickupCard();
+  curShipping=cfg.shipping[0];
   document.getElementById('page-shop').classList.add('app-revealed');
-
-  // Update nav profile avatar
   updateNavProfileIcon();
-
-  // Welcome toast only on first-ever login (no saved session before)
-  const alreadyKnown = tgUser && localStorage.getItem('emartzon_welcomed_' + tgUser.id);
-  if (tgUser && !alreadyKnown) {
-    showToast(`Welcome, ${tgUser.first_name}! 👋`);
-    localStorage.setItem('emartzon_welcomed_' + tgUser.id, '1');
-  }
-
-  // 5-tap logo → admin PIN
-  let tapCount=0, tapTimer;
-  document.querySelector('.logo').addEventListener('click',()=>{
-    tapCount++;
-    clearTimeout(tapTimer);
-    tapTimer=setTimeout(()=>tapCount=0,700);
-    if(tapCount>=5){ tapCount=0; showPinModal(); }
-  });
+  const alreadyWelcomed=tgUser&&localStorage.getItem('emartzon_welcomed_'+tgUser.id);
+  if(tgUser&&!alreadyWelcomed&&!String(tgUser.id).startsWith('guest_')){ showToast(`Welcome, ${tgUser.first_name}! 👋`); localStorage.setItem('emartzon_welcomed_'+tgUser.id,'1'); }
+  let tapCount=0,tapTimer;
+  document.querySelector('.logo').addEventListener('click',()=>{ tapCount++; clearTimeout(tapTimer); tapTimer=setTimeout(()=>tapCount=0,700); if(tapCount>=5){ tapCount=0; showAdminDirect(); } });
 }
 
-function updateNavProfileIcon() {
-  if (!tgUser) return;
-  const initials = ((tgUser.first_name||'?')[0] + (tgUser.last_name ? tgUser.last_name[0] : '')).toUpperCase();
-  const navIcon = document.getElementById('nav-profile-icon');
-  navIcon.style.cssText = `
-    width:28px;height:28px;border-radius:50%;
-    background:linear-gradient(135deg,var(--accent),var(--accent2));
-    display:flex;align-items:center;justify-content:center;
-    font-size:12px;font-weight:700;color:var(--bg);
-    font-style:normal;overflow:hidden;
-  `;
-  if (tgUser.photo_url) {
-    navIcon.innerHTML = `<img src="${tgUser.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${initials}'">`;
-  } else {
-    navIcon.textContent = initials;
-  }
+function updateNavProfileIcon(){
+  if(!tgUser) return;
+  const ini=((tgUser.first_name||'?')[0]+(tgUser.last_name?tgUser.last_name[0]:'')).toUpperCase();
+  const el=document.getElementById('nav-profile-icon');
+  el.style.cssText='width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--bg);overflow:hidden;';
+  if(tgUser.photo_url){ el.innerHTML=`<img src="${tgUser.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${ini}'">` } else { el.textContent=ini; }
 }
 
-// ── THEME ─────────────────────────────────────────
-function applyTheme(){
-  const t = cfg.theme||DEFAULT_CONFIG.theme;
-  Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(k,v));
-}
-function liveColor(varName,val){
-  document.documentElement.style.setProperty(varName,val);
-  const key = varName.replace('--','clr-');
-  const hexEl = document.getElementById(key+'-hex');
-  if(hexEl) hexEl.textContent=val;
-}
-function saveTheme(){
-  const keys = ['accent','bg','card','dark','white','border'];
-  keys.forEach(k=>{
-    const inp = document.getElementById('clr-'+k);
-    if(inp) cfg.theme['--'+k] = inp.value;
-  });
-  save(); applyTheme(); showToast('Theme saved! 🎨'); renderHeader(); renderHero();
-}
-function resetTheme(){
-  cfg.theme = deepClone(DEFAULT_CONFIG.theme);
-  save(); applyTheme(); populateThemeForm(); showToast('Theme reset');
-}
+// ═══════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════
+function applyTheme(){ const t=cfg.theme||DEFAULT_CONFIG.theme; Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty(k,v)); }
+function liveColor(v,val){ document.documentElement.style.setProperty(v,val); const k=v.replace('--','clr-'); const e=document.getElementById(k+'-hex'); if(e) e.textContent=val; }
 
-// ── HEADER & LOGO ─────────────────────────────────
+// ═══════════════════════════════════════════
+// HEADER / HERO
+// ═══════════════════════════════════════════
 function renderHeader(){
-  const logoEl = document.getElementById('hdr-logo-img');
-  if(cfg.logoUrl){
-    logoEl.className='logo-img';
-    logoEl.outerHTML=`<img id="hdr-logo-img" class="logo-img" src="${cfg.logoUrl}" alt="logo" onerror="this.outerHTML='<div id=hdr-logo-img class=logo-emoji>'+cfg.logoEmoji+'</div>'">`;
-  } else {
-    logoEl.className='logo-emoji';
-    logoEl.textContent=cfg.logoEmoji||'⚽';
-  }
-  document.getElementById('hdr-brand-name').innerHTML = `${cfg.brandName1||'emart'}<span>${cfg.brandName2||'zon'}</span>`;
-  document.getElementById('hdr-brand-sub').textContent = cfg.storeSub||'Sportswear';
+  const el=document.getElementById('hdr-logo-img');
+  if(cfg.logoUrl){ el.className='logo-img'; el.outerHTML=`<img id="hdr-logo-img" class="logo-img" src="${cfg.logoUrl}" onerror="this.outerHTML='<div id=hdr-logo-img class=logo-emoji>${cfg.logoEmoji||'⚽'}</div>'">`; }
+  else { el.className='logo-emoji'; el.textContent=cfg.logoEmoji||'⚽'; }
+  document.getElementById('hdr-brand-name').innerHTML=`${cfg.brandName1||'emart'}<span>${cfg.brandName2||'zon'}</span>`;
+  document.getElementById('hdr-brand-sub').textContent=cfg.storeSub||'Sportswear';
 }
-
-// ── HERO ──────────────────────────────────────────
 function renderHero(){
-  const h = cfg.hero;
-  document.getElementById('hero-tag').textContent = h.tag||'';
-  document.getElementById('hero-title').innerHTML = `${h.h1a||'Official'}<br><span>${h.h1b||'Football Jerseys'}</span>`;
-  document.getElementById('hero-subtitle').textContent = h.sub||'';
-  const imgC = document.getElementById('hero-img-container');
-  imgC.innerHTML = h.imgUrl
-    ? `<img class="hero-img" src="${h.imgUrl}" alt="" onerror="this.style.display='none'">`
-    : '';
+  const h=cfg.hero;
+  document.getElementById('hero-tag').textContent=h.tag||'';
+  document.getElementById('hero-title').innerHTML=`${h.h1a||'Official'}<br><span>${h.h1b||'Football Jerseys'}</span>`;
+  document.getElementById('hero-subtitle').textContent=h.sub||'';
+  document.getElementById('hero-img-container').innerHTML=h.imgUrl?`<img class="hero-img" src="${h.imgUrl}" onerror="this.style.display='none'">`:'';
 }
 
-// ── SHOP NAV STATE ────────────────────────────────
-let shopState = { leagueId: 'all', teamId: null, kitFilter: 'all' };
+// ═══════════════════════════════════════════
+// SHOP — LEAGUE → TEAM → KITS NAVIGATION
+// ═══════════════════════════════════════════
+function kitIcon(t){ return {'Home Kit':'🏠','Away Kit':'✈️','Third Kit':'3️⃣','Goalkeeper':'🧤','Training Top':'💪','Shorts':'👖','UCL Edition':'🏆','Local':'🇪🇹'}[t]||'⚽'; }
 
-// ── CATEGORIES (league tabs) ───────────────────────
-function renderCats() {
-  const bar = document.getElementById('cats-bar');
-  const leagues = cfg.leagues || [];
-  bar.innerHTML = `<div class="cat-btn active" onclick="filterLeague('all',this)">All Teams</div>`
-    + leagues.map(l => `<div class="cat-btn" onclick="filterLeague('${l.id}',this)">${l.emoji} ${l.label}</div>`).join('');
+function renderLeagueTabs(){
+  const bar=document.getElementById('cats-bar');
+  bar.innerHTML=`<div class="cat-btn active" onclick="selectLeague('all',this)">⚽ All Teams</div>`
+    +cfg.leagues.map(l=>`<div class="cat-btn" onclick="selectLeague('${l.id}',this)">${l.emoji} ${l.label}</div>`).join('');
 }
 
-function filterLeague(leagueId, el) {
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
-  shopState = { leagueId, teamId: null, kitFilter: 'all' };
-  renderShopGrid();
-  updateBreadcrumb();
-  updateShopTitle();
-}
-
-function updateShopTitle() {
-  const el = document.getElementById('shop-sec-title');
-  if (!el) return;
-  const st = shopState;
-  if (st.teamId) {
-    const team = findTeam(st.leagueId, st.teamId);
-    el.textContent = team ? team.name : 'Products';
-  } else if (st.leagueId !== 'all') {
-    const lg = (cfg.leagues||[]).find(l => l.id === st.leagueId);
-    el.textContent = lg ? `${lg.emoji} ${lg.label} — Teams` : 'Teams';
-  } else {
-    el.textContent = 'All Teams';
-  }
-}
-
-function updateBreadcrumb() {
-  const bc = document.getElementById('shop-breadcrumb');
-  if (!bc) return;
-  const st = shopState;
-  const parts = [];
-  parts.push(`<span class="bc-item" onclick="filterLeague('all',document.querySelector('.cat-btn'))">🏠 All</span>`);
-  if (st.leagueId !== 'all') {
-    const lg = (cfg.leagues||[]).find(l => l.id === st.leagueId);
-    if (lg) {
-      parts.push(`<span class="bc-sep">›</span>`);
-      if (st.teamId) {
-        parts.push(`<span class="bc-item" onclick="backToLeague()">${lg.emoji} ${lg.label}</span>`);
-        const team = findTeam(st.leagueId, st.teamId);
-        if (team) { parts.push(`<span class="bc-sep">›</span><span class="bc-item active">${team.name}</span>`); }
-      } else {
-        parts.push(`<span class="bc-item active">${lg.emoji} ${lg.label}</span>`);
-      }
-    }
-  }
-  const show = st.leagueId !== 'all' || !!st.teamId;
-  bc.style.display = show ? 'flex' : 'none';
-  bc.innerHTML = parts.join('');
-}
-
-function backToLeague() {
-  shopState.teamId = null; shopState.kitFilter = 'all';
+function selectLeague(id, el){
+  document.querySelectorAll('#cats-bar .cat-btn').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  shopState={leagueId:id,teamId:null,kitFilter:'all'};
   renderShopGrid(); updateBreadcrumb(); updateShopTitle();
 }
 
-// ── MAIN SHOP GRID ────────────────────────────────
-function renderShopGrid(query = '') {
-  const st = shopState;
-  const grid = document.getElementById('products-grid');
-
-  if (st.teamId) {
-    // TEAM VIEW: kits + accessories
-    const team = findTeam(st.leagueId, st.teamId);
-    const league = (cfg.leagues||[]).find(l => l.id === st.leagueId);
-    if (!team) { grid.innerHTML = ''; return; }
-    let items = team.products || [];
-    if (st.kitFilter !== 'all') items = items.filter(p => p.kitType === st.kitFilter);
-    if (query) items = items.filter(p => p.kitType.toLowerCase().includes(query.toLowerCase()) || (p.desc||'').toLowerCase().includes(query.toLowerCase()));
-    const allTypes = [...new Set((team.products||[]).map(p => p.kitType))];
-    const chipsHtml = `<div class="kit-type-tabs">
-      <div class="kit-chip ${st.kitFilter==='all'?'active':''}" onclick="filterKitType('all')">All</div>
-      ${allTypes.map(t=>`<div class="kit-chip ${st.kitFilter===t?'active':''}" onclick="filterKitType(\`${t}\`)">${kitTypeIcon(t)} ${t}</div>`).join('')}
-    </div>`;
-    const teamHeader = `
-      <div class="kits-header">
-        <div class="kits-team-logo">${team.crest?`<img src="${team.crest}" onerror="this.parentNode.textContent='${team.emoji}'">`:team.emoji}</div>
-        <div><div class="kits-team-name">${team.name}</div><div class="kits-league">${league?.label||''}</div></div>
-      </div>${chipsHtml}`;
-    if (!items.length) { grid.innerHTML = teamHeader + `<div style="text-align:center;padding:30px 0;color:var(--gray);font-size:13px">No items for this filter</div>`; return; }
-    grid.innerHTML = teamHeader + `<div class="products">` + items.map(p => {
-      const name = `${team.name} ${p.kitType}`;
-      return `<div class="prod-card" onclick="showDetailFromTeam('${team.id}','${st.leagueId}',${p.id})">
-        ${p.badge?`<div class="badge ${p.badge}">${p.badge.toUpperCase()}</div>`:''}
-        <div class="prod-img-wrap">${p.imgUrl?`<img src="${p.imgUrl}" alt="${name}" onerror="this.parentNode.innerHTML='<div class=prod-emoji>${p.emoji||'⚽'}</div>'">`: `<div class="prod-emoji">${p.emoji||'⚽'}</div>`}</div>
-        <div class="prod-info">
-          <div class="prod-league">${kitTypeIcon(p.kitType)} ${p.kitType}</div>
-          <div class="prod-name">${name}</div>
-          <div class="prod-foot"><div class="prod-price">${fmt(p.price)}</div>
-            <button class="add-btn" onclick="event.stopPropagation();quickAddTeam('${team.id}','${st.leagueId}',${p.id})">+</button>
-          </div>
-        </div>
-      </div>`;
-    }).join('') + `</div>`;
-  } else {
-    // LEAGUE / ALL VIEW: team cards
-    let leagues = cfg.leagues || [];
-    if (st.leagueId !== 'all') leagues = leagues.filter(l => l.id === st.leagueId);
-    let rows = '';
-    leagues.forEach(lg => {
-      let teams = lg.teams || [];
-      if (query) teams = teams.filter(t => t.name.toLowerCase().includes(query.toLowerCase()));
-      if (!teams.length) return;
-      if (st.leagueId === 'all') rows += `<div style="padding:12px 14px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-size:16px">${lg.emoji}</span>${lg.label}</div>`;
-      rows += `<div class="teams-grid">` + teams.map(team => `
-        <div class="team-card" onclick="selectTeam('${lg.id}','${team.id}')">
-          ${st.leagueId==='all'?`<div class="team-league-badge">${lg.emoji}</div>`:''}
-          <div class="team-crest">${team.crest?`<img src="${team.crest}" onerror="this.parentNode.textContent='${team.emoji}'">`:team.emoji}</div>
-          <div class="team-name">${team.name}</div>
-          <div class="team-kit-count">${(team.products||[]).length} items</div>
-        </div>`).join('') + `</div>`;
-    });
-    grid.innerHTML = rows || `<div style="text-align:center;padding:40px 0;color:var(--gray);font-size:13px">No teams found</div>`;
-  }
-}
-
-function renderProducts(cat, query) {
-  if (cat && cat !== 'all') shopState.leagueId = cat;
-  else shopState = { leagueId: 'all', teamId: null, kitFilter: 'all' };
-  renderShopGrid(query || '');
-  updateBreadcrumb(); updateShopTitle();
-}
-
-function filterKitType(type) { shopState.kitFilter = type; renderShopGrid(); }
-
-function kitTypeIcon(t) {
-  return {'Home Kit':'🏠','Away Kit':'✈️','Third Kit':'3️⃣','Goalkeeper':'🧤','Training Top':'💪','Shorts':'👖','UCL Edition':'🏆','Local':'🇪🇹'}[t] || '⚽';
-}
-
-function selectTeam(leagueId, teamId) {
-  shopState = { leagueId, teamId, kitFilter: 'all' };
+function selectTeam(leagueId, teamId){
+  shopState={leagueId,teamId,kitFilter:'all'};
   renderShopGrid(); updateBreadcrumb(); updateShopTitle();
-  document.querySelector('.scroll').scrollTop = 0;
+  document.querySelector('.scroll').scrollTop=0;
 }
 
-function findTeam(leagueId, teamId) {
-  return ((cfg.leagues||[]).find(l=>l.id===leagueId)?.teams||[]).find(t=>t.id===teamId) || null;
+function backToLeague(){ shopState.teamId=null; shopState.kitFilter='all'; renderShopGrid(); updateBreadcrumb(); updateShopTitle(); }
+
+function filterKitType(type){ shopState.kitFilter=type; renderShopGrid(); }
+
+function updateShopTitle(){
+  const el=document.getElementById('shop-sec-title'); if(!el) return;
+  const st=shopState;
+  if(st.teamId){ const t=findTeam(st.leagueId,st.teamId); el.textContent=t?t.name:'Products'; }
+  else if(st.leagueId!=='all'){ const l=cfg.leagues.find(x=>x.id===st.leagueId); el.textContent=l?`${l.emoji} ${l.label} — Select Team`:'Teams'; }
+  else { el.textContent='All Leagues'; }
 }
 
-function findProductGlobal(productId) {
-  for (const lg of (cfg.leagues||[])) {
-    for (const team of (lg.teams||[])) {
-      const p = (team.products||[]).find(x=>x.id===productId);
-      if (p) return { product:p, team, league:lg };
-    }
+function updateBreadcrumb(){
+  const bc=document.getElementById('shop-breadcrumb'); if(!bc) return;
+  const st=shopState; const parts=[];
+  parts.push(`<span class="bc-item" onclick="selectLeague('all',document.querySelector('#cats-bar .cat-btn'))">🏠 All</span>`);
+  if(st.leagueId!=='all'){
+    const lg=cfg.leagues.find(l=>l.id===st.leagueId);
+    if(lg){ parts.push(`<span class="bc-sep">›</span>`);
+      if(st.teamId){ parts.push(`<span class="bc-item" onclick="backToLeague()">${lg.emoji} ${lg.label}</span>`); const t=findTeam(st.leagueId,st.teamId); if(t){ parts.push(`<span class="bc-sep">›</span><span class="bc-item active">${t.name}</span>`); } }
+      else { parts.push(`<span class="bc-item active">${lg.emoji} ${lg.label}</span>`); } }
   }
+  bc.style.display=(st.leagueId!=='all'||st.teamId)?'flex':'none';
+  bc.innerHTML=parts.join('');
+}
+
+function findTeam(lid,tid){ return (cfg.leagues.find(l=>l.id===lid)?.teams||[]).find(t=>t.id===tid)||null; }
+
+function findProduct(pid){
+  for(const lg of cfg.leagues) for(const team of (lg.teams||[])) for(const p of (team.products||[])) if(p.id===pid) return {p,team,lg};
   return null;
 }
 
-function showDetailFromTeam(teamId, leagueId, productId) {
-  const found = findProductGlobal(productId);
-  if (!found) return;
-  const { product:p, team, league:lg } = found;
-  curProduct = { ...p, teamId:team.id, teamName:team.name, leagueId:lg.id, leagueName:lg.label, name:`${team.name} ${p.kitType}` };
-  selSize = cfg.sizes[2]||'M'; selQty = 1;
-  document.getElementById('det-title').textContent = `${team.name} — ${p.kitType}`;
-  document.getElementById('det-content').innerHTML = `
-    <div class="det-img-wrap">${p.imgUrl?`<img src="${p.imgUrl}" alt="${curProduct.name}" onerror="this.parentNode.innerHTML='<div class=det-emoji>${p.emoji||'⚽'}</div>'">`: `<div class="det-emoji">${p.emoji||'⚽'}</div>`}</div>
+function renderShopGrid(query=''){
+  const st=shopState; const grid=document.getElementById('products-grid');
+
+  if(st.teamId){
+    // ── TEAM VIEW: show kit type chips + product grid
+    const team=findTeam(st.leagueId,st.teamId);
+    const lg=cfg.leagues.find(l=>l.id===st.leagueId);
+    if(!team){ grid.innerHTML=''; return; }
+    let items=team.products||[];
+    if(st.kitFilter!=='all') items=items.filter(p=>p.kitType===st.kitFilter);
+    if(query) items=items.filter(p=>p.kitType.toLowerCase().includes(query.toLowerCase())||(p.desc||'').toLowerCase().includes(query.toLowerCase()));
+    const allTypes=[...new Set((team.products||[]).map(p=>p.kitType))];
+    grid.innerHTML=`
+      <div class="kits-header">
+        <div class="kits-team-logo" style="border-color:${team.color||'var(--border)'}">
+          ${team.crest?`<img src="${team.crest}" onerror="this.parentNode.textContent='${team.emoji}'">`:team.emoji}
+        </div>
+        <div><div class="kits-team-name">${team.name}</div><div class="kits-league">${lg?.label||''}</div></div>
+      </div>
+      <div class="kit-type-tabs">
+        <div class="kit-chip ${st.kitFilter==='all'?'active':''}" onclick="filterKitType('all')">All</div>
+        ${allTypes.map(t=>`<div class="kit-chip ${st.kitFilter===t?'active':''}" onclick="filterKitType('${t.replace(/'/g,'&#39;')}')">${kitIcon(t)} ${t}</div>`).join('')}
+      </div>
+      <div class="products">
+        ${items.length?items.map(p=>{
+          const name=`${team.name} ${p.kitType}`;
+          return `<div class="prod-card" onclick="openDetail(${p.id})">
+            ${p.badge?`<div class="badge ${p.badge}">${p.badge.toUpperCase()}</div>`:''}
+            <div class="prod-img-wrap">${p.imgUrl?`<img src="${p.imgUrl}" alt="${name}" onerror="this.parentNode.innerHTML='<div class=prod-emoji>${p.emoji||'⚽'}</div>'">`:`<div class="prod-emoji">${p.emoji||'⚽'}</div>`}</div>
+            <div class="prod-info">
+              <div class="prod-league">${kitIcon(p.kitType)} ${p.kitType}</div>
+              <div class="prod-name">${name}</div>
+              <div class="prod-foot"><div class="prod-price">${fmt(p.price)}</div>
+                <button class="add-btn" onclick="event.stopPropagation();quickAdd(${p.id})">+</button>
+              </div>
+            </div>
+          </div>`;
+        }).join(''):`<div style="grid-column:span 2;text-align:center;padding:30px;color:var(--gray);font-size:13px">No items for this filter</div>`}
+      </div>`;
+  } else {
+    // ── LEAGUE / ALL VIEW: show team cards
+    let leagues=cfg.leagues;
+    if(st.leagueId!=='all') leagues=leagues.filter(l=>l.id===st.leagueId);
+    let html='';
+    leagues.forEach(lg=>{
+      let teams=lg.teams||[];
+      if(query) teams=teams.filter(t=>t.name.toLowerCase().includes(query.toLowerCase()));
+      if(!teams.length) return;
+      if(st.leagueId==='all') html+=`<div style="padding:12px 14px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-size:16px">${lg.emoji}</span>${lg.label}</div>`;
+      html+=`<div class="teams-grid">${teams.map(t=>`
+        <div class="team-card" onclick="selectTeam('${lg.id}','${t.id}')">
+          ${st.leagueId==='all'?`<div class="team-league-badge">${lg.emoji}</div>`:''}
+          <div class="team-crest" style="border-color:${t.color||'var(--border)'}44">
+            ${t.crest?`<img src="${t.crest}" onerror="this.parentNode.textContent='${t.emoji}'">`:t.emoji}
+          </div>
+          <div class="team-name">${t.name}</div>
+          <div class="team-kit-count">${(t.products||[]).length} items</div>
+        </div>`).join('')}</div>`;
+    });
+    grid.innerHTML=html||`<div style="text-align:center;padding:40px;color:var(--gray);font-size:13px">No teams found</div>`;
+  }
+}
+
+function openDetail(pid){
+  const found=findProduct(pid); if(!found) return;
+  const {p,team,lg}=found;
+  curProduct={...p,teamId:team.id,teamName:team.name,leagueId:lg.id,name:`${team.name} ${p.kitType}`};
+  selSize=cfg.sizes[2]||'M'; selQty=1;
+  document.getElementById('det-title').textContent=`${team.name} — ${p.kitType}`;
+  document.getElementById('det-content').innerHTML=`
+    <div class="det-img-wrap">${p.imgUrl?`<img src="${p.imgUrl}" onerror="this.parentNode.innerHTML='<div class=det-emoji>${p.emoji||'⚽'}</div>'">`:`<div class="det-emoji">${p.emoji||'⚽'}</div>`}</div>
     <div class="det-body">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <div style="width:30px;height:30px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--border);overflow:hidden">
+        <div style="width:30px;height:30px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid ${team.color||'var(--border)'};overflow:hidden">
           ${team.crest?`<img src="${team.crest}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${team.emoji}'">`:team.emoji}
         </div>
-        <div>
-          <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.4px">${lg.label}</div>
-          <div style="font-size:12px;color:var(--light)">${team.name}</div>
-        </div>
-        <div style="margin-left:auto;display:inline-flex;align-items:center;gap:4px;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:4px 9px">
-          <span style="font-size:12px">${kitTypeIcon(p.kitType)}</span>
-          <span style="font-size:11px;font-weight:600;color:var(--light)">${p.kitType}</span>
-        </div>
+        <div><div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.4px">${lg.label}</div><div style="font-size:12px;color:var(--light)">${team.name}</div></div>
+        <div style="margin-left:auto;background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:4px 9px;font-size:11px;font-weight:600;color:var(--light)">${kitIcon(p.kitType)} ${p.kitType}</div>
       </div>
-      <div class="det-name">${curProduct.name}</div>
+      <div class="det-name">${team.name} ${p.kitType}</div>
       <div class="det-price">${fmt(p.price)}</div>
       <div class="size-lbl">Select Size</div>
       <div class="sizes">${cfg.sizes.map((s,i)=>`<div class="sz-btn ${i===2?'active':''}" onclick="selSz('${s}',this)">${s}</div>`).join('')}</div>
       <div class="qty-row">
         <div class="qty-lbl">Quantity</div>
-        <div class="qty-ctrl">
-          <button onclick="chgQty(-1)">−</button>
-          <div class="qty-num" id="qty-disp">1</div>
-          <button onclick="chgQty(1)">+</button>
-        </div>
+        <div class="qty-ctrl"><button onclick="chgQty(-1)">−</button><div class="qty-num" id="qty-disp">1</div><button onclick="chgQty(1)">+</button></div>
       </div>
       <div class="det-desc">${p.desc}</div>
       <button class="add-cart-btn" onclick="addToCart()">Add to Cart 🛒</button>
-      ${(team.products||[]).filter(x=>x.id!==p.id).length ? `
+      ${(team.products||[]).filter(x=>x.id!==p.id).length?`
       <div style="margin-top:16px;margin-bottom:8px;font-size:13px;font-weight:700;color:var(--light)">More from ${team.name}</div>
       <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none">
         ${(team.products||[]).filter(x=>x.id!==p.id).map(x=>`
-          <div onclick="showDetailFromTeam('${team.id}','${lg.id}',${x.id})" style="flex-shrink:0;width:78px;cursor:pointer">
+          <div onclick="openDetail(${x.id})" style="flex-shrink:0;width:78px;cursor:pointer">
             <div style="width:78px;height:78px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;border:1px solid var(--border);margin-bottom:5px">
               ${x.imgUrl?`<img src="${x.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${x.emoji||'⚽'}'">`:x.emoji||'⚽'}
             </div>
             <div style="font-size:10px;font-weight:600;color:var(--light);text-align:center;line-height:1.3">${x.kitType}</div>
             <div style="font-size:11px;color:var(--accent);text-align:center;font-weight:700">${fmt(x.price)}</div>
           </div>`).join('')}
-      </div>` : ''}
+      </div>`:''}
       <div style="height:20px"></div>
     </div>`;
   showPage('detail');
 }
 
-function showDetail(id) {
-  const found = findProductGlobal(id);
-  if (found) showDetailFromTeam(found.team.id, found.league.id, id);
-}
-
-function detGoBack() { showPage('shop'); }
-
+function detGoBack(){ showPage('shop'); }
 function selSz(s,el){ selSize=s; document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
 function chgQty(d){ selQty=Math.max(1,selQty+d); document.getElementById('qty-disp').textContent=selQty; }
 function addToCart(){
@@ -1386,48 +1033,34 @@ function addToCart(){
   if(ex) ex.qty+=selQty; else cart.push({...curProduct,size:selSize,qty:selQty});
   updateBadge(); showToast('Added to cart! 🛒');
 }
-function quickAddTeam(teamId, leagueId, productId) {
-  const found = findProductGlobal(productId);
-  if (!found) return;
-  const { product:p, team } = found;
-  const name = `${team.name} ${p.kitType}`;
-  const item = {...p, name, teamName:team.name, size:cfg.sizes[2]||'M', qty:1};
-  const ex = cart.find(i=>i.id===p.id&&i.size===item.size);
+function quickAdd(pid){
+  const found=findProduct(pid); if(!found) return;
+  const {p,team}=found; const name=`${team.name} ${p.kitType}`;
+  const item={...p,name,teamName:team.name,size:cfg.sizes[2]||'M',qty:1};
+  const ex=cart.find(i=>i.id===p.id&&i.size===item.size);
   if(ex) ex.qty++; else cart.push(item);
   updateBadge(); showToast(`${name} added! 🛒`);
 }
-function quickAdd(id) {
-  const found = findProductGlobal(id);
-  if (found) quickAddTeam(found.team.id, found.league.id, id);
-}
-function updateBadge(){
-  const n=cart.reduce((a,i)=>a+i.qty,0);
-  const b=document.getElementById('cart-badge');
-  b.textContent=n; b.style.display=n>0?'flex':'none';
-}
+function updateBadge(){ const n=cart.reduce((a,i)=>a+i.qty,0); const b=document.getElementById('cart-badge'); b.textContent=n; b.style.display=n>0?'flex':'none'; }
 
-
-// ── SHIPPING OPTS (checkout) ──────────────────────
+// ═══════════════════════════════════════════
+// SHIPPING
+// ═══════════════════════════════════════════
 function renderShipOpts(){
-  curShipping = cfg.shipping[0]||null;
-  const c=document.getElementById('ship-opts-container');
-  c.innerHTML=cfg.shipping.map((s,i)=>`
+  curShipping=cfg.shipping[0]||null;
+  document.getElementById('ship-opts-container').innerHTML=cfg.shipping.map((s,i)=>`
     <div class="ship-opt ${i===0?'selected':''}" id="sopt-${s.id}" onclick="selShip('${s.id}')">
       <div class="ship-radio"><div class="ship-dot"></div></div>
       <div class="ship-icon">${s.icon}</div>
-      <div class="ship-text">
-        <div class="ship-name">${s.name}</div>
-        <div class="ship-desc">${s.desc}</div>
-      </div>
+      <div class="ship-text"><div class="ship-name">${s.name}</div><div class="ship-desc">${s.desc}</div></div>
       <div class="ship-price">${s.price===0?'Free':fmt(s.price)}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 function selShip(id){
   curShipping=cfg.shipping.find(s=>s.id===id);
   document.querySelectorAll('.ship-opt').forEach(el=>el.classList.remove('selected'));
   document.getElementById('sopt-'+id).classList.add('selected');
-  const isPickup = curShipping?.id==='pickup';
+  const isPickup=curShipping?.id==='pickup';
   document.getElementById('addr-form-wrap').style.display=isPickup?'none':'block';
   document.getElementById('pickup-info-wrap').style.display=isPickup?'block':'none';
   updateCheckoutSummary();
@@ -1437,11 +1070,12 @@ function renderPickupCard(){
     <div style="font-size:14px;font-weight:600;margin-bottom:3px">${cfg.storeName}</div>
     <div style="font-size:12px;color:var(--gray);margin-bottom:7px">${cfg.address}</div>
     <div style="font-size:11px;color:var(--accent)">⏰ ${cfg.hours}</div>
-    <div style="font-size:11px;color:var(--gray);margin-top:3px">📞 ${cfg.phone}</div>
-  `;
+    <div style="font-size:11px;color:var(--gray);margin-top:3px">📞 ${cfg.phone}</div>`;
 }
 
-// ── CART ──────────────────────────────────────────
+// ═══════════════════════════════════════════
+// CART / CHECKOUT
+// ═══════════════════════════════════════════
 function showCart(){
   const con=document.getElementById('cart-content');
   if(!cart.length){
@@ -1449,272 +1083,147 @@ function showCart(){
   } else {
     const sub=cart.reduce((a,i)=>a+i.price*i.qty,0);
     const ship=(curShipping||cfg.shipping[0])?.price||0;
-    con.innerHTML=`
-      <div style="height:12px"></div>
+    con.innerHTML=`<div style="height:12px"></div>
       <div style="padding:0 14px">${cart.map((item,idx)=>`
         <div class="cart-item">
-          <div class="cart-thumb">${item.imgUrl?`<img src="${item.imgUrl}" alt="" onerror="this.parentNode.textContent='${item.emoji||'⚽'}'">`:item.emoji||'⚽'}</div>
+          <div class="cart-thumb">${item.imgUrl?`<img src="${item.imgUrl}" onerror="this.parentNode.textContent='${item.emoji||'⚽'}'">`:item.emoji||'⚽'}</div>
           <div class="cart-info">
             <div class="cart-name">${item.name}</div>
             <div class="cart-meta">Size: ${item.size} · Qty: ${item.qty}</div>
             <div class="cart-price">${fmt(item.price*item.qty)}</div>
           </div>
           <button class="cart-rm" onclick="rmItem(${idx})">✕</button>
-        </div>
-      `).join('')}</div>
+        </div>`).join('')}</div>
       <div class="summary-box">
         <div class="sum-row"><span>Subtotal (${cart.reduce((a,i)=>a+i.qty,0)} items)</span><span>${fmt(sub)}</span></div>
         <div class="sum-row"><span>Shipping</span><span>${ship===0?'Free':fmt(ship)}</span></div>
         <div class="sum-row total"><span>Total</span><span>${fmt(sub+ship)}</span></div>
       </div>
       <button class="cta-btn" onclick="showCheckout()">Proceed to Checkout →</button>
-      <div style="height:16px"></div>
-    `;
+      <div style="height:16px"></div>`;
   }
   setNav('cart'); showPage('cart');
 }
 function rmItem(idx){ cart.splice(idx,1); updateBadge(); showCart(); }
 
-// ── CHECKOUT ──────────────────────────────────────
-function showCheckout(){
-  if(!curShipping) curShipping=cfg.shipping[0];
-  renderShipOpts();
-  updateCheckoutSummary();
-  showPage('checkout');
-}
+function showCheckout(){ if(!curShipping) curShipping=cfg.shipping[0]; renderShipOpts(); updateCheckoutSummary(); showPage('checkout'); }
 function updateCheckoutSummary(){
-  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0);
-  const ship=(curShipping||cfg.shipping[0])?.price||0;
+  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0); const ship=(curShipping||cfg.shipping[0])?.price||0;
   document.getElementById('checkout-summary-box').innerHTML=`
     <div class="ord-row"><span>Items</span><span>${cart.reduce((a,i)=>a+i.qty,0)}</span></div>
     <div class="ord-row"><span>Subtotal</span><span>${fmt(sub)}</span></div>
     <div class="ord-row"><span>Shipping</span><span>${ship===0?'Free':fmt(ship)}</span></div>
-    <div class="ord-row" style="font-size:14px;font-weight:700;color:var(--white);border-top:1px solid var(--border);padding-top:9px;margin-top:3px"><span>Total</span><span style="color:var(--accent)">${fmt(sub+ship)}</span></div>
-  `;
+    <div class="ord-row" style="font-size:14px;font-weight:700;color:var(--white);border-top:1px solid var(--border);padding-top:9px;margin-top:3px"><span>Total</span><span style="color:var(--accent)">${fmt(sub+ship)}</span></div>`;
 }
 function placeOrder(){
-  const orderId='EM'+Date.now().toString().slice(-6);
-  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0);
-  const ship=(curShipping||cfg.shipping[0])?.price||0;
-  const m=curShipping||cfg.shipping[0];
-  const buyerName = tgUser ? [tgUser.first_name,tgUser.last_name].filter(Boolean).join(' ') : (document.getElementById('inp-name')?.value||'Customer');
+  const oid='EM'+Date.now().toString().slice(-6);
+  const sub=cart.reduce((a,i)=>a+i.price*i.qty,0); const ship=(curShipping||cfg.shipping[0])?.price||0; const m=curShipping||cfg.shipping[0];
+  const buyer=tgUser?[tgUser.first_name,tgUser.last_name].filter(Boolean).join(' '):(document.getElementById('inp-name')?.value||'Customer');
   document.getElementById('success-details').innerHTML=`
-    <div class="ord-row"><span>Order ID</span><span>#${orderId}</span></div>
-    <div class="ord-row"><span>Customer</span><span>${buyerName}</span></div>
-    ${tgUser?.username ? `<div class="ord-row"><span>Telegram</span><span>@${tgUser.username}</span></div>` : ''}
+    <div class="ord-row"><span>Order ID</span><span>#${oid}</span></div>
+    <div class="ord-row"><span>Customer</span><span>${buyer}</span></div>
+    ${tgUser?.username?`<div class="ord-row"><span>Telegram</span><span>@${tgUser.username}</span></div>`:''}
     <div class="ord-row"><span>Items</span><span>${cart.reduce((a,i)=>a+i.qty,0)} jerseys</span></div>
     <div class="ord-row"><span>Total Paid</span><span>${fmt(sub+ship)}</span></div>
-    <div class="ord-row"><span>Method</span><span>${m?.icon} ${m?.name}</span></div>
-  `;
-  document.getElementById('success-msg').textContent = m?.id==='pickup'
-    ? `Your order is ready for pickup in 1–2 hours at ${cfg.storeName}. Show this confirmation at the counter!`
-    : 'Your order has been placed! You\'ll receive a Telegram confirmation shortly.';
-
-  // Save to order history
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
-  orderHistory.push({
-    id: orderId,
-    userId: tgUser ? String(tgUser.id) : 'guest',
-    date: dateStr,
-    total: sub + ship,
-    itemCount: cart.reduce((a,i)=>a+i.qty,0),
-    method: m?.id || 'delivery',
-    methodIcon: m?.icon || '📦',
-    methodName: m?.name || 'Delivery',
-  });
-  saveOrders();
-
-  cart=[]; updateBadge(); showPage('success');
+    <div class="ord-row"><span>Method</span><span>${m?.icon} ${m?.name}</span></div>`;
+  document.getElementById('success-msg').textContent=m?.id==='pickup'?`Ready for pickup in 1–2 hours at ${cfg.storeName}. Show this at the counter!`:'Order placed! You\'ll receive a Telegram confirmation shortly.';
+  const now=new Date(); const ds=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+  orderHistory.push({id:oid,userId:tgUser?String(tgUser.id):'guest',date:ds,total:sub+ship,itemCount:cart.reduce((a,i)=>a+i.qty,0),method:m?.id||'delivery',methodIcon:m?.icon||'📦',methodName:m?.name||'Delivery'});
+  saveOrders(); cart=[]; updateBadge(); showPage('success');
 }
 
-// ── STORE INFO PAGE ────────────────────────────────
+// ═══════════════════════════════════════════
+// STORE INFO
+// ═══════════════════════════════════════════
 function showInfo(){
   document.getElementById('store-info-card').innerHTML=`
     <h3 style="margin-bottom:10px">🏪 ${cfg.storeName}</h3>
     <div class="info-row"><div class="info-icon">📞</div><div class="info-text">${cfg.phone}<span>Phone</span></div></div>
     <div class="info-row"><div class="info-icon">📧</div><div class="info-text">${cfg.email}<span>Email</span></div></div>
     <div class="info-row"><div class="info-icon">📍</div><div class="info-text">${cfg.address}<span>Address</span></div></div>
-    <div class="info-row"><div class="info-icon">⏰</div><div class="info-text">${cfg.hours}<span>Opening Hours</span></div></div>
-  `;
+    <div class="info-row"><div class="info-icon">⏰</div><div class="info-text">${cfg.hours}<span>Opening Hours</span></div></div>`;
   document.getElementById('about-text').textContent=cfg.about;
   setNav('info'); showPage('info');
 }
 
-// ── PROFILE PAGE ──────────────────────────────────
-function showProfile() {
-  if (!tgUser) { showToast('Not logged in'); return; }
-  const u = tgUser;
-  const full = [u.first_name, u.last_name].filter(Boolean).join(' ');
-  const initials = ((u.first_name||'?')[0] + (u.last_name ? u.last_name[0] : '')).toUpperCase();
-
-  // Avatar
-  const bigAv = document.getElementById('profile-avatar-big');
-  if (u.photo_url) {
-    bigAv.innerHTML = `<img src="${u.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${initials}'">`;
-  } else { bigAv.textContent = initials; }
-
-  // Role badge
-  const rb = document.getElementById('profile-role-badge');
-  const hb = document.getElementById('profile-hdr-badge');
-  if (isOwner()) {
-    const b = `<span style="background:linear-gradient(90deg,#f5a623,#e8920f);color:#000;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px">👑 Owner</span>`;
-    rb.innerHTML = b; hb.innerHTML = b;
-  } else if (isAdmin()) {
-    const b = `<span style="background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.4);color:var(--accent);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px">⚙️ Admin</span>`;
-    rb.innerHTML = b; hb.innerHTML = b;
-  } else {
-    rb.innerHTML = `<span style="background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.25);color:#2ecc71;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#2ecc71;display:inline-block"></span>Member</span>`;
-    hb.innerHTML = '';
-  }
-
-  document.getElementById('profile-name').textContent = full || 'Telegram User';
-  document.getElementById('profile-handle').textContent = u.username ? '@' + u.username : 'No username set';
-  document.getElementById('profile-id').textContent = u.id;
-  document.getElementById('profile-lang').textContent = u.language_code ? u.language_code.toUpperCase() : '—';
-
-  const userOrders = orderHistory.filter(o => o.userId === String(u.id));
-  const totalSpent = userOrders.reduce((a, o) => a + (o.total||0), 0);
-  document.getElementById('profile-order-count').textContent = userOrders.length;
-  document.getElementById('profile-total-spent').textContent = fmt(totalSpent);
-  const cartCount = cart.reduce((a,i)=>a+i.qty,0);
-  document.getElementById('profile-cart-count').textContent = cartCount === 0 ? 'Empty' : `${cartCount} item${cartCount!==1?'s':''}`;
-
-  // Orders list
-  const ordList = document.getElementById('profile-orders-list');
-  if (!userOrders.length) {
-    ordList.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;padding:28px 16px;text-align:center"><div style="font-size:38px;margin-bottom:10px">📦</div><div style="font-size:14px;font-weight:600;margin-bottom:5px">No orders yet</div><div style="font-size:12px;color:var(--gray)">Your order history will appear here</div></div>`;
-  } else {
-    ordList.innerHTML = [...userOrders].reverse().map(o=>`
-      <div style="padding:13px 14px;border-bottom:1px solid var(--border)">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-          <div style="font-size:13px;font-weight:700">#${o.id}</div>
-          <div style="font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;background:${o.method==='pickup'?'rgba(46,204,113,.12)':'rgba(245,166,35,.12)'};color:${o.method==='pickup'?'#2ecc71':'var(--accent)'}">${o.methodIcon} ${o.methodName}</div>
-        </div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:4px">${o.date} · ${o.itemCount} item${o.itemCount!==1?'s':''}</div>
-        <div style="font-size:14px;font-weight:700;color:var(--accent)">${fmt(o.total)}</div>
-      </div>`).join('');
-  }
-
-  // Show/hide role sections
-  const adminSec = document.getElementById('profile-admin-section');
-  const ownerSec = document.getElementById('profile-owner-section');
-  adminSec.style.display = isAdmin() ? 'block' : 'none';
-  ownerSec.style.display = isOwner() ? 'block' : 'none';
-
-  if (isAdmin()) populatePadmForms();
-  if (isOwner()) {
-    renderManageAdmins();
-    const ownerIdEl = document.getElementById('owner-id-display');
-    const myIdEl = document.getElementById('owner-my-id-copy');
-    if (ownerIdEl) ownerIdEl.textContent = cfg.ownerTelegramId || String(u.id);
-    if (myIdEl) myIdEl.textContent = String(u.id);
-  }
-
-  setNav('profile');
-  showPage('profile');
+// ═══════════════════════════════════════════
+// PROFILE
+// ═══════════════════════════════════════════
+function showProfile(){
+  if(!tgUser){ showToast('Not logged in'); return; }
+  const u=tgUser; const full=[u.first_name,u.last_name].filter(Boolean).join(' ');
+  const ini=((u.first_name||'?')[0]+(u.last_name?u.last_name[0]:'')).toUpperCase();
+  const av=document.getElementById('profile-avatar-big');
+  if(u.photo_url){ av.innerHTML=`<img src="${u.photo_url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%" onerror="this.parentNode.textContent='${ini}'">` } else { av.textContent=ini; }
+  const rb=document.getElementById('profile-role-badge'); const hb=document.getElementById('profile-hdr-badge');
+  if(isOwner()){ const b=`<span style="background:linear-gradient(90deg,#f5a623,#e8920f);color:#000;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px">👑 Owner</span>`; rb.innerHTML=b; hb.innerHTML=b; }
+  else if(isAdmin()){ const b=`<span style="background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.4);color:var(--accent);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px">⚙️ Admin</span>`; rb.innerHTML=b; hb.innerHTML=b; }
+  else { rb.innerHTML=`<span style="background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.25);color:#2ecc71;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px">● Member</span>`; hb.innerHTML=''; }
+  document.getElementById('profile-name').textContent=full||'Telegram User';
+  document.getElementById('profile-handle').textContent=u.username?'@'+u.username:'No username set';
+  document.getElementById('profile-id').textContent=u.id;
+  document.getElementById('profile-lang').textContent=u.language_code?u.language_code.toUpperCase():'—';
+  const uOrders=orderHistory.filter(o=>o.userId===String(u.id));
+  document.getElementById('profile-order-count').textContent=uOrders.length;
+  document.getElementById('profile-total-spent').textContent=fmt(uOrders.reduce((a,o)=>a+(o.total||0),0));
+  const cc=cart.reduce((a,i)=>a+i.qty,0); document.getElementById('profile-cart-count').textContent=cc===0?'Empty':`${cc} item${cc!==1?'s':''}`;
+  const ol=document.getElementById('profile-orders-list');
+  if(!uOrders.length){ ol.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;padding:28px 16px;text-align:center"><div style="font-size:38px;margin-bottom:10px">📦</div><div style="font-size:14px;font-weight:600;margin-bottom:5px">No orders yet</div><div style="font-size:12px;color:var(--gray)">Your order history will appear here</div></div>`; }
+  else { ol.innerHTML=[...uOrders].reverse().map(o=>`<div style="padding:13px 14px;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><div style="font-size:13px;font-weight:700">#${o.id}</div><div style="font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;background:${o.method==='pickup'?'rgba(46,204,113,.12)':'rgba(245,166,35,.12)'};color:${o.method==='pickup'?'#2ecc71':'var(--accent)'}">${o.methodIcon} ${o.methodName}</div></div><div style="font-size:11px;color:var(--gray);margin-bottom:4px">${o.date} · ${o.itemCount} item${o.itemCount!==1?'s':''}</div><div style="font-size:14px;font-weight:700;color:var(--accent)">${fmt(o.total)}</div></div>`).join(''); }
+  document.getElementById('profile-admin-section').style.display=isAdmin()?'block':'none';
+  document.getElementById('profile-owner-section').style.display=isOwner()?'block':'none';
+  if(isAdmin()) populatePadmForms();
+  if(isOwner()){ renderManageAdmins(); const oid=document.getElementById('owner-id-display'); const mid=document.getElementById('owner-my-id-copy'); if(oid) oid.textContent=cfg.ownerTelegramId||String(u.id); if(mid) mid.textContent=String(u.id); }
+  setNav('profile'); showPage('profile');
 }
 
-// ── POPULATE INLINE ADMIN FORMS ───────────────────
-function populatePadmForms() {
+// ═══════════════════════════════════════════
+// PROFILE ADMIN FORMS
+// ═══════════════════════════════════════════
+function populatePadmForms(){
   padmRenderProducts();
-  padmRenderCats();
-  padmRenderSizes();
   padmRenderShipping();
-  // Store tab
-  const fields = {
-    'padm-store-name': cfg.storeName, 'padm-store-sub': cfg.storeSub,
-    'padm-phone': cfg.phone, 'padm-email': cfg.email,
-    'padm-address': cfg.address, 'padm-hours': cfg.hours,
-    'padm-about': cfg.about, 'padm-logo-url': cfg.logoUrl,
-    'padm-logo-emoji': cfg.logoEmoji, 'padm-brand1': cfg.brandName1,
-    'padm-brand2': cfg.brandName2,
-  };
-  Object.entries(fields).forEach(([id,val])=>{ const el=document.getElementById(id); if(el) el.value=val||''; });
-  // Theme tab
-  const t = cfg.theme||DEFAULT_CONFIG.theme;
-  ['accent','bg','card','dark','white'].forEach(k=>{
-    const inp=document.getElementById('padm-clr-'+k);
-    const hex=document.getElementById('padm-clr-'+k+'-hex');
-    if(inp) inp.value=t['--'+k]||'';
-    if(hex) hex.textContent=t['--'+k]||'';
+  const fields={'padm-store-name':cfg.storeName,'padm-store-sub':cfg.storeSub,'padm-phone':cfg.phone,'padm-email':cfg.email,'padm-address':cfg.address,'padm-hours':cfg.hours,'padm-about':cfg.about,'padm-logo-url':cfg.logoUrl,'padm-logo-emoji':cfg.logoEmoji,'padm-brand1':cfg.brandName1,'padm-brand2':cfg.brandName2};
+  Object.entries(fields).forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
+  const t=cfg.theme||{}; ['accent','bg','card','dark','white'].forEach(k=>{ const i=document.getElementById('padm-clr-'+k); const h=document.getElementById('padm-clr-'+k+'-hex'); if(i) i.value=t['--'+k]||''; if(h) h.textContent=t['--'+k]||''; });
+  const cu=document.getElementById('padm-currency'); const cp=document.getElementById('padm-cur-pos');
+  if(cu) cu.value=cfg.currency||'ETB'; if(cp) cp.value=cfg.currencyPos||'before';
+  const h=cfg.hero; [['padm-hero-tag',h.tag],['padm-hero-h1a',h.h1a],['padm-hero-h1b',h.h1b],['padm-hero-sub',h.sub],['padm-hero-img',h.imgUrl]].forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
+}
+
+function switchProfileAdminTab(idx,el){ document.querySelectorAll('.padm-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.padm-panel').forEach(p=>p.classList.remove('active')); document.getElementById('padm-panel-'+idx).classList.add('active'); }
+
+function padmRenderProducts(){
+  const list=document.getElementById('padm-products-list'); if(!list) return;
+  let html='';
+  cfg.leagues.forEach(lg=>{
+    lg.teams.forEach(team=>{
+      html+=`<div style="margin-bottom:4px;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;padding:8px 0 4px">${lg.emoji} ${lg.label} — ${team.emoji} ${team.name}</div>`;
+      (team.products||[]).forEach(p=>{
+        html+=`<div style="display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:6px;cursor:pointer" onclick="openProdModal('${lg.id}','${team.id}',${p.id})">
+          <div style="width:44px;height:44px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0">
+            ${p.imgUrl?`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'⚽'}'">`:p.emoji||'⚽'}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:600">${team.name} ${p.kitType}</div>
+            <div style="font-size:12px;font-weight:700;color:var(--accent)">${fmt(p.price)}</div>
+          </div>
+          <div style="color:var(--gray);font-size:16px">›</div>
+        </div>`;
+      });
+    });
   });
-  const cur=document.getElementById('padm-currency');
-  const curPos=document.getElementById('padm-cur-pos');
-  if(cur) cur.value=cfg.currency||'ETB';
-  if(curPos) curPos.value=cfg.currencyPos||'before';
-  // Hero tab
-  const h=cfg.hero;
-  [['padm-hero-tag',h.tag],['padm-hero-h1a',h.h1a],['padm-hero-h1b',h.h1b],['padm-hero-sub',h.sub],['padm-hero-img',h.imgUrl]].forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
+  list.innerHTML=html;
 }
 
-function switchProfileAdminTab(idx, el) {
-  document.querySelectorAll('.padm-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.padm-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('padm-panel-'+idx).classList.add('active');
-}
-
-// Products
-function padmRenderProducts() {
-  const list = document.getElementById('padm-products-list');
-  if (!list) return;
-  list.innerHTML = cfg.products.map((p,i)=>`
-    <div style="display:flex;align-items:center;gap:10px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;cursor:pointer" onclick="padmOpenProd(${i})">
-      <div style="width:44px;height:44px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0">
-        ${p.imgUrl ? `<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'⚽'}'">` : p.emoji||'⚽'}
-      </div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</div>
-        <div style="font-size:11px;color:var(--gray)">${p.league}</div>
-        <div style="font-size:12px;font-weight:700;color:var(--accent)">${fmt(p.price)}</div>
-      </div>
-      <div style="color:var(--gray);font-size:16px">›</div>
-    </div>
-  `).join('');
-}
-function padmOpenProd(idx) { openProdModal(idx); }
-function padmAddProd() { openProdModal(-1); }
-
-// Categories
-function padmRenderCats() {
-  const list = document.getElementById('padm-cats-list');
-  if (!list) return;
-  list.innerHTML = cfg.categories.map((c,i)=>`
-    <div style="display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-bottom:7px">
-      <span style="font-size:14px;color:var(--gray)">≡</span>
-      <input value="${c.label}" oninput="cfg.categories[${i}].label=this.value;save();renderCats();" style="flex:1;background:none;border:none;color:var(--white);font-size:13px;outline:none;font-family:var(--font)" placeholder="Category name">
-      <input value="${c.id}" oninput="updateCatId(${i},this.value)" style="width:90px;background:none;border:none;color:var(--accent);font-size:12px;outline:none;font-family:monospace" placeholder="id">
-      <button onclick="deleteCat(${i})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;padding:2px">✕</button>
-    </div>`).join('');
-}
-function padmAddCat() { adminAddCat(); setTimeout(padmRenderCats, 50); }
-
-// Sizes
-function padmRenderSizes() {
-  const wrap = document.getElementById('padm-sizes-edit');
-  if (!wrap) return;
-  wrap.innerHTML = cfg.sizes.map((s,i)=>`
-    <div class="sz-chip"><span>${s}</span><button onclick="cfg.sizes.splice(${i},1);save();padmRenderSizes();renderAdmSizes()" style="background:none;border:none;color:var(--gray);cursor:pointer;font-size:14px;line-height:1;padding:0">✕</button></div>`).join('');
-}
-function padmAddSize() {
-  const inp = document.getElementById('padm-new-size');
-  const v = (inp?.value||'').trim().toUpperCase();
-  if (!v) return;
-  if (!cfg.sizes.includes(v)) cfg.sizes.push(v);
-  inp.value = ''; save(); padmRenderSizes(); renderAdmSizes(); showToast('Size added');
-}
-
-// Shipping
-function padmRenderShipping() {
-  const list = document.getElementById('padm-shipping-list');
-  if (!list) return;
-  list.innerHTML = cfg.shipping.map((s,i)=>`
+function padmRenderShipping(){
+  const list=document.getElementById('padm-shipping-list'); if(!list) return;
+  list.innerHTML=cfg.shipping.map((s,i)=>`
     <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:9px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <input value="${s.icon}" oninput="cfg.shipping[${i}].icon=this.value;save()" style="width:36px;background:none;border:none;color:var(--white);font-size:20px;outline:none;text-align:center">
         <input value="${s.name}" oninput="cfg.shipping[${i}].name=this.value;save()" style="flex:1;background:none;border:none;color:var(--white);font-size:13px;font-weight:600;outline:none;font-family:var(--font)">
-        <button onclick="cfg.shipping.splice(${i},1);save();padmRenderShipping();renderAdmShipping()" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px">${cfg.shipping.length>1?'✕':''}</button>
+        <button onclick="cfg.shipping.splice(${i},1);save();padmRenderShipping()" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px">${cfg.shipping.length>1?'✕':''}</button>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div class="adm-field"><label>Description</label><input value="${s.desc}" oninput="cfg.shipping[${i}].desc=this.value;save()"></div>
@@ -1722,423 +1231,78 @@ function padmRenderShipping() {
       </div>
     </div>`).join('');
 }
-function padmAddShipping() {
-  cfg.shipping.push({id:'ship-'+Date.now(),icon:'📦',name:'New Method',desc:'Description',price:0});
-  save(); padmRenderShipping(); renderAdmShipping(); showToast('Method added');
-}
+function padmAddShipping(){ cfg.shipping.push({id:'ship-'+Date.now(),icon:'📦',name:'New Method',desc:'Description',price:0}); save(); padmRenderShipping(); showToast('Method added'); }
 
-// Store save functions
-function padmSaveStore() {
-  cfg.storeName=document.getElementById('padm-store-name').value;
-  cfg.storeSub=document.getElementById('padm-store-sub').value;
-  cfg.phone=document.getElementById('padm-phone').value;
-  cfg.email=document.getElementById('padm-email').value;
-  cfg.address=document.getElementById('padm-address').value;
-  cfg.hours=document.getElementById('padm-hours').value;
-  cfg.about=document.getElementById('padm-about').value;
-  save(); renderHeader(); renderPickupCard();
-  // Sync to main admin too
-  populateStoreForm();
-  showToast('Store info saved! ✅');
-}
-function padmSaveLogo() {
-  cfg.logoUrl=document.getElementById('padm-logo-url').value;
-  cfg.logoEmoji=document.getElementById('padm-logo-emoji').value||'⚽';
-  cfg.brandName1=document.getElementById('padm-brand1').value;
-  cfg.brandName2=document.getElementById('padm-brand2').value;
-  save(); renderHeader(); showToast('Logo saved! 🎨');
-}
-function padmSaveTheme() {
-  ['accent','bg','card','dark','white'].forEach(k=>{
-    const inp=document.getElementById('padm-clr-'+k);
-    if(inp) cfg.theme['--'+k]=inp.value;
-  });
-  cfg.currency=document.getElementById('padm-currency')?.value||'ETB';
-  cfg.currencyPos=document.getElementById('padm-cur-pos')?.value||'before';
-  save(); applyTheme(); renderHeader(); renderHero(); renderProducts('all');
-  showToast('Theme saved! 🎨');
-}
-function padmResetTheme() {
-  cfg.theme=deepClone(DEFAULT_CONFIG.theme);
-  save(); applyTheme(); populatePadmForms(); populateThemeForm(); showToast('Theme reset');
-}
-function padmSaveHero() {
-  cfg.hero={
-    tag: document.getElementById('padm-hero-tag')?.value||'',
-    h1a: document.getElementById('padm-hero-h1a')?.value||'',
-    h1b: document.getElementById('padm-hero-h1b')?.value||'',
-    sub: document.getElementById('padm-hero-sub')?.value||'',
-    imgUrl: document.getElementById('padm-hero-img')?.value||''
-  };
-  save(); renderHero(); populateHeroForm(); showToast('Hero saved! 🎉');
-}
+function padmSaveStore(){ cfg.storeName=document.getElementById('padm-store-name').value; cfg.storeSub=document.getElementById('padm-store-sub').value; cfg.phone=document.getElementById('padm-phone').value; cfg.email=document.getElementById('padm-email').value; cfg.address=document.getElementById('padm-address').value; cfg.hours=document.getElementById('padm-hours').value; cfg.about=document.getElementById('padm-about').value; save(); renderHeader(); renderPickupCard(); showToast('Store info saved! ✅'); }
+function padmSaveLogo(){ cfg.logoUrl=document.getElementById('padm-logo-url').value; cfg.logoEmoji=document.getElementById('padm-logo-emoji').value||'⚽'; cfg.brandName1=document.getElementById('padm-brand1').value; cfg.brandName2=document.getElementById('padm-brand2').value; save(); renderHeader(); showToast('Logo saved! 🎨'); }
+function padmSaveTheme(){ ['accent','bg','card','dark','white'].forEach(k=>{ const i=document.getElementById('padm-clr-'+k); if(i) cfg.theme['--'+k]=i.value; }); cfg.currency=document.getElementById('padm-currency')?.value||'ETB'; cfg.currencyPos=document.getElementById('padm-cur-pos')?.value||'before'; save(); applyTheme(); renderHeader(); renderHero(); renderShopGrid(); showToast('Theme saved! 🎨'); }
+function padmResetTheme(){ cfg.theme=deepClone(DEFAULT_CONFIG.theme); save(); applyTheme(); populatePadmForms(); showToast('Theme reset'); }
+function padmSaveHero(){ cfg.hero={tag:document.getElementById('padm-hero-tag')?.value||'',h1a:document.getElementById('padm-hero-h1a')?.value||'',h1b:document.getElementById('padm-hero-h1b')?.value||'',sub:document.getElementById('padm-hero-sub')?.value||'',imgUrl:document.getElementById('padm-hero-img')?.value||''}; save(); renderHero(); showToast('Hero saved! 🎉'); }
 
-// ── MANAGE ADMINS (owner only) ────────────────────
-function renderManageAdmins() {
-  const list = document.getElementById('admin-ids-list');
-  if (!list) return;
-  const ids = cfg.adminIds || [];
-  if (!ids.length) {
-    list.innerHTML = `<div style="padding:14px;text-align:center;font-size:12px;color:var(--gray)">No admins added yet. Add a Telegram ID below.</div>`;
-    return;
-  }
-  list.innerHTML = ids.map((id,i) => `
-    <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border)">
-      <div style="width:36px;height:36px;border-radius:50%;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">⚙️</div>
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:600;font-family:monospace;color:var(--light)">${id}</div>
-        <div style="font-size:11px;color:var(--gray);margin-top:1px">Admin #${i+1}</div>
-      </div>
-      <button onclick="removeAdmin('${id}')" style="background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);padding:6px 11px;border-radius:8px;font-size:12px;cursor:pointer">Remove</button>
-    </div>`).join('');
+// ═══════════════════════════════════════════
+// PRODUCT EDIT MODAL (league/team/product aware)
+// ═══════════════════════════════════════════
+let modalCtx = null; // {lgId, teamId, prodId}
+
+function openProdModal(lgId, teamId, prodId){
+  const found=findProduct(prodId); if(!found) return;
+  const {p}=found;
+  modalCtx={lgId,teamId,prodId};
+  document.getElementById('prod-modal-title').textContent=`Edit — ${found.team.name} ${p.kitType}`;
+  document.getElementById('prod-modal-del-btn').style.display='none'; // no deletion from modal for now
+  document.getElementById('pm-img').value=p.imgUrl||'';
+  document.getElementById('pm-emoji').value=p.emoji||'⚽';
+  document.getElementById('pm-name').value=p.kitType;
+  document.getElementById('pm-price').value=p.price;
+  document.getElementById('pm-badge').value=p.badge||'';
+  document.getElementById('pm-desc').value=p.desc||'';
+  const prev=document.getElementById('prod-modal-preview');
+  if(p.imgUrl){ prev.innerHTML=`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'⚽'}'">` } else { prev.textContent=p.emoji||'⚽'; }
+  document.getElementById('prod-modal').style.display='block';
 }
-
-function addAdmin() {
-  const inp = document.getElementById('new-admin-id-inp');
-  const val = (inp?.value||'').trim().replace(/\D/g,'');
-  if (!val) { showToast('Enter a valid Telegram ID'); return; }
-  if (val === String(cfg.ownerTelegramId)) { showToast("That's your own ID — you're already the owner"); return; }
-  if ((cfg.adminIds||[]).includes(val)) { showToast('Already an admin'); return; }
-  if (!cfg.adminIds) cfg.adminIds = [];
-  cfg.adminIds.push(val);
-  save();
-  if (inp) inp.value = '';
-  renderManageAdmins();
-  showToast('Admin added! ✅');
+function closeProdModal(){ document.getElementById('prod-modal').style.display='none'; modalCtx=null; }
+function previewProdImg(url){ const p=document.getElementById('prod-modal-preview'); if(url){ p.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='⚽'">` } else { p.textContent=document.getElementById('pm-emoji').value||'⚽'; } }
+function saveProdModal(){
+  if(!modalCtx) return;
+  const lg=cfg.leagues.find(l=>l.id===modalCtx.lgId); if(!lg) return;
+  const team=lg.teams.find(t=>t.id===modalCtx.teamId); if(!team) return;
+  const pidx=team.products.findIndex(p=>p.id===modalCtx.prodId); if(pidx===-1) return;
+  team.products[pidx].imgUrl=document.getElementById('pm-img').value||'';
+  team.products[pidx].emoji=document.getElementById('pm-emoji').value||'⚽';
+  team.products[pidx].price=parseInt(document.getElementById('pm-price').value)||0;
+  team.products[pidx].badge=document.getElementById('pm-badge').value||'';
+  team.products[pidx].desc=document.getElementById('pm-desc').value||'';
+  save(); closeProdModal(); padmRenderProducts(); renderShopGrid(); showToast('Product saved! ✅');
 }
+function deleteProdModal(){ closeProdModal(); }
 
-function removeAdmin(id) {
-  cfg.adminIds = (cfg.adminIds||[]).filter(x => x !== id);
-  save(); renderManageAdmins(); showToast('Admin removed');
+// ═══════════════════════════════════════════
+// MANAGE ADMINS
+// ═══════════════════════════════════════════
+function renderManageAdmins(){
+  const list=document.getElementById('admin-ids-list'); if(!list) return;
+  const ids=cfg.adminIds||[];
+  if(!ids.length){ list.innerHTML=`<div style="padding:14px;text-align:center;font-size:12px;color:var(--gray)">No admins added yet.</div>`; return; }
+  list.innerHTML=ids.map((id,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border)"><div style="width:36px;height:36px;border-radius:50%;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">⚙️</div><div style="flex:1"><div style="font-size:13px;font-weight:600;font-family:monospace;color:var(--light)">${id}</div><div style="font-size:11px;color:var(--gray);margin-top:1px">Admin #${i+1}</div></div><button onclick="removeAdmin('${id}')" style="background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);color:var(--danger);padding:6px 11px;border-radius:8px;font-size:12px;cursor:pointer">Remove</button></div>`).join('');
 }
+function addAdmin(){ const inp=document.getElementById('new-admin-id-inp'); const val=(inp?.value||'').trim().replace(/\D/g,''); if(!val){ showToast('Enter a valid Telegram ID'); return; } if(val===String(cfg.ownerTelegramId)){ showToast("That's your own ID"); return; } if((cfg.adminIds||[]).includes(val)){ showToast('Already an admin'); return; } if(!cfg.adminIds) cfg.adminIds=[]; cfg.adminIds.push(val); save(); if(inp) inp.value=''; renderManageAdmins(); showToast('Admin added! ✅'); }
+function removeAdmin(id){ cfg.adminIds=(cfg.adminIds||[]).filter(x=>x!==id); save(); renderManageAdmins(); showToast('Admin removed'); }
+function copyOwnerId(){ const id=String(tgUser?.id||''); if(navigator.clipboard) navigator.clipboard.writeText(id).then(()=>showToast('ID copied! 📋')); else showToast(id); }
 
-function copyOwnerId() {
-  const id = String(tgUser?.id || '');
-  if (navigator.clipboard) navigator.clipboard.writeText(id).then(()=>showToast('ID copied! 📋'));
-  else showToast(id);
-}
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function goShop(){ shopState={leagueId:'all',teamId:null,kitFilter:'all'}; renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle(); setNav('shop'); showPage('shop'); }
+function goSearch(){ goShop(); setTimeout(()=>{ const q=prompt('Search teams or kits:'); if(q) renderShopGrid(q); },100); }
+function showAdminDirect(){ if(isAdmin()){ showProfile(); } }
 
-// Keep old inline stubs working
-function padmOpenProd(idx){ openProdModal(idx); }
-function padmAddProd(){ openProdModal(-1); }
-
-// Override openProdModal save to also refresh padm list
-const _origSaveProdModal = typeof saveProdModal !== 'undefined' ? saveProdModal : null;
-
-
-
-function goSearch(){
-  goShop();
-  setTimeout(()=>{
-    const q=prompt('Search jerseys:');
-    if(q) renderProducts('all',q);
-  },100);
-}
-
-// ── NAVIGATION ────────────────────────────────────
-function goShop(){
-  shopState = { leagueId: 'all', teamId: null, kitFilter: 'all' };
-  renderCats();
-  renderShopGrid();
-  updateBreadcrumb();
-  updateShopTitle();
-  setNav('shop'); showPage('shop');
-}
 function showPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  const hideHdr=['detail','cart','checkout','success','info','admin','profile'].includes(p);
-  document.getElementById('main-hdr').style.display=hideHdr?'none':'flex';
+  document.getElementById('main-hdr').style.display=['detail','cart','checkout','success','info','profile'].includes(p)?'none':'flex';
 }
-function setNav(p){
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const m={shop:'nav-shop',cart:'nav-cart',info:'nav-info',profile:'nav-profile'};
-  if(m[p]) document.getElementById(m[p]).classList.add('active');
-}
-
-// ── TOAST ────────────────────────────────────────
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200);
-}
-
-// ═══════════════════════════════════════════════════
-//   ADMIN PANEL
-// ═══════════════════════════════════════════════════
-function showAdmin(){
-  document.getElementById('admin-hdr-btn').style.display='flex';
-  populateAdminForms();
-  setNav(''); showPage('admin');
-}
-
-function switchAdmTab(idx,el){
-  document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.adm-panel').forEach(p=>p.classList.remove('active'));
-  document.getElementById('adm-tab-'+idx).classList.add('active');
-  document.getElementById('adm-scroll').scrollTop=0;
-}
-
-// ── PIN MODAL ─────────────────────────────────────
-function showPinModal(){
-  const m=document.getElementById('pin-modal');
-  m.style.display='flex'; m.style.alignItems='center'; m.style.justifyContent='center';
-  document.getElementById('pin-inp').value='';
-  document.getElementById('pin-error').style.display='none';
-  setTimeout(()=>document.getElementById('pin-inp').focus(),100);
-}
-function hidePinModal(){ document.getElementById('pin-modal').style.display='none'; }
-function checkPIN(){
-  const v=document.getElementById('pin-inp').value;
-  if(v===cfg.pin){ hidePinModal(); document.getElementById('admin-hdr-btn').style.display='flex'; showAdmin(); }
-  else { document.getElementById('pin-error').style.display='block'; }
-}
-// Trigger on logo 5-tap already wired in init
-// Also: long press admin btn → bypass if already unlocked
-document.addEventListener('DOMContentLoaded',()=>{
-  // secret: type "admin" anywhere
-  let seq='';
-  document.addEventListener('keydown',e=>{
-    seq+=e.key; if(seq.length>5) seq=seq.slice(-5);
-    if(seq==='admin'){ showPinModal(); seq=''; }
-  });
-});
-
-// ── POPULATE FORMS ────────────────────────────────
-function populateAdminForms(){
-  renderAdmProducts();
-  renderAdmCats();
-  renderAdmSizes();
-  renderAdmShipping();
-  populateStoreForm();
-  populateThemeForm();
-  populateHeroForm();
-}
-
-function populateStoreForm(){
-  document.getElementById('cfg-store-name').value=cfg.storeName;
-  document.getElementById('cfg-store-sub').value=cfg.storeSub;
-  document.getElementById('cfg-phone').value=cfg.phone;
-  document.getElementById('cfg-email').value=cfg.email;
-  document.getElementById('cfg-address').value=cfg.address;
-  document.getElementById('cfg-hours').value=cfg.hours;
-  document.getElementById('cfg-about').value=cfg.about;
-  document.getElementById('cfg-logo-url').value=cfg.logoUrl;
-  document.getElementById('cfg-logo-emoji').value=cfg.logoEmoji;
-  document.getElementById('cfg-brand1').value=cfg.brandName1;
-  document.getElementById('cfg-brand2').value=cfg.brandName2;
-  document.getElementById('cfg-currency').value=cfg.currency;
-  document.getElementById('cfg-cur-pos').value=cfg.currencyPos;
-}
-function populateThemeForm(){
-  const t=cfg.theme;
-  const keys=['accent','bg','card','dark','white','border'];
-  keys.forEach(k=>{
-    const inp=document.getElementById('clr-'+k);
-    const hex=document.getElementById('clr-'+k+'-hex');
-    if(inp) inp.value=t['--'+k]||'';
-    if(hex) hex.textContent=t['--'+k]||'';
-  });
-}
-function populateHeroForm(){
-  const h=cfg.hero;
-  document.getElementById('hero-tag-inp').value=h.tag;
-  document.getElementById('hero-h1a-inp').value=h.h1a;
-  document.getElementById('hero-h1b-inp').value=h.h1b;
-  document.getElementById('hero-sub-inp').value=h.sub;
-  document.getElementById('hero-img-inp').value=h.imgUrl;
-}
-
-// ── ADMIN: PRODUCTS ──────────────────────────────
-function renderAdmProducts(){
-  const list=document.getElementById('adm-products-list');
-  list.innerHTML=cfg.products.map((p,i)=>`
-    <div class="adm-card" style="cursor:pointer" onclick="openProdModal(${i})">
-      <div class="adm-prod-preview">
-        <div class="adm-thumb">${p.imgUrl?`<img src="${p.imgUrl}" alt="" onerror="this.parentNode.textContent='${p.emoji||'⚽'}'">`:p.emoji||'⚽'}</div>
-        <div class="adm-thumb-info">
-          <div class="adm-thumb-name">${p.name}</div>
-          <div style="font-size:11px;color:var(--gray)">${p.league} · ${p.cat}</div>
-          <div class="adm-thumb-price">${fmt(p.price)}</div>
-        </div>
-        <div style="font-size:18px;color:var(--gray)">›</div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function openProdModal(idx){
-  editingProdIdx=idx;
-  const p = idx===-1 ? {id:nextId(),name:'',league:'',cat:cfg.categories[0]?.id||'',emoji:'⚽',imgUrl:'',price:0,badge:'',desc:''} : cfg.products[idx];
-  document.getElementById('prod-modal-title').textContent = idx===-1 ? 'Add Product' : 'Edit Product';
-  document.getElementById('prod-modal-del-btn').style.display = idx===-1 ? 'none' : 'inline-flex';
-  document.getElementById('pm-img').value=p.imgUrl||'';
-  document.getElementById('pm-emoji').value=p.emoji||'⚽';
-  document.getElementById('pm-name').value=p.name;
-  document.getElementById('pm-league').value=p.league;
-  document.getElementById('pm-price').value=p.price;
-  document.getElementById('pm-badge').value=p.badge||'';
-  document.getElementById('pm-desc').value=p.desc;
-  // populate cat select
-  const catSel=document.getElementById('pm-cat');
-  catSel.innerHTML=cfg.categories.map(c=>`<option value="${c.id}" ${c.id===p.cat?'selected':''}>${c.label}</option>`).join('');
-  // preview
-  const prev=document.getElementById('prod-modal-preview');
-  if(p.imgUrl){ prev.innerHTML=`<img src="${p.imgUrl}" alt="" onerror="this.parentNode.textContent='${p.emoji||'⚽'}'">` }
-  else { prev.textContent=p.emoji||'⚽'; }
-  document.getElementById('prod-modal').style.display='block';
-}
-function closeProdModal(){ document.getElementById('prod-modal').style.display='none'; }
-function previewProdImg(url){
-  const prev=document.getElementById('prod-modal-preview');
-  if(url){ prev.innerHTML=`<img src="${url}" alt="" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent=document.getElementById('pm-emoji').value||'⚽'">` }
-  else { prev.textContent=document.getElementById('pm-emoji').value||'⚽'; }
-}
-function saveProdModal(){
-  const p = {
-    id: editingProdIdx===-1 ? nextId() : cfg.products[editingProdIdx].id,
-    name: document.getElementById('pm-name').value||'Unnamed Product',
-    league: document.getElementById('pm-league').value||'',
-    cat: document.getElementById('pm-cat').value||cfg.categories[0]?.id||'other',
-    emoji: document.getElementById('pm-emoji').value||'⚽',
-    imgUrl: document.getElementById('pm-img').value||'',
-    price: parseInt(document.getElementById('pm-price').value)||0,
-    badge: document.getElementById('pm-badge').value||'',
-    desc: document.getElementById('pm-desc').value||''
-  };
-  if(editingProdIdx===-1) cfg.products.push(p);
-  else cfg.products[editingProdIdx]=p;
-  save(); closeProdModal(); renderAdmProducts(); renderProducts('all');
-  if (isAdmin()) padmRenderProducts();
-  showToast('Product saved! ✅');
-}
-function deleteProdModal(){
-  if(!confirm('Delete this product?')) return;
-  cfg.products.splice(editingProdIdx,1);
-  save(); closeProdModal(); renderAdmProducts(); renderProducts('all'); showToast('Product deleted');
-}
-function adminAddProduct(){ openProdModal(-1); }
-
-// ── ADMIN: CATEGORIES ────────────────────────────
-function renderAdmCats(){
-  const list=document.getElementById('adm-cats-list');
-  list.innerHTML=cfg.categories.map((c,i)=>`
-    <div class="cat-edit-item">
-      <span style="font-size:14px;color:var(--gray)">≡</span>
-      <input value="${c.label}" oninput="cfg.categories[${i}].label=this.value;save();renderCats();" placeholder="Category name">
-      <input value="${c.id}" oninput="updateCatId(${i},this.value)" placeholder="id (no spaces)" style="width:90px;color:var(--accent)">
-      <button style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;padding:2px" onclick="deleteCat(${i})">✕</button>
-    </div>
-  `).join('');
-}
-function updateCatId(i,newId){
-  const old=cfg.categories[i].id;
-  cfg.categories[i].id=newId.replace(/\s/g,'-').toLowerCase();
-  cfg.products.forEach(p=>{ if(p.cat===old) p.cat=cfg.categories[i].id; });
-  save(); renderCats();
-}
-function adminAddCat(){
-  cfg.categories.push({id:'new-cat-'+Date.now(),label:'New Category'});
-  save(); renderAdmCats(); renderCats(); showToast('Category added');
-}
-function deleteCat(i){
-  if(!confirm('Delete category?')) return;
-  cfg.categories.splice(i,1);
-  save(); renderAdmCats(); renderCats(); showToast('Category deleted');
-}
-function renderAdmSizes(){
-  const wrap=document.getElementById('adm-sizes-edit');
-  wrap.innerHTML=cfg.sizes.map((s,i)=>`
-    <div class="sz-chip">
-      <span>${s}</span>
-      <button onclick="deleteSize(${i})">✕</button>
-    </div>
-  `).join('');
-}
-function adminAddSize(){
-  const inp=document.getElementById('new-size-inp');
-  const v=inp.value.trim().toUpperCase();
-  if(!v) return;
-  if(!cfg.sizes.includes(v)) cfg.sizes.push(v);
-  inp.value=''; save(); renderAdmSizes(); showToast('Size added');
-}
-function deleteSize(i){
-  cfg.sizes.splice(i,1);
-  save(); renderAdmSizes(); showToast('Size removed');
-}
-
-// ── ADMIN: SHIPPING ───────────────────────────────
-function renderAdmShipping(){
-  const list=document.getElementById('adm-shipping-list');
-  list.innerHTML=cfg.shipping.map((s,i)=>`
-    <div class="ship-edit-item">
-      <div class="ship-edit-hdr">
-        <input value="${s.icon}" oninput="cfg.shipping[${i}].icon=this.value;save()" style="width:40px;background:none;border:none;color:var(--white);font-size:22px;outline:none;text-align:center">
-        <div style="flex:1">
-          <input value="${s.name}" oninput="cfg.shipping[${i}].name=this.value;save()" style="width:100%;background:none;border:none;color:var(--white);font-size:13px;font-weight:600;outline:none;font-family:var(--font)">
-        </div>
-        <button style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px" onclick="delShipping(${i})">✕</button>
-      </div>
-      <div class="adm-2col">
-        <div class="adm-field"><label>Description</label><input value="${s.desc}" oninput="cfg.shipping[${i}].desc=this.value;save()"></div>
-        <div class="adm-field"><label>Price (0=Free)</label><input type="number" value="${s.price}" min="0" oninput="cfg.shipping[${i}].price=parseInt(this.value)||0;save()"></div>
-      </div>
-    </div>
-  `).join('');
-}
-function adminAddShipping(){
-  cfg.shipping.push({id:'ship-'+Date.now(),icon:'📦',name:'New Method',desc:'Description',price:0});
-  save(); renderAdmShipping(); showToast('Shipping method added');
-}
-function delShipping(i){
-  if(cfg.shipping.length<=1){showToast('Need at least 1 method');return;}
-  cfg.shipping.splice(i,1);
-  save(); renderAdmShipping(); showToast('Deleted');
-}
-
-// ── ADMIN: STORE INFO SAVE ────────────────────────
-function saveStoreInfo(){
-  cfg.storeName=document.getElementById('cfg-store-name').value;
-  cfg.storeSub=document.getElementById('cfg-store-sub').value;
-  cfg.phone=document.getElementById('cfg-phone').value;
-  cfg.email=document.getElementById('cfg-email').value;
-  cfg.address=document.getElementById('cfg-address').value;
-  cfg.hours=document.getElementById('cfg-hours').value;
-  cfg.about=document.getElementById('cfg-about').value;
-  save(); renderHeader(); renderPickupCard(); showToast('Store info saved! ✅');
-}
-function saveLogo(){
-  cfg.logoUrl=document.getElementById('cfg-logo-url').value;
-  cfg.logoEmoji=document.getElementById('cfg-logo-emoji').value||'⚽';
-  cfg.brandName1=document.getElementById('cfg-brand1').value;
-  cfg.brandName2=document.getElementById('cfg-brand2').value;
-  save(); renderHeader(); showToast('Logo saved! 🎨');
-}
-function saveCurrency(){
-  cfg.currency=document.getElementById('cfg-currency').value||'ETB';
-  cfg.currencyPos=document.getElementById('cfg-cur-pos').value;
-  save(); renderProducts('all'); showToast('Currency saved!');
-}
-function savePIN(){
-  const old=document.getElementById('cfg-pin').value;
-  const n=document.getElementById('cfg-new-pin').value;
-  if(old!==cfg.pin){showToast('Wrong current PIN ❌');return;}
-  if(n.length<4){showToast('PIN must be 4+ digits');return;}
-  cfg.pin=n; save(); showToast('PIN changed! 🔐');
-}
-
-// ── ADMIN: HERO SAVE ─────────────────────────────
-function saveHero(){
-  cfg.hero={
-    tag: document.getElementById('hero-tag-inp').value,
-    h1a: document.getElementById('hero-h1a-inp').value,
-    h1b: document.getElementById('hero-h1b-inp').value,
-    sub: document.getElementById('hero-sub-inp').value,
-    imgUrl: document.getElementById('hero-img-inp').value
-  };
-  save(); renderHero(); showToast('Hero saved! 🎉');
-}
+function setNav(p){ document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); const m={shop:'nav-shop',cart:'nav-cart',info:'nav-info',profile:'nav-profile'}; if(m[p]) document.getElementById(m[p]).classList.add('active'); }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
 </script>
 </body>
 </html>
