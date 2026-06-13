@@ -746,6 +746,20 @@ if(savedCfg){
   cfg=deepClone(DEFAULT_CONFIG);
 }
 
+// ── CART PERSISTENCE ─────────────────────────────
+// Cart is stored per-user: emartzon_cart_<userId>
+// Loaded after login, saved on every change
+function cartKey(){ return tgUser ? 'emartzon_cart_'+String(tgUser.id) : null; }
+function loadCart(){
+  const k=cartKey(); if(!k) return;
+  try{ const saved=localStorage.getItem(k); if(saved) cart=JSON.parse(saved); } catch(e){ cart=[]; }
+  updateBadge();
+}
+function saveCart(){
+  const k=cartKey(); if(!k) return;
+  localStorage.setItem(k,JSON.stringify(cart));
+}
+
 let cart=[];
 let orderHistory=JSON.parse(localStorage.getItem('emartzon_orders')||'[]');
 let curProduct=null, selSize="M", selQty=1, curShipping=null;
@@ -810,6 +824,7 @@ function enterApp(){
 }
 function bootApp(){
   claimOwnership();
+  loadCart(); // ← load saved cart for this user
   renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
   renderShipOpts(); renderPickupCard();
   curShipping=cfg.shipping[0];
@@ -1008,6 +1023,7 @@ function chgQty(d){ selQty=Math.max(1,selQty+d); document.getElementById('qty-di
 function addToCart(){
   const ex=cart.find(i=>i.id===curProduct.id&&i.size===selSize);
   if(ex) ex.qty+=selQty; else cart.push({...curProduct,size:selSize,qty:selQty});
+  saveCart(); // ← persist after every change
   updateBadge(); showToast('Added to cart! 🛒');
 }
 function quickAdd(pid){
@@ -1016,6 +1032,7 @@ function quickAdd(pid){
   const item={...p,name,teamName:team.name,size:cfg.sizes[2]||'M',qty:1};
   const ex=cart.find(i=>i.id===p.id&&i.size===item.size);
   if(ex) ex.qty++; else cart.push(item);
+  saveCart(); // ← persist after every change
   updateBadge(); showToast(`${name} added! 🛒`);
 }
 function updateBadge(){ const n=cart.reduce((a,i)=>a+i.qty,0); const b=document.getElementById('cart-badge'); b.textContent=n; b.style.display=n>0?'flex':'none'; }
@@ -1038,7 +1055,6 @@ function selShip(id){
   const isPickup=curShipping?.id==='pickup';
   document.getElementById('addr-form-wrap').style.display=isPickup?'none':'block';
   document.getElementById('pickup-info-wrap').style.display=isPickup?'block':'none';
-  // If pickup, auto-select "Pay at Store"
   if(isPickup){ selectPayment('cash'); }
   else if(selectedPayment==='cash'){ selectPayment('cbe'); }
   updateCheckoutSummary();
@@ -1143,7 +1159,11 @@ function showCart(){
   }
   setNav('cart'); showPage('cart');
 }
-function rmItem(idx){ cart.splice(idx,1); updateBadge(); showCart(); }
+function rmItem(idx){
+  cart.splice(idx,1);
+  saveCart(); // ← persist after removal
+  updateBadge(); showCart();
+}
 
 // ── CHECKOUT ──────────────────────────────────────
 function showCheckout(){
@@ -1182,7 +1202,6 @@ function placeOrder(){
   const payMethod=payMethods[selectedPayment]||selectedPayment;
   const cartSnapshot=deepClone(cart);
 
-  // Build the receipt card HTML
   const itemsHtml=cartSnapshot.map(item=>`
     <div class="receipt-item">
       <div class="receipt-item-img">${item.imgUrl?`<img src="${item.imgUrl}" onerror="this.parentNode.textContent='${item.emoji||'⚽'}'">`:item.emoji||'⚽'}</div>
@@ -1205,7 +1224,6 @@ function placeOrder(){
     :`<div class="receipt-row"><span class="receipt-row-label">Deliver To</span><span class="receipt-row-val">${city}${address?', '+address:''}</span></div><div class="receipt-row"><span class="receipt-row-label">Contact</span><span class="receipt-row-val">${phone}</span></div>`;
 
   document.getElementById('receipt-card').innerHTML=`
-    <!-- Receipt Header -->
     <div class="receipt-header">
       <div class="receipt-header-top">
         <div class="receipt-brand">⚽ ${cfg.storeName}</div>
@@ -1213,50 +1231,37 @@ function placeOrder(){
       </div>
       <div class="receipt-date">${dateStr} at ${timeStr}</div>
     </div>
-
-    <!-- Customer Info -->
     <div class="receipt-section">
       <div class="receipt-section-title">Customer</div>
       <div class="receipt-row"><span class="receipt-row-label">Name</span><span class="receipt-row-val">${buyer}</span></div>
       ${tgUser?.username?`<div class="receipt-row"><span class="receipt-row-label">Telegram</span><span class="receipt-row-val">@${tgUser.username}</span></div>`:''}
       ${tgUser?.id?`<div class="receipt-row"><span class="receipt-row-label">User ID</span><span class="receipt-row-val" style="font-family:monospace">${tgUser.id}</span></div>`:''}
     </div>
-
-    <!-- Items -->
     <div class="receipt-section">
       <div class="receipt-section-title">Items Ordered</div>
       <div class="receipt-items-list">${itemsHtml}</div>
     </div>
-
-    <!-- Pricing -->
     <div class="receipt-section">
       <div class="receipt-section-title">Pricing</div>
       <div class="receipt-row"><span class="receipt-row-label">Subtotal</span><span class="receipt-row-val">${fmt(sub)}</span></div>
       <div class="receipt-row"><span class="receipt-row-label">Shipping</span><span class="receipt-row-val">${ship===0?'Free':fmt(ship)}</span></div>
       <div class="receipt-row total-row"><span class="receipt-row-label">Total Paid</span><span class="receipt-row-val">${fmt(total)}</span></div>
     </div>
-
-    <!-- Delivery -->
     <div class="receipt-section">
       <div class="receipt-section-title">${m?.id==='pickup'?'Store Pickup':'Delivery'}</div>
       <div class="receipt-row"><span class="receipt-row-label">Method</span><span class="receipt-row-val">${m?.icon} ${m?.name}</span></div>
       ${deliveryInfo}
     </div>
-
-    <!-- Payment -->
     <div class="receipt-section">
       <div class="receipt-section-title">Payment</div>
       <div class="receipt-row" style="margin-bottom:10px"><span class="receipt-row-label">Method</span><span class="receipt-row-val"><span class="receipt-pay-badge ${payBadgeClass}">${payMethod}</span></span></div>
       <div style="background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.2);border-radius:9px;padding:11px;font-size:12px;color:var(--light);line-height:1.6">${payInstr}</div>
     </div>
-
-    <!-- Footer -->
     <div style="padding:14px 18px;background:var(--card2);display:flex;align-items:center;gap:10px">
       <div style="font-size:11px;color:var(--gray);flex:1;line-height:1.5">Thank you for shopping at ${cfg.storeName}! For help: ${cfg.phone}</div>
       <div style="font-size:22px">🙏</div>
     </div>`;
 
-  // Save to order history
   orderHistory.push({
     id:oid,
     userId:tgUser?String(tgUser.id):'guest',
@@ -1271,7 +1276,6 @@ function placeOrder(){
   });
   saveOrders();
 
-  // Send receipt via Telegram WebApp (sends data back to bot)
   try {
     const tg=window.Telegram?.WebApp;
     if(tg&&tg.sendData){
@@ -1288,7 +1292,11 @@ function placeOrder(){
     }
   } catch(e){}
 
-  cart=[]; updateBadge(); showPage('success');
+  // Clear cart after successful order
+  cart=[];
+  saveCart(); // ← save empty cart after order placed
+  updateBadge();
+  showPage('success');
 }
 
 function shareReceipt(){
