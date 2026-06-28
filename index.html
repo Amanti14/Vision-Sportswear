@@ -930,9 +930,13 @@ async function submitTxnProof(){
   btn.disabled=true; btn.style.opacity='0.5';
   inp.style.borderColor='var(--accent)';
   verifying.style.display='block';
+  // Pass expected account so Worker can verify recipient server-side
+  const pay=cfg.payment||DEFAULT_CONFIG.payment;
+  const isTPay=_pendingOrder?.rawPayment==='telebirr';
+  const expectedAccount=isTPay?(pay.telebirrNum||''):(pay.cbeNum||'');
   let result;
   try{
-    const res=await fetch(VERIFY_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
+    const res=await fetch(VERIFY_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,expectedAccount})});
     result=await res.json();
   }catch(e){
     verifying.style.display='none'; btn.disabled=false; btn.style.opacity='1';
@@ -943,14 +947,11 @@ async function submitTxnProof(){
   if(result.status&&!['success','completed','approved','successful'].includes(result.status.toLowerCase())){
     showTxnError(`Your transaction status is "${result.status}".\nOnly completed transactions are accepted.`,null,null); inp.style.borderColor='#ef4444'; return;
   }
-  const pay=cfg.payment||DEFAULT_CONFIG.payment;
-  const isT=_pendingOrder?.rawPayment==='telebirr';
-  const expectedRaw=isT?(pay.telebirrNum||''):(pay.cbeNum||'');
-  if(result.receiver&&expectedRaw){
+  if(result.receiver&&expectedAccount){
     const norm=s=>s.replace(/[\s\+]/g,'').replace(/^251/,'').replace(/^0/,'');
-    const expN=norm(expectedRaw); const recN=norm(result.receiver);
+    const expN=norm(expectedAccount); const recN=norm(result.receiver);
     if(expN&&recN&&!recN.includes(expN)&&!expN.includes(recN)){
-      showTxnError(`This receipt shows payment to a different account.\n\nExpected: ${expectedRaw}\nReceipt:  ${result.receiver}\n\nPlease send to the correct account and paste the new receipt.`,null,null);
+      showTxnError(`This receipt shows payment to a different account.\n\nExpected: ${expectedAccount}\nReceipt:  ${result.receiver}\n\nPlease send to the correct account and paste the new receipt.`,null,null);
       inp.style.borderColor='#ef4444'; return;
     }
   }
