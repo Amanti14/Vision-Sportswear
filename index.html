@@ -232,13 +232,8 @@
       </div>
       <div id="jsonbin-setup-notice" style="display:none;background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.3);border-radius:12px;padding:14px;margin-bottom:14px">
         <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">⚠️ Cloud Sync Not Configured</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.6;margin-bottom:10px">Your edits currently only apply to your own device. To sync changes to all users, set up a free JSONBin account:</div>
-        <div style="font-size:12px;color:var(--light);line-height:1.8">1. Go to <b>jsonbin.io</b> → Sign up free<br>2. Create a new Bin with <code style="background:var(--card2);padding:1px 5px;border-radius:4px">{}</code> as content<br>3. Copy your <b>Bin ID</b> and <b>API Key</b><br>4. Paste them below and tap Save</div>
-        <div style="margin-top:12px">
-          <div class="adm-field"><label>JSONBin Bin ID</label><input id="jsonbin-bin-id-setup" type="text" placeholder="64abc123..."></div>
-          <div class="adm-field"><label>JSONBin API Key</label><input id="jsonbin-api-key-setup" type="text" placeholder="$2a$10$..."></div>
-          <button class="btn-save" onclick="saveJsonBinCredentials()" style="width:100%;margin-top:4px">Save & Enable Cloud Sync ☁️</button>
-        </div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.6;margin-bottom:10px">Your edits currently only apply to your own device. Set up the free ☁️ Sync tab below to push changes to all users.</div>
+        <button class="btn-save" onclick="switchProfileAdminTab(6,document.querySelectorAll('.padm-tab')[6])" style="width:100%">Go to ☁️ Sync Tab</button>
       </div>
       <div id="sync-status-bar" style="display:none;padding:8px 12px;border-radius:9px;margin-bottom:12px;font-size:12px;font-weight:600;text-align:center"></div>
       <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--card);border-radius:12px 12px 0 0;overflow:hidden;overflow-x:auto;scrollbar-width:none">
@@ -754,15 +749,16 @@ function setSyncStatus(msg,color){
 }
 
 function saveJsonBinCredentials(){
-  const binId=(document.getElementById('jsonbin-bin-id-setup')?.value||document.getElementById('jsonbin-bin-id')?.value||'').trim();
-  const apiKey=(document.getElementById('jsonbin-api-key-setup')?.value||document.getElementById('jsonbin-api-key')?.value||'').trim();
+  const binId=(document.getElementById('jsonbin-bin-id')?.value||'').trim();
+  const apiKey=(document.getElementById('jsonbin-api-key')?.value||'').trim();
   if(!binId||!apiKey){ showToast('Enter both Bin ID and API Key'); return; }
   localStorage.setItem(JBIN_CREDS_KEY,JSON.stringify({binId,apiKey}));
-  ['jsonbin-bin-id','jsonbin-bin-id-setup'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=binId; });
-  ['jsonbin-api-key','jsonbin-api-key-setup'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=apiKey; });
-  document.getElementById('jsonbin-setup-notice')?.style?.display && (document.getElementById('jsonbin-setup-notice').style.display='none');
   showToast('Credentials saved! Now tap Push Config to Cloud.');
-  updateSyncStatusPanel();
+  if(isAdmin()){
+    const notice=document.getElementById('jsonbin-setup-notice');
+    if(notice) notice.style.display=hasCloudSync()?'none':'block';
+    updateSyncStatusPanel();
+  }
 }
 
 async function testJsonBinConnection(){
@@ -796,7 +792,8 @@ function updateSyncStatusPanel(){
   const c=getJBinCreds();
   if(c&&c.binId&&c.apiKey){ el.innerHTML=`<span style="color:#22c55e;font-weight:700">☁️ Cloud Sync ENABLED</span><br>Bin: <code style="background:var(--card);padding:1px 5px;border-radius:4px">${c.binId}</code><br>Every save pushes to all users automatically.`; }
   else { el.innerHTML=`<span style="color:#f5a623;font-weight:700">⚠️ Cloud Sync NOT configured</span><br>Your changes only apply to your device.`; }
-  if(c){ ['jsonbin-bin-id','jsonbin-bin-id-setup'].forEach(id=>{ const e=document.getElementById(id); if(e&&!e.value) e.value=c.binId||''; }); ['jsonbin-api-key','jsonbin-api-key-setup'].forEach(id=>{ const e=document.getElementById(id); if(e&&!e.value) e.value=c.apiKey||''; }); }
+  const binEl=document.getElementById('jsonbin-bin-id'); if(binEl) binEl.value=c?.binId||'';
+  const keyEl=document.getElementById('jsonbin-api-key'); if(keyEl) keyEl.value=c?.apiKey||'';
 }
 
 let savedCfg=JSON.parse(localStorage.getItem('emartzon_cfg')||'null');
