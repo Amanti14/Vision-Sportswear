@@ -741,8 +741,9 @@ async function pushCloudConfig(showMsg=true){
   const c=getJBinCreds(); if(!c||!c.binId||!c.apiKey){ showMsg&&showToast('Cloud sync not configured'); return false; }
   setSyncStatus('⏳ Syncing to cloud…','#f5a623');
   try{
-    cfg._lastUpdated=Date.now();
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${c.binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':c.apiKey,'X-Bin-Versioning':'false'},body:JSON.stringify(cfg)});
+    const toSync={...cfg}; delete toSync.ownerTelegramId; // never expose owner ID in cloud
+    toSync._lastUpdated=Date.now(); cfg._lastUpdated=toSync._lastUpdated;
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${c.binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':c.apiKey,'X-Bin-Versioning':'false'},body:JSON.stringify(toSync)});
     if(res.ok){ setSyncStatus('✅ Synced to cloud — all users will see changes','#22c55e'); showMsg&&showToast('Config pushed to all users! ✅'); _lastKnownRemoteTs=cfg._lastUpdated; return true; }
     else{ setSyncStatus('❌ Sync failed — check your credentials','#ef4444'); showMsg&&showToast('Sync failed. Check your Bin ID & API key.'); return false; }
   }catch(e){ setSyncStatus('❌ Network error during sync','#ef4444'); showMsg&&showToast('Network error during sync'); return false; }
@@ -785,11 +786,13 @@ async function pullConfigFromCloud(){
 }
 
 function applyRemoteConfig(remote){
-  const localOwner=cfg.ownerTelegramId; const localAdmins=cfg.adminIds||[];
+  // Always preserve the local owner ID — never let cloud overwrite it
+  const localOwnerId=localStorage.getItem('emartzon_owner_id')||cfg.ownerTelegramId||'';
   cfg=Object.assign({},DEFAULT_CONFIG,remote);
   cfg.leagues=mergeLeagues(remote.leagues,DEFAULT_CONFIG.leagues);
   if(!cfg.payment) cfg.payment=deepClone(DEFAULT_CONFIG.payment);
-  if(tgUser&&isOwner()&&localOwner){ cfg.ownerTelegramId=localOwner; cfg.adminIds=localAdmins; }
+  // Restore owner from local storage — cloud version never has ownerTelegramId
+  cfg.ownerTelegramId=localOwnerId;
   localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
   applyTheme(); renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
 }
@@ -1046,12 +1049,39 @@ let shopState={leagueId:'all',teamId:null,kitFilter:'all'};
 let modalCtx=null;
 let tgUser=null;
 
-function save(){ localStorage.setItem('emartzon_cfg',JSON.stringify(cfg)); if(hasCloudSync()) pushCloudConfig(false); }
+function save(){ localStorage.setItem('emartzon_cfg',JSON.stringify(cfg)); if(hasCloudSync()) pushCloudConfigSafe(); }
 function saveOrders(){ localStorage.setItem('emartzon_orders',JSON.stringify(orderHistory)); }
 function fmt(n){ return cfg.currencyPos==='after'?n.toLocaleString()+' '+cfg.currency:cfg.currency+' '+n.toLocaleString(); }
-function isOwner(){ if(!tgUser) return false; if(!cfg.ownerTelegramId) return true; return String(tgUser.id)===String(cfg.ownerTelegramId); }
-function isAdmin(){ if(!tgUser) return false; if(isOwner()) return true; return (cfg.adminIds||[]).map(String).includes(String(tgUser.id)); }
-function claimOwnership(){ if(!cfg.ownerTelegramId&&tgUser){ cfg.ownerTelegramId=String(tgUser.id); if(!cfg.adminIds) cfg.adminIds=[]; save(); } }
+function isOwner(){ if(!tgUser||!cfg.ownerTelegramId) return false; return String(tgUser.id)===String(cfg.ownerTelegramId); }
+function isAdmin(){ if(!tgUser) return false; if(isOwner()) return true; if(!cfg.ownerTelegramId) return false; return (cfg.adminIds||[]).map(String).includes(String(tgUser.id)); }
+function claimOwnership(){
+  // Owner ID is stored only in localStorage on the owner's own device.
+  // It is NEVER pushed to cloud, so other users can never become owner via sync.
+  const localOwnerId=localStorage.getItem('emartzon_owner_id');
+  if(localOwnerId){
+    cfg.ownerTelegramId=localOwnerId; // restore from local storage on each boot
+  } else if(!cfg.ownerTelegramId&&tgUser){
+    // First ever boot on this device with no owner set anywhere — claim it
+    cfg.ownerTelegramId=String(tgUser.id);
+    localStorage.setItem('emartzon_owner_id',String(tgUser.id));
+    // Save to cloud but strip ownerTelegramId so cloud version never has it
+    if(!cfg.adminIds) cfg.adminIds=[];
+    localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
+    if(hasCloudSync()) pushCloudConfigSafe();
+  }
+}
+// Push to cloud without leaking ownerTelegramId or adminIds
+async function pushCloudConfigSafe(){
+  const toSync={...cfg};
+  delete toSync.ownerTelegramId; // never expose owner ID in cloud
+  // adminIds DO sync so owner can manage them from their device
+  const c=getJBinCreds(); if(!c||!c.binId||!c.apiKey) return;
+  try{
+    toSync._lastUpdated=Date.now(); cfg._lastUpdated=toSync._lastUpdated;
+    await fetch(`https://api.jsonbin.io/v3/b/${c.binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':c.apiKey,'X-Bin-Versioning':'false'},body:JSON.stringify(toSync)});
+    _lastKnownRemoteTs=toSync._lastUpdated;
+  }catch(e){}
+}
 
 window.addEventListener('load',()=>{ applyTheme(); initLogin(); });
 
