@@ -423,6 +423,12 @@ const VERIFY_WORKER_URL = "https://ancient-mud-9bee.amantifekede14.workers.dev";
 // To add another owner, just add their ID to this array.
 const OWNER_IDS = ["5158823198"];
 
+// ── JSONBIN CLOUD SYNC — hardcoded so ALL users fetch config automatically ──
+// Every user (phone, PC, any device) will pull the latest config on startup.
+// Only the owner can push changes — but everyone reads from the same bin.
+const JBIN_ID  = "6a3628d0f5f4af5e2912fb43";
+const JBIN_KEY = "$2a$10$wF98eMYcbolP1B1yowmL/edktVJLbByoYqhE3lPRJ.2nGkf7yzv52";
+
 // ═══════════════════════════════════════════
 // DEFAULT CONFIG — unchanged from original
 // ═══════════════════════════════════════════
@@ -762,12 +768,17 @@ function mergeLeagues(saved, defaults) {
 // ── CLOUD SYNC (JSONBin) ──────────────────────────
 const JBIN_CREDS_KEY = 'emartzon_jbin';
 function getJBinCreds(){ try{ return JSON.parse(localStorage.getItem(JBIN_CREDS_KEY)||'null'); }catch(e){ return null; } }
-function hasCloudSync(){ const c=getJBinCreds(); return !!(c&&c.binId&&c.apiKey); }
+function hasCloudSync(){ return true; /* hardcoded creds always available */ }
 
 async function fetchCloudConfig(){
-  const c=getJBinCreds(); if(!c||!c.binId) return null;
+  // Use saved credentials if available, otherwise fall back to hardcoded ones.
+  // This means ALL users automatically sync — not just the admin's device.
+  const c=getJBinCreds();
+  const binId  = (c&&c.binId)  ? c.binId  : JBIN_ID;
+  const apiKey = (c&&c.apiKey) ? c.apiKey : JBIN_KEY;
+  if(!binId||!apiKey) return null;
   try{
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${c.binId}/latest`,{headers:{'X-Master-Key':c.apiKey,'X-Bin-Meta':'false'}});
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`,{headers:{'X-Master-Key':apiKey,'X-Bin-Meta':'false'}});
     if(!res.ok) return null;
     const data=await res.json();
     return (typeof data==='object'&&data!==null&&!Array.isArray(data)&&Object.keys(data).length>2)?data:null;
@@ -776,11 +787,14 @@ async function fetchCloudConfig(){
 
 // ── CHANGE 1 of 4: stamp _lastUpdated on every push ──
 async function pushCloudConfig(showMsg=true){
-  const c=getJBinCreds(); if(!c||!c.binId||!c.apiKey){ showMsg&&showToast('Cloud sync not configured'); return false; }
+  const c=getJBinCreds();
+  const binId  = (c&&c.binId)  ? c.binId  : JBIN_ID;
+  const apiKey = (c&&c.apiKey) ? c.apiKey : JBIN_KEY;
+  if(!binId||!apiKey){ showMsg&&showToast('Cloud sync not configured'); return false; }
   setSyncStatus('⏳ Syncing to cloud…','#f5a623');
   try{
     cfg._lastUpdated=Date.now();
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${c.binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':c.apiKey,'X-Bin-Versioning':'false'},body:JSON.stringify(cfg)});
+    const res=await fetch(`https://api.jsonbin.io/v3/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':apiKey,'X-Bin-Versioning':'false'},body:JSON.stringify(cfg)});
     if(res.ok){ setSyncStatus('✅ Synced to cloud — all users will see changes','#22c55e'); showMsg&&showToast('Config pushed to all users! ✅'); _lastKnownRemoteTs=cfg._lastUpdated; return true; }
     else{ setSyncStatus('❌ Sync failed — check your credentials','#ef4444'); showMsg&&showToast('Sync failed. Check your Bin ID & API key.'); return false; }
   }catch(e){ setSyncStatus('❌ Network error during sync','#ef4444'); showMsg&&showToast('Network error during sync'); return false; }
