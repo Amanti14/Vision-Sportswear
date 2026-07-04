@@ -721,6 +721,8 @@ const DEFAULT_CONFIG = {
 function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
 
 function mergeLeagues(saved, defaults) {
+  // If no saved data, use defaults
+  if(!saved||!saved.length) return deepClone(defaults);
   const savedMap={};
   (saved||[]).forEach(lg=>{savedMap[lg.id]=lg;});
   return defaults.map(defLg=>{
@@ -736,9 +738,22 @@ function mergeLeagues(saved, defaults) {
       const mergedProds=defTeam.products.map(defProd=>{
         const savProd=spm[defProd.id];
         if(!savProd) return deepClone(defProd);
-        return {...deepClone(defProd),imgUrl:savProd.imgUrl||'',price:savProd.price,badge:savProd.badge,desc:savProd.desc};
+        // Trust saved data completely — imgUrl, price, badge, desc, emoji all from saved
+        return {
+          ...deepClone(defProd),
+          imgUrl: savProd.imgUrl||'',
+          emoji:  savProd.emoji||defProd.emoji,
+          price:  savProd.price,
+          badge:  savProd.badge,
+          desc:   savProd.desc||defProd.desc,
+        };
       });
-      return {...deepClone(defTeam),crestUrl:savTeam.crestUrl||savTeam.crest||'',products:mergedProds};
+      return {
+        ...deepClone(defTeam),
+        crestUrl: savTeam.crestUrl||savTeam.crest||'',
+        emoji:    savTeam.emoji||defTeam.emoji,
+        products: mergedProds,
+      };
     });
     return {...deepClone(defLg),teams:mergedTeams};
   });
@@ -809,7 +824,11 @@ async function pullConfigFromCloud(){
 
 function applyRemoteConfig(remote){
   cfg=Object.assign({},DEFAULT_CONFIG,remote);
-  cfg.leagues=mergeLeagues(remote.leagues,DEFAULT_CONFIG.leagues);
+  // Use remote leagues directly — they already contain all admin edits (images, prices etc).
+  // Only fall back to mergeLeagues if remote is missing some leagues entirely.
+  cfg.leagues=remote.leagues&&remote.leagues.length
+    ? mergeLeagues(remote.leagues, DEFAULT_CONFIG.leagues)
+    : deepClone(DEFAULT_CONFIG.leagues);
   if(!cfg.payment) cfg.payment=deepClone(DEFAULT_CONFIG.payment);
   localStorage.setItem('emartzon_cfg',JSON.stringify(cfg));
   applyTheme(); renderHeader(); renderHero(); renderLeagueTabs(); renderShopGrid(); updateBreadcrumb(); updateShopTitle();
@@ -861,7 +880,13 @@ function updateSyncStatusPanel(){
 
 let savedCfg=JSON.parse(localStorage.getItem('emartzon_cfg')||'null');
 let cfg;
-if(savedCfg){ cfg=Object.assign({},DEFAULT_CONFIG,savedCfg); cfg.leagues=mergeLeagues(savedCfg.leagues,DEFAULT_CONFIG.leagues); if(!cfg.payment) cfg.payment=deepClone(DEFAULT_CONFIG.payment); }
+if(savedCfg){
+  cfg=Object.assign({},DEFAULT_CONFIG,savedCfg);
+  cfg.leagues=savedCfg.leagues&&savedCfg.leagues.length
+    ? mergeLeagues(savedCfg.leagues,DEFAULT_CONFIG.leagues)
+    : deepClone(DEFAULT_CONFIG.leagues);
+  if(!cfg.payment) cfg.payment=deepClone(DEFAULT_CONFIG.payment);
+}
 else { cfg=deepClone(DEFAULT_CONFIG); }
 // NOW safe to read cfg._lastUpdated since cfg is initialized above
 _lastKnownRemoteTs=cfg._lastUpdated||0;
