@@ -388,7 +388,7 @@
 <div class="bot-nav">
   <div class="nav-item active" id="nav-shop" onclick="goShop()"><div class="nav-icon">🏠</div><div class="nav-lbl">Shop</div></div>
   <div class="nav-item" id="nav-search" onclick="goSearch()"><div class="nav-icon">🔍</div><div class="nav-lbl">Search</div></div>
-  <div class="nav-item" id="nav-cart" onclick="showCart()"><div class="nav-icon">🛒</div><div class="nav-lbl">Cart</div></div>
+  <div class="nav-item" id="nav-cart" onclick="showCart()"><div class="nav-icon" style="position:relative">🛒<div id="nav-cart-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:var(--accent);color:var(--bg);border-radius:50%;min-width:17px;height:17px;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 3px;line-height:1">0</div></div><div class="nav-lbl">Cart</div></div>
   <div class="nav-item" id="nav-info" onclick="showInfo()"><div class="nav-icon">🏪</div><div class="nav-lbl">Store</div></div>
   <div class="nav-item" id="nav-profile" onclick="showProfile()"><div class="nav-icon" id="nav-profile-icon">👤</div><div class="nav-lbl">Profile</div></div>
 </div>
@@ -434,7 +434,7 @@ const JBIN_KEY = "$2a$10$wF98eMYcbolP1B1yowmL/edktVJLbByoYqhE3lPRJ.2nGkf7yzv52";
 // ═══════════════════════════════════════════
 const DEFAULT_CONFIG = {
   pin:"1234",ownerTelegramId:"",adminIds:[],
-  brandName1:"emart",brandName2:"zon",logoUrl:"",logoEmoji:"⚽",
+  brandName1:"emart",brandName2:"zon",logoUrl:"https://i.imgur.com/XsXh1xb.png",logoEmoji:"⚽",
   storeName:"Emartzon Sportswear",storeSub:"Official Football Jerseys",
   phone:"+251 911 234 567",email:"info@emartzon.com",
   address:"Bole Road, Near Edna Mall, Addis Ababa",hours:"Mon–Sat 9AM–7PM",
@@ -1344,7 +1344,7 @@ function selSz(s,el){ selSize=s; document.querySelectorAll('.sz-btn').forEach(b=
 function chgQty(d){ selQty=Math.max(1,selQty+d); document.getElementById('qty-disp').textContent=selQty; }
 function addToCart(){ const ex=cart.find(i=>i.id===curProduct.id&&i.size===selSize); if(ex) ex.qty+=selQty; else cart.push({...curProduct,size:selSize,qty:selQty}); saveCart(); updateBadge(); showToast('Added to cart! 🛒'); }
 function quickAdd(pid){ const found=findProduct(pid); if(!found) return; const {p,team}=found; const name=`${team.name} ${p.kitType}`; const item={...p,name,teamName:team.name,size:cfg.sizes[2]||'M',qty:1}; const ex=cart.find(i=>i.id===p.id&&i.size===item.size); if(ex) ex.qty++; else cart.push(item); saveCart(); updateBadge(); showToast(`${name} added! 🛒`); }
-function updateBadge(){ const n=cart.reduce((a,i)=>a+i.qty,0); const b=document.getElementById('cart-badge'); b.textContent=n; b.style.display=n>0?'flex':'none'; }
+function updateBadge(){ const n=cart.reduce((a,i)=>a+i.qty,0); const b=document.getElementById('cart-badge'); b.textContent=n; b.style.display=n>0?'flex':'none'; const nb=document.getElementById('nav-cart-badge'); if(nb){ nb.textContent=n>9?'9+':n; nb.style.display=n>0?'flex':'none'; } }
 
 function renderShipOpts(){
   curShipping=cfg.shipping[0]||null;
