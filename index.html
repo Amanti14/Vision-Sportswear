@@ -1439,14 +1439,21 @@ function showCart(){
     const sub=cart.reduce((a,i)=>a+i.price*i.qty,0); const ship=(curShipping||cfg.shipping[0])?.price||0;
     con.innerHTML=`<div style="height:12px"></div>
       <div style="padding:0 14px">${cart.map((item,idx)=>`
-        <div class="cart-item">
+        <div class="cart-item" style="align-items:flex-start">
           <div class="cart-thumb">${item.imgUrl?`<img src="${item.imgUrl}" onerror="this.parentNode.textContent='${item.emoji||'⚽'}'">`:item.emoji||'⚽'}</div>
-          <div class="cart-info">
+          <div class="cart-info" style="flex:1">
             <div class="cart-name">${item.name}</div>
-            <div class="cart-meta">Size: ${item.size} · Qty: ${item.qty}</div>
-            <div class="cart-price">${fmt(item.price*item.qty)}</div>
+            <div class="cart-meta">Size: ${item.size}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:0;background:var(--card2);border:1px solid var(--border);border-radius:9px;overflow:hidden">
+                <button onclick="cartChgQty(${idx},-1)" style="background:none;border:none;color:var(--white);width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:300">−</button>
+                <div style="min-width:28px;text-align:center;font-size:13px;font-weight:700;color:var(--white)">${item.qty}</div>
+                <button onclick="cartChgQty(${idx},1)" style="background:none;border:none;color:var(--white);width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:300">+</button>
+              </div>
+              <div class="cart-price">${fmt(item.price*item.qty)}</div>
+            </div>
           </div>
-          <button class="cart-rm" onclick="rmItem(${idx})">✕</button>
+          <button class="cart-rm" onclick="rmItem(${idx})" style="margin-top:2px">✕</button>
         </div>`).join('')}</div>
       <div class="summary-box">
         <div class="sum-row"><span>Subtotal (${cart.reduce((a,i)=>a+i.qty,0)} items)</span><span>${fmt(sub)}</span></div>
@@ -1459,6 +1466,10 @@ function showCart(){
   setNav('cart'); showPage('cart');
 }
 function rmItem(idx){ cart.splice(idx,1); saveCart(); updateBadge(); showCart(); }
+function cartChgQty(idx, delta){
+  cart[idx].qty = Math.max(1, cart[idx].qty + delta);
+  saveCart(); updateBadge(); showCart();
+}
 
 function showCheckout(){ if(!curShipping) curShipping=cfg.shipping[0]; renderShipOpts(); selectPayment(selectedPayment); updateCheckoutSummary(); showPage('checkout'); }
 function updateCheckoutSummary(){
