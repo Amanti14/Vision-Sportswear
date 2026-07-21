@@ -91,6 +91,12 @@
   <div class="scroll2" id="det-content"></div>
 </div>
 
+<!-- CUSTOM JERSEY PAGE -->
+<div class="page" id="page-custom">
+  <div class="pg-hdr"><h2>🎨 Customize Your Jersey</h2></div>
+  <div class="scroll2" id="custom-content"></div>
+</div>
+
 <!-- CART PAGE -->
 <div class="page" id="page-cart">
   <div class="pg-hdr"><h2>🛒 My Cart</h2></div>
@@ -421,6 +427,7 @@
 <div class="bot-nav">
   <div class="nav-item active" id="nav-shop" onclick="goShop()"><div class="nav-icon">🏠</div><div class="nav-lbl">Shop</div></div>
   <div class="nav-item" id="nav-search" onclick="goSearch()"><div class="nav-icon">🔍</div><div class="nav-lbl">Search</div></div>
+  <div class="nav-item" id="nav-custom" onclick="goCustom()"><div class="nav-icon">🎨</div><div class="nav-lbl">Custom</div></div>
   <div class="nav-item" id="nav-cart" onclick="showCart()"><div class="nav-icon" style="position:relative">🛒<div id="nav-cart-badge" style="display:none;position:absolute;top:-6px;right:-8px;background:var(--accent);color:var(--bg);border-radius:50%;min-width:17px;height:17px;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 3px;line-height:1">0</div></div><div class="nav-lbl">Cart</div></div>
   <div class="nav-item" id="nav-info" onclick="showInfo()"><div class="nav-icon">🏪</div><div class="nav-lbl">Store</div></div>
   <div class="nav-item" id="nav-profile" onclick="showProfile()"><div class="nav-icon" id="nav-profile-icon">👤</div><div class="nav-lbl">Profile</div></div>
@@ -489,6 +496,7 @@ const DEFAULT_CONFIG = {
   hero:{tag:"⚡ New Season 2024/25",h1a:"Official",h1b:"Football Jerseys",sub:"Authentic kits from top leagues worldwide",imgUrl:""},
   theme:{"--accent":"#ffffff","--bg":"#1a1a1a","--card":"#242424","--dark":"#111111","--white":"#ffffff","--border":"#333333","--accent2":"#cccccc"},
   sizes:["XS","S","M","L","XL","XXL"],
+  customFee:150,
   shipping:[
     {id:"delivery",icon:"🚚",name:"Home Delivery",desc:"3–5 business days",price:80},
     {id:"pickup",  icon:"🏪",name:"Pick from Store",desc:"Ready in 1–2 hours · Addis",price:0},
@@ -1576,8 +1584,116 @@ function openDetail(pid){
 function detGoBack(){ showPage('shop'); }
 function selSz(s,el){ selSize=s; document.querySelectorAll('.sz-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
 function chgQty(d){ selQty=Math.max(1,selQty+d); document.getElementById('qty-disp').textContent=selQty; }
-function addToCart(){ const ex=cart.find(i=>i.id===curProduct.id&&i.size===selSize); if(ex) ex.qty+=selQty; else cart.push({...curProduct,size:selSize,qty:selQty}); saveCart(); updateBadge(); showToast('Added to cart! 🛒'); }
-function quickAdd(pid){ const found=findProduct(pid); if(!found) return; const {p,team}=found; const name=`${team.name} ${p.kitType}`; const item={...p,name,teamName:team.name,size:cfg.sizes[2]||'M',qty:1}; const ex=cart.find(i=>i.id===p.id&&i.size===item.size); if(ex) ex.qty++; else cart.push(item); saveCart(); updateBadge(); showToast(`${name} added! 🛒`); }
+function addToCart(){ const ex=cart.find(i=>i.id===curProduct.id&&i.size===selSize&&!i.custom); if(ex) ex.qty+=selQty; else cart.push({...curProduct,size:selSize,qty:selQty}); saveCart(); updateBadge(); showToast('Added to cart! 🛒'); }
+function quickAdd(pid){ const found=findProduct(pid); if(!found) return; const {p,team}=found; const name=`${team.name} ${p.kitType}`; const item={...p,name,teamName:team.name,size:cfg.sizes[2]||'M',qty:1}; const ex=cart.find(i=>i.id===p.id&&i.size===item.size&&!i.custom); if(ex) ex.qty++; else cart.push(item); saveCart(); updateBadge(); showToast(`${name} added! 🛒`); }
+
+// ── LIVE JERSEY CUSTOMIZATION ─────────────────────────────────────────
+let customState={product:null,size:null,qty:1,name:'',number:''};
+
+function getAllProductsFlat(){
+  const out=[];
+  cfg.leagues.forEach(lg=>(lg.teams||[]).forEach(team=>(team.products||[]).forEach(p=>{
+    out.push({...p,teamId:team.id,teamName:team.name,leagueId:lg.id,leagueLabel:lg.label,teamCrest:team.crestUrl||team.crest||'',teamEmoji:team.emoji,name:`${team.name} ${p.kitType}`});
+  })));
+  return out;
+}
+
+function goCustom(pid){
+  const all=getAllProductsFlat();
+  if(!all.length){
+    document.getElementById('custom-content').innerHTML=`<div class="empty"><div class="empty-icon">🎨</div><h3>No jerseys yet</h3><p>Add products in the shop first, then come back to customize one.</p></div>`;
+    setNav('custom'); showPage('custom'); return;
+  }
+  const startProduct=pid?all.find(x=>x.id===pid):null;
+  customState={product:startProduct||all[0],size:cfg.sizes[2]||'M',qty:1,name:'',number:''};
+  renderCustomPage(all);
+  setNav('custom'); showPage('custom');
+}
+
+function renderCustomPage(all){
+  all=all||getAllProductsFlat();
+  const grouped={};
+  all.forEach(p=>{ (grouped[p.leagueLabel]=grouped[p.leagueLabel]||[]).push(p); });
+  const optionsHtml=Object.keys(grouped).map(lbl=>`<optgroup label="${lbl}">${grouped[lbl].map(p=>`<option value="${p.id}" ${p.id===customState.product.id?'selected':''}>${p.name} — ${fmt(p.price)}</option>`).join('')}</optgroup>`).join('');
+  document.getElementById('custom-content').innerHTML=`
+    <div style="padding:14px">
+      <div class="det-img-wrap" id="custom-preview-wrap" style="border-radius:16px;position:relative;aspect-ratio:1">
+        <div id="custom-preview-name" style="position:absolute;top:16%;left:0;right:0;text-align:center;font-weight:800;font-size:15px;letter-spacing:2px;color:var(--white);text-shadow:0 2px 8px rgba(0,0,0,.6);text-transform:uppercase;padding:0 10px;word-break:break-word"></div>
+        <div id="custom-preview-number" style="position:absolute;top:32%;left:0;right:0;text-align:center;font-weight:900;font-size:64px;line-height:1;color:var(--accent);text-shadow:0 3px 10px rgba(0,0,0,.7);-webkit-text-stroke:1.5px var(--bg)"></div>
+      </div>
+      <div style="height:14px"></div>
+
+      <div class="size-lbl">Choose Jersey</div>
+      <select id="custom-product-select" onchange="onCustomProductChange(this.value)" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:11px 12px;border-radius:10px;font-size:13px;margin-bottom:16px">${optionsHtml}</select>
+
+      <div class="size-lbl">Name on Jersey <span style="color:var(--gray);font-weight:400">(optional)</span></div>
+      <input id="custom-name-inp" type="text" maxlength="12" placeholder="e.g. MESSI" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:12px;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px" oninput="onCustomTextInput()">
+
+      <div class="size-lbl">Number <span style="color:var(--gray);font-weight:400">(optional, 0–99)</span></div>
+      <input id="custom-number-inp" type="number" min="0" max="99" placeholder="10" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:12px;border-radius:10px;font-size:14px;font-weight:700;margin-bottom:16px" oninput="onCustomTextInput()">
+
+      <div class="size-lbl">Select Size</div>
+      <div class="sizes" id="custom-sizes">${cfg.sizes.map((s,i)=>`<div class="sz-btn ${s===customState.size?'active':''}" onclick="selCustomSize('${s}',this)">${s}</div>`).join('')}</div>
+
+      <div class="qty-row">
+        <div class="qty-lbl">Quantity</div>
+        <div class="qty-ctrl"><button onclick="chgCustomQty(-1)">−</button><div class="qty-num" id="custom-qty-disp">1</div><button onclick="chgCustomQty(1)">+</button></div>
+      </div>
+
+      <div class="summary-box" style="margin-bottom:16px">
+        <div class="sum-row"><span>Jersey</span><span id="custom-base-price">${fmt(customState.product.price)}</span></div>
+        <div class="sum-row"><span>Customization</span><span id="custom-fee-price">${fmt(cfg.customFee||0)}</span></div>
+        <div class="sum-row total"><span>Total</span><span id="custom-total-price">${fmt(customState.product.price+(cfg.customFee||0))}</span></div>
+      </div>
+
+      <button class="add-cart-btn" onclick="addCustomToCart()">Add Custom Jersey to Cart 🎨</button>
+      <div style="height:20px"></div>
+    </div>`;
+  updateCustomPreview();
+}
+
+function onCustomProductChange(pid){
+  const found=getAllProductsFlat().find(x=>x.id==pid); if(!found) return;
+  customState.product=found;
+  document.getElementById('custom-base-price').textContent=fmt(found.price);
+  document.getElementById('custom-total-price').textContent=fmt(found.price+(cfg.customFee||0));
+  updateCustomPreview();
+}
+function selCustomSize(s,el){ customState.size=s; document.querySelectorAll('#custom-sizes .sz-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function chgCustomQty(d){ customState.qty=Math.max(1,customState.qty+d); document.getElementById('custom-qty-disp').textContent=customState.qty; }
+function onCustomTextInput(){
+  customState.name=(document.getElementById('custom-name-inp').value||'').toUpperCase().slice(0,12);
+  let num=(document.getElementById('custom-number-inp').value||'').replace(/\D/g,'').slice(0,2);
+  customState.number=num;
+  updateCustomPreview();
+}
+function updateCustomPreview(){
+  const wrap=document.getElementById('custom-preview-wrap'); if(!wrap) return;
+  const p=customState.product;
+  const imgHtml=p.imgUrl?`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.parentNode.style.background='var(--card2)'">`:`<div class="det-emoji" style="width:100%;text-align:center">${p.emoji||'⚽'}</div>`;
+  // rebuild base image without wiping the overlaid name/number nodes
+  let imgNode=wrap.querySelector('.custom-preview-img');
+  if(!imgNode){ wrap.insertAdjacentHTML('afterbegin',`<div class="custom-preview-img" style="position:absolute;inset:0">${imgHtml}</div>`); }
+  else{ imgNode.innerHTML=imgHtml; }
+  document.getElementById('custom-preview-name').textContent=customState.name||'';
+  document.getElementById('custom-preview-number').textContent=customState.number||'';
+}
+function addCustomToCart(){
+  const p=customState.product;
+  const fee=cfg.customFee||0;
+  cart.push({
+    ...p,
+    id:p.id, // keep base id for reference; custom items never merge with regular ones
+    price:p.price+fee,
+    size:customState.size,
+    qty:customState.qty,
+    custom:{name:customState.name||'',number:customState.number||''},
+  });
+  saveCart(); updateBadge();
+  showToast('Custom jersey added to cart! 🎨');
+}
+
+
 function updateBadge(){ const n=cart.reduce((a,i)=>a+i.qty,0); const b=document.getElementById('cart-badge'); b.textContent=n; b.style.display=n>0?'flex':'none'; const nb=document.getElementById('nav-cart-badge'); if(nb){ nb.textContent=n>9?'9+':n; nb.style.display=n>0?'flex':'none'; } }
 
 function renderShipOpts(){
@@ -1677,7 +1793,7 @@ function showCart(){
           <div class="cart-thumb">${item.imgUrl?`<img src="${item.imgUrl}" onerror="this.parentNode.textContent='${item.emoji||'⚽'}'">`:item.emoji||'⚽'}</div>
           <div class="cart-info" style="flex:1">
             <div class="cart-name">${item.name}</div>
-            <div class="cart-meta">Size: ${item.size}</div>
+            <div class="cart-meta">Size: ${item.size}${item.custom&&(item.custom.name||item.custom.number)?` · 🎨 ${[item.custom.name,item.custom.number?'#'+item.custom.number:''].filter(Boolean).join(' ')}`:''}</div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
               <div style="display:flex;align-items:center;gap:0;background:var(--card2);border:1px solid var(--border);border-radius:9px;overflow:hidden">
                 <button onclick="cartChgQty(${idx},-1)" style="background:none;border:none;color:var(--white);width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:300">−</button>
@@ -1775,7 +1891,7 @@ function completeOrder(o){
       <div style="font-size:11px;color:var(--gray);flex:1;line-height:1.5">Thank you for shopping at ${cfg.storeName}! For help: ${cfg.phone}</div>
       <div style="font-size:22px">🙏</div>
     </div>`;
-  orderHistory.push({id:oid,userId:tgUser?String(tgUser.id):'guest',date:dateStr,total,itemCount:(cartSnapshot||[]).reduce((a,i)=>a+i.qty,0),method:m?.id||'delivery',methodIcon:m?.icon||'📦',methodName:m?.name||'Delivery',paymentMethod:payMethod,txnUrl:txnUrl||null,items:(cartSnapshot||[]).map(i=>({name:i.name,qty:i.qty,size:i.size,price:i.price}))});
+  orderHistory.push({id:oid,userId:tgUser?String(tgUser.id):'guest',date:dateStr,total,itemCount:(cartSnapshot||[]).reduce((a,i)=>a+i.qty,0),method:m?.id||'delivery',methodIcon:m?.icon||'📦',methodName:m?.name||'Delivery',paymentMethod:payMethod,txnUrl:txnUrl||null,items:(cartSnapshot||[]).map(i=>({name:i.name+(i.custom&&(i.custom.name||i.custom.number)?' ['+[i.custom.name,i.custom.number?'#'+i.custom.number:''].filter(Boolean).join(' ')+']':''),qty:i.qty,size:i.size,price:i.price}))});
   saveOrders();
   // Send to bot Worker — customer gets receipt, owner gets full order details
   const orderPayload = {
@@ -1784,7 +1900,7 @@ function completeOrder(o){
     buyer,
     telegramId:tgUser?.id,
     username:tgUser?.username,
-    items:(cartSnapshot||[]).map(i=>({name:i.name,qty:i.qty,size:i.size,price:i.price})),
+    items:(cartSnapshot||[]).map(i=>({name:i.name+(i.custom&&(i.custom.name||i.custom.number)?' ['+[i.custom.name,i.custom.number?'#'+i.custom.number:''].filter(Boolean).join(' ')+']':''),qty:i.qty,size:i.size,price:i.price})),
     subtotal:fmt(sub),
     shipping:ship===0?'Free':fmt(ship),
     total:fmt(total),
@@ -2205,9 +2321,9 @@ function showAdminDirect(){ if(isAdmin()) showProfile(); }
 function showPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  document.getElementById('main-hdr').style.display=['detail','cart','checkout','success','info','profile'].includes(p)?'none':'flex';
+  document.getElementById('main-hdr').style.display=['detail','cart','checkout','success','info','profile','custom'].includes(p)?'none':'flex';
 }
-function setNav(p){ document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); const m={shop:'nav-shop',cart:'nav-cart',info:'nav-info',profile:'nav-profile'}; if(m[p]) document.getElementById(m[p]).classList.add('active'); }
+function setNav(p){ document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); const m={shop:'nav-shop',cart:'nav-cart',info:'nav-info',profile:'nav-profile',custom:'nav-custom'}; if(m[p]) document.getElementById(m[p]).classList.add('active'); }
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
 </script>
 </body>
