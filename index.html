@@ -249,7 +249,6 @@
       <div id="sync-status-bar" style="display:none;padding:8px 12px;border-radius:9px;margin-bottom:12px;font-size:12px;font-weight:600;text-align:center"></div>
       <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--card);border-radius:12px 12px 0 0;overflow:hidden;overflow-x:auto;scrollbar-width:none">
         <div class="padm-tab active" onclick="switchProfileAdminTab(0,this)">Products</div>
-        <div class="padm-tab" onclick="switchProfileAdminTab(8,this)">🎨 Custom</div>
         <div class="padm-tab" onclick="switchProfileAdminTab(1,this)">Shipping</div>
         <div class="padm-tab" onclick="switchProfileAdminTab(2,this)">Payment</div>
         <div class="padm-tab" onclick="switchProfileAdminTab(3,this)">Store</div>
@@ -365,13 +364,6 @@
           </div>
           <div id="cust-list-wrap"><div style="padding:20px;text-align:center;font-size:12px;color:var(--gray)">Tap Refresh to load customer data.</div></div>
         </div>
-        <div class="padm-panel" id="padm-panel-8" style="padding:12px">
-          <div style="font-size:11px;color:var(--gray);margin-bottom:14px;line-height:1.5">Settings for the 🎨 Customize Jersey page — the customization fee, and the front/back photos shown when a customer previews a personalized jersey.</div>
-          <div class="adm-field"><label>Customization Fee (ETB)</label><input id="padm-custom-fee" type="number" min="0" placeholder="150"></div>
-          <button class="btn-save" onclick="padmSaveCustomFee()" style="width:100%;margin-bottom:18px">Save Fee</button>
-          <div style="font-size:11px;color:var(--gray);margin-bottom:10px;line-height:1.5">Tap any kit to edit its Front / Back custom-preview images.</div>
-          <div id="padm-custom-list"></div>
-        </div>
       </div>
     </div>
     <!-- OWNER CONTROLS -->
@@ -450,18 +442,17 @@
   </div>
   <div style="padding:14px">
     <div class="adm-field">
-      <label id="pm-img-label">Image URL (Front)</label>
+      <label id="pm-img-label">Image URL</label>
       <div class="img-preview" id="prod-modal-preview">🎽</div>
       <input id="pm-img" type="url" placeholder="https://i.imgur.com/..." oninput="previewProdImg(this.value)">
       <div class="img-url-hint" id="pm-img-hint">Paste a direct image URL (Imgur, etc.)</div>
     </div>
-    <div class="adm-field" id="pm-img-back-row">
-      <label>Image URL (Back)</label>
-      <div class="img-preview" id="prod-modal-preview-back">🎽</div>
-      <input id="pm-img-back" type="url" placeholder="https://i.imgur.com/..." oninput="previewProdImgBack(this.value)">
-      <div class="img-url-hint">Optional — back-of-jersey photo, shown on the Customize Jersey page.</div>
+    <div class="adm-field"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="⚽" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'🎽'"></div>
+    <div class="adm-field" id="pm-back-row" style="display:none">
+      <label>Back Image URL <span style="color:var(--gray);font-weight:400">(for the 3D Customizer spin view)</span></label>
+      <input id="pm-back-img" type="url" placeholder="https://i.imgur.com/... (back of jersey)">
+      <div class="img-url-hint">Optional. If left blank, the Customizer shows the front image on both sides.</div>
     </div>
-    <div class="adm-field" id="pm-emoji-row"><label>Emoji (fallback)</label><input id="pm-emoji" type="text" placeholder="⚽" maxlength="4" oninput="if(!document.getElementById('pm-img').value)document.getElementById('prod-modal-preview').textContent=this.value||'🎽'"></div>
     <div class="adm-field" id="pm-name-row"><label>Kit Type</label><input id="pm-name" type="text" placeholder="Home Kit" readonly style="opacity:.6"></div>
     <div class="adm-field" id="pm-price-row"><label>Price (ETB)</label><input id="pm-price" type="number" placeholder="1850" min="0"></div>
     <div class="adm-field" id="pm-badge-row"><label>Badge</label><select id="pm-badge"><option value="">None</option><option value="new">NEW</option><option value="hot">HOT</option><option value="sale">SALE</option><option value="local">LOCAL</option></select></div>
@@ -519,7 +510,7 @@ const DEFAULT_CONFIG = {
   leagues:[
     {id:"premier",label:"Premier League",emoji:"🏴󠁧󠁢󠁥󠁮󠁧󠁿",teams:[
       {id:"arsenal",name:"Arsenal",emoji:"🔴",color:"#EF0107",crestUrl:"",products:[
-        {id:101,kitType:"Home Kit",emoji:"🔴",imgUrl:"",price:1850,badge:"new",desc:"Arsenal 2024/25 home. Classic red with white sleeves."},
+        {id:101,kitType:"Home Kit",emoji:"🔴",imgUrl:"",backImgUrl:"",price:1850,badge:"new",desc:"Arsenal 2024/25 home. Classic red with white sleeves."},
         {id:102,kitType:"Away Kit",emoji:"🟡",imgUrl:"",price:1800,badge:"",desc:"Arsenal away. Yellow with navy details."},
         {id:103,kitType:"Third Kit",emoji:"⚫",imgUrl:"",price:1800,badge:"",desc:"Arsenal third kit. Dark navy design."},
         {id:104,kitType:"Goalkeeper",emoji:"🟢",imgUrl:"",price:1750,badge:"",desc:"Arsenal GK jersey 2024/25."},
@@ -1619,7 +1610,7 @@ function goCustom(pid){
     setNav('custom'); showPage('custom'); return;
   }
   const startProduct=pid?all.find(x=>x.id===pid):null;
-  customState={product:startProduct||all[0],size:cfg.sizes[2]||'M',qty:1,name:'',number:'',side:'front'};
+  customState={product:startProduct||all[0],size:cfg.sizes[2]||'M',qty:1,name:'',number:''};
   renderCustomPage(all);
   setNav('custom'); showPage('custom');
 }
@@ -1631,12 +1622,23 @@ function renderCustomPage(all){
   const optionsHtml=Object.keys(grouped).map(lbl=>`<optgroup label="${lbl}">${grouped[lbl].map(p=>`<option value="${p.id}" ${p.id===customState.product.id?'selected':''}>${p.name} — ${fmt(p.price)}</option>`).join('')}</optgroup>`).join('');
   document.getElementById('custom-content').innerHTML=`
     <div style="padding:14px">
-      <div class="det-img-wrap" id="custom-preview-wrap" style="border-radius:16px;position:relative;aspect-ratio:1">
-        <div id="custom-preview-name" style="position:absolute;top:16%;left:0;right:0;text-align:center;font-weight:800;font-size:15px;letter-spacing:2px;color:var(--white);text-shadow:0 2px 8px rgba(0,0,0,.6);text-transform:uppercase;padding:0 10px;word-break:break-word"></div>
-        <div id="custom-preview-number" style="position:absolute;top:32%;left:0;right:0;text-align:center;font-weight:900;font-size:64px;line-height:1;color:var(--accent);text-shadow:0 3px 10px rgba(0,0,0,.7);-webkit-text-stroke:1.5px var(--bg)"></div>
+      <div class="jersey3d-stage">
+        <div class="jersey3d-box" id="j3d-box">
+          <div class="j3d-face j3d-front" id="j3d-front"></div>
+          <div class="j3d-face j3d-back" id="j3d-back">
+            <div class="j3d-name" id="custom-preview-name"></div>
+            <div class="j3d-number" id="custom-preview-number"></div>
+          </div>
+          <div class="j3d-face j3d-side j3d-side-r"></div>
+          <div class="j3d-face j3d-side j3d-side-l"></div>
+        </div>
       </div>
-      <div id="custom-side-toggle" style="display:flex;gap:8px;justify-content:center;margin-top:10px"></div>
-      <div style="height:14px"></div>
+      <div class="jersey3d-hint">↔ Drag or scroll to spin it around</div>
+      <div class="j3d-quickbtns">
+        <div class="j3d-quickbtn active" id="j3d-btn-front" onclick="j3dSnapTo(0,this)">Front</div>
+        <div class="j3d-quickbtn" id="j3d-btn-back" onclick="j3dSnapTo(180,this)">Back</div>
+      </div>
+      <div style="height:6px"></div>
 
       <div class="size-lbl">Choose Jersey</div>
       <select id="custom-product-select" onchange="onCustomProductChange(this.value)" style="width:100%;background:var(--card2);border:1px solid var(--border);color:var(--white);padding:11px 12px;border-radius:10px;font-size:13px;margin-bottom:16px">${optionsHtml}</select>
@@ -1665,12 +1667,12 @@ function renderCustomPage(all){
       <div style="height:20px"></div>
     </div>`;
   updateCustomPreview();
+  initJ3dControls();
 }
 
 function onCustomProductChange(pid){
   const found=getAllProductsFlat().find(x=>x.id==pid); if(!found) return;
   customState.product=found;
-  customState.side='front';
   document.getElementById('custom-base-price').textContent=fmt(found.price);
   document.getElementById('custom-total-price').textContent=fmt(found.price+(cfg.customFee||0));
   updateCustomPreview();
@@ -1684,32 +1686,55 @@ function onCustomTextInput(){
   updateCustomPreview();
 }
 function updateCustomPreview(){
-  const wrap=document.getElementById('custom-preview-wrap'); if(!wrap) return;
+  const front=document.getElementById('j3d-front'), back=document.getElementById('j3d-back');
+  if(!front||!back) return;
   const p=customState.product;
-  const hasBack=!!p.imgUrlBack;
-  if(!customState.side||(customState.side==='back'&&!hasBack)) customState.side='front';
-  const activeUrl=customState.side==='back'?p.imgUrlBack:p.imgUrl;
-  const imgHtml=activeUrl?`<img src="${activeUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.parentNode.style.background='var(--card2)'">`:`<div class="det-emoji" style="width:100%;text-align:center">${p.emoji||'⚽'}</div>`;
-  // rebuild base image without wiping the overlaid name/number nodes
-  let imgNode=wrap.querySelector('.custom-preview-img');
-  if(!imgNode){ wrap.insertAdjacentHTML('afterbegin',`<div class="custom-preview-img" style="position:absolute;inset:0">${imgHtml}</div>`); }
-  else{ imgNode.innerHTML=imgHtml; }
+  const frontImg=p.imgUrl?`<img src="${p.imgUrl}" onerror="this.style.display='none'">`:`<div class="det-emoji" style="font-size:60px">${p.emoji||'⚽'}</div>`;
+  const backSrc=p.backImgUrl||p.imgUrl;
+  const backImg=backSrc?`<img src="${backSrc}" onerror="this.style.display='none'">`:`<div class="det-emoji" style="font-size:60px">${p.emoji||'⚽'}</div>`;
+  // rebuild image without clobbering the name/number overlay nodes in .j3d-back
+  let frontImgNode=front.querySelector('.j3d-img');
+  if(!frontImgNode){ front.insertAdjacentHTML('afterbegin',`<div class="j3d-img" style="position:absolute;inset:0">${frontImg}</div>`); }
+  else{ frontImgNode.innerHTML=frontImg; }
+  let backImgNode=back.querySelector('.j3d-img');
+  if(!backImgNode){ back.insertAdjacentHTML('afterbegin',`<div class="j3d-img" style="position:absolute;inset:0">${backImg}</div>`); }
+  else{ backImgNode.innerHTML=backImg; }
   document.getElementById('custom-preview-name').textContent=customState.name||'';
   document.getElementById('custom-preview-number').textContent=customState.number||'';
-  const toggle=document.getElementById('custom-side-toggle');
-  if(toggle){
-    if(hasBack){
-      toggle.style.display='flex';
-      toggle.innerHTML=`
-        <button onclick="setCustomSide('front')" style="background:${customState.side==='front'?'var(--accent)':'var(--card2)'};color:${customState.side==='front'?'var(--bg)':'var(--white)'};border:1px solid var(--border);padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer">Front</button>
-        <button onclick="setCustomSide('back')" style="background:${customState.side==='back'?'var(--accent)':'var(--card2)'};color:${customState.side==='back'?'var(--bg)':'var(--white)'};border:1px solid var(--border);padding:7px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer">Back</button>`;
-    } else {
-      toggle.style.display='none';
-      toggle.innerHTML='';
-    }
-  }
 }
-function setCustomSide(side){ customState.side=side; updateCustomPreview(); }
+
+// ── 3D rotation controls (drag + scroll/wheel) ─────────────────────
+let j3dAngle=0, j3dDragging=false, j3dStartX=0, j3dStartAngle=0;
+function j3dApply(){
+  const box=document.getElementById('j3d-box'); if(!box) return;
+  box.style.transform=`rotateY(${j3dAngle}deg)`;
+  const norm=((j3dAngle%360)+360)%360;
+  const showingBack=norm>90&&norm<270;
+  document.getElementById('j3d-btn-front')?.classList.toggle('active',!showingBack);
+  document.getElementById('j3d-btn-back')?.classList.toggle('active',showingBack);
+}
+function j3dSnapTo(deg,el){
+  // rotate the shortest way to the target angle instead of always spinning forward
+  const cur=j3dAngle%360; let target=deg;
+  let diff=((target-cur+540)%360)-180;
+  j3dAngle=j3dAngle+diff;
+  j3dApply();
+}
+function initJ3dControls(){
+  const box=document.getElementById('j3d-box'); if(!box) return;
+  j3dAngle=0; j3dApply();
+  const start=(x)=>{ j3dDragging=true; j3dStartX=x; j3dStartAngle=j3dAngle; box.classList.add('dragging'); };
+  const move=(x)=>{ if(!j3dDragging) return; const dx=x-j3dStartX; j3dAngle=j3dStartAngle+dx*0.6; j3dApply(); };
+  const end=()=>{ j3dDragging=false; box.classList.remove('dragging'); };
+  box.addEventListener('mousedown',e=>start(e.clientX));
+  window.addEventListener('mousemove',e=>move(e.clientX));
+  window.addEventListener('mouseup',end);
+  box.addEventListener('touchstart',e=>start(e.touches[0].clientX),{passive:true});
+  box.addEventListener('touchmove',e=>{ if(j3dDragging){ move(e.touches[0].clientX); } },{passive:true});
+  box.addEventListener('touchend',end);
+  box.addEventListener('wheel',e=>{ e.preventDefault(); j3dAngle+=e.deltaY*0.35; j3dApply(); },{passive:false});
+}
+
 function addCustomToCart(){
   const p=customState.product;
   const fee=cfg.customFee||0;
@@ -2015,10 +2040,8 @@ function populatePadmForms(){
   const cu=document.getElementById('padm-currency'); const cp=document.getElementById('padm-cur-pos');
   if(cu) cu.value=cfg.currency||'ETB'; if(cp) cp.value=cfg.currencyPos||'before';
   const h=cfg.hero; [['padm-hero-tag',h.tag],['padm-hero-h1a',h.h1a],['padm-hero-h1b',h.h1b],['padm-hero-sub',h.sub],['padm-hero-img',h.imgUrl]].forEach(([id,v])=>{ const el=document.getElementById(id); if(el) el.value=v||''; });
-  const cf=document.getElementById('padm-custom-fee'); if(cf) cf.value=cfg.customFee||0;
 }
-function padmSaveCustomFee(){ cfg.customFee=parseInt(document.getElementById('padm-custom-fee').value)||0; save(); showToast('Customization fee saved! ✅'); }
-function switchProfileAdminTab(idx,el){ document.querySelectorAll('.padm-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.padm-panel').forEach(p=>p.classList.remove('active')); document.getElementById('padm-panel-'+idx).classList.add('active'); if(idx===6) updateSyncStatusPanel(); if(idx===4) renderThemeColorEditors(); if(idx===7&&!_custDashData) loadCustomerDashboard(); if(idx===8) padmRenderCustomJerseys(); }
+function switchProfileAdminTab(idx,el){ document.querySelectorAll('.padm-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.padm-panel').forEach(p=>p.classList.remove('active')); document.getElementById('padm-panel-'+idx).classList.add('active'); if(idx===6) updateSyncStatusPanel(); if(idx===4) renderThemeColorEditors(); if(idx===7&&!_custDashData) loadCustomerDashboard(); }
 
 function padmRenderProducts(){
   const list=document.getElementById('padm-products-list'); if(!list) return;
@@ -2093,7 +2116,7 @@ function openTeamCrestModal(lgId,teamId){
   document.getElementById('pm-img').value=team.crestUrl||''; document.getElementById('pm-emoji').value=team.emoji||'⚽';
   document.getElementById('pm-name-row').style.display='none'; document.getElementById('pm-price-row').style.display='none';
   document.getElementById('pm-badge-row').style.display='none'; document.getElementById('pm-desc-row').style.display='none';
-  document.getElementById('pm-img-back-row').style.display='none';
+  document.getElementById('pm-back-row').style.display='none';
   document.getElementById('pm-img-hint').textContent='Team crest/logo URL. Use PNG with transparent background. Try worldvectorlogo.com or Wikipedia.';
   const prev=document.getElementById('prod-modal-preview'); const cu=team.crestUrl||'';
   prev.innerHTML=cu?`<img src="${cu}" style="width:100%;height:100%;object-fit:contain;padding:20px" onerror="this.parentNode.textContent='${team.emoji}'">`:`<span style="font-size:56px">${team.emoji}</span>`;
@@ -2106,11 +2129,9 @@ function openProdModal(lgId,teamId,prodId){
   modalCtx={type:'product',lgId,teamId,prodId};
   document.getElementById('prod-modal-title').textContent=`${team.name} — ${p.kitType}`;
   document.getElementById('pm-img').value=p.imgUrl||''; document.getElementById('pm-emoji').value=p.emoji||'⚽';
-  document.getElementById('pm-emoji-row').style.display='block';
   document.getElementById('pm-name-row').style.display='block'; document.getElementById('pm-price-row').style.display='block';
   document.getElementById('pm-badge-row').style.display='block'; document.getElementById('pm-desc-row').style.display='block';
-  document.getElementById('pm-img-back-row').style.display='none';
-  document.getElementById('pm-img-label').textContent='Image URL (Front)';
+  document.getElementById('pm-back-row').style.display='block'; document.getElementById('pm-back-img').value=p.backImgUrl||'';
   document.getElementById('pm-name').value=p.kitType; document.getElementById('pm-price').value=p.price;
   document.getElementById('pm-badge').value=p.badge||''; document.getElementById('pm-desc').value=p.desc||'';
   document.getElementById('pm-img-hint').textContent='Jersey image URL. Upload to imgur.com and paste the direct link.';
@@ -2119,29 +2140,9 @@ function openProdModal(lgId,teamId,prodId){
   document.getElementById('prod-modal').style.display='block';
 }
 
-function openCustomImgModal(lgId,teamId,prodId){
-  const found=findProduct(prodId); if(!found) return;
-  const {p,team}=found;
-  modalCtx={type:'customImg',lgId,teamId,prodId};
-  document.getElementById('prod-modal-title').textContent=`${team.name} — ${p.kitType} (Custom Images)`;
-  document.getElementById('pm-img').value=p.imgUrl||''; document.getElementById('pm-emoji').value=p.emoji||'⚽';
-  document.getElementById('pm-emoji-row').style.display='none';
-  document.getElementById('pm-name-row').style.display='none'; document.getElementById('pm-price-row').style.display='none';
-  document.getElementById('pm-badge-row').style.display='none'; document.getElementById('pm-desc-row').style.display='none';
-  document.getElementById('pm-img-back-row').style.display='block';
-  document.getElementById('pm-img-label').textContent='Front Image (Custom Preview)';
-  document.getElementById('pm-img-hint').textContent='Shown as the front photo on the Customize Jersey page.';
-  const prev=document.getElementById('prod-modal-preview');
-  if(p.imgUrl){ prev.innerHTML=`<img src="${p.imgUrl}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'⚽'}'">` } else { prev.textContent=p.emoji||'⚽'; }
-  document.getElementById('pm-img-back').value=p.imgUrlBack||'';
-  const prevBack=document.getElementById('prod-modal-preview-back');
-  if(p.imgUrlBack){ prevBack.innerHTML=`<img src="${p.imgUrlBack}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${p.emoji||'⚽'}'">` } else { prevBack.textContent=p.emoji||'⚽'; }
-  document.getElementById('prod-modal').style.display='block';
-}
-
 function closeProdModal(){
   document.getElementById('prod-modal').style.display='none';
-  ['pm-name-row','pm-price-row','pm-badge-row','pm-desc-row','pm-img-back-row','pm-emoji-row'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='block'; });
+  ['pm-name-row','pm-price-row','pm-badge-row','pm-desc-row','pm-back-row'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display='block'; });
   modalCtx=null;
 }
 
@@ -2149,10 +2150,6 @@ function previewProdImg(url){
   const prev=document.getElementById('prod-modal-preview'); const fb=document.getElementById('pm-emoji').value||'⚽';
   const isCrest=modalCtx?.type==='crest';
   if(url){ prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:${isCrest?'contain;padding:16px':'cover'}" onerror="this.parentNode.textContent='${fb}'">` } else { prev.textContent=fb; }
-}
-function previewProdImgBack(url){
-  const prev=document.getElementById('prod-modal-preview-back'); const fb=document.getElementById('pm-emoji').value||'⚽';
-  if(url){ prev.innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.textContent='${fb}'">` } else { prev.textContent=fb; }
 }
 
 function saveProdModal(){
@@ -2164,12 +2161,8 @@ function saveProdModal(){
     save(); closeProdModal(); padmRenderProducts(); renderShopGrid(); showToast('Team logo saved! 🎨'); return;
   }
   const pidx=team.products.findIndex(p=>p.id===modalCtx.prodId); if(pidx===-1) return;
-  if(modalCtx.type==='customImg'){
-    team.products[pidx].imgUrl=document.getElementById('pm-img').value||'';
-    team.products[pidx].imgUrlBack=document.getElementById('pm-img-back').value||'';
-    save(); closeProdModal(); padmRenderCustomJerseys(); renderShopGrid(); showToast('Custom images saved! 🎨'); return;
-  }
   team.products[pidx].imgUrl=document.getElementById('pm-img').value||'';
+  team.products[pidx].backImgUrl=document.getElementById('pm-back-img').value||'';
   team.products[pidx].emoji=document.getElementById('pm-emoji').value||'⚽';
   team.products[pidx].price=parseInt(document.getElementById('pm-price').value)||0;
   team.products[pidx].badge=document.getElementById('pm-badge').value||'';
