@@ -805,10 +805,11 @@ function mergeLeagues(saved, defaults) {
       const mergedProds=defTeam.products.map(defProd=>{
         const savProd=spm[defProd.id];
         if(!savProd) return deepClone(defProd);
-        // Trust saved data completely — imgUrl, price, badge, desc, emoji all from saved
+        // Trust saved data completely — imgUrl, backImgUrl, price, badge, desc, emoji all from saved
         return {
           ...deepClone(defProd),
           imgUrl: savProd.imgUrl||'',
+          backImgUrl: savProd.backImgUrl||'',
           emoji:  savProd.emoji||defProd.emoji,
           price:  savProd.price,
           badge:  savProd.badge,
