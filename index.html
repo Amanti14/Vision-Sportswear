@@ -240,16 +240,6 @@
         <div style="font-size:11px;color:var(--accent);font-weight:700;letter-spacing:.5px;white-space:nowrap">⚙️ ADMIN SETTINGS</div>
         <div style="flex:1;height:1px;background:var(--border)"></div>
       </div>
-      <div id="jsonbin-setup-notice" style="display:none;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:14px;margin-bottom:14px">
-        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">⚠️ Cloud Sync Not Configured</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.6;margin-bottom:10px">Your edits currently only apply to your own device. To sync changes to all users, set up a free JSONBin account:</div>
-        <div style="font-size:12px;color:var(--light);line-height:1.8">1. Go to <b>jsonbin.io</b> → Sign up free<br>2. Create a new Bin with <code style="background:var(--card2);padding:1px 5px;border-radius:4px">{}</code> as content<br>3. Copy your <b>Bin ID</b> and <b>API Key</b><br>4. Paste them below and tap Save</div>
-        <div style="margin-top:12px">
-          <div class="adm-field"><label>JSONBin Bin ID</label><input id="jsonbin-bin-id-setup" type="text" placeholder="64abc123..."></div>
-          <div class="adm-field"><label>JSONBin API Key</label><input id="jsonbin-api-key-setup" type="text" placeholder="$2a$10$..."></div>
-          <button class="btn-save" onclick="saveJsonBinCredentials()" style="width:100%;margin-top:4px">Save & Enable Cloud Sync ☁️</button>
-        </div>
-      </div>
       <div id="sync-status-bar" style="display:none;padding:8px 12px;border-radius:9px;margin-bottom:12px;font-size:12px;font-weight:600;text-align:center"></div>
       <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--card);border-radius:12px 12px 0 0;overflow:hidden;overflow-x:auto;scrollbar-width:none">
         <div class="padm-tab active" onclick="switchProfileAdminTab(0,this)">Products</div>
@@ -339,22 +329,9 @@
         <!-- SYNC TAB -->
         <div class="padm-panel" id="padm-panel-6" style="padding:12px">
           <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--accent)">☁️ Cloud Sync Settings</div>
-          <div style="font-size:12px;color:var(--gray);line-height:1.6;margin-bottom:14px">When cloud sync is enabled, every save you make is pushed to all users in real time.</div>
+          <div style="font-size:12px;color:var(--gray);line-height:1.6;margin-bottom:14px">Every save you make is pushed to all users in real time, through your bot's Worker. There's nothing to configure here — sync is verified using your Telegram identity, not a stored key.</div>
           <div id="sync-current-status" style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--gray)">Checking sync status…</div>
-          <div class="adm-field"><label>JSONBin Bin ID</label><input id="jsonbin-bin-id" type="text" placeholder="64abc123..."></div>
-          <div class="adm-field"><label>JSONBin API Key</label><input id="jsonbin-api-key" type="text" placeholder="$2a$10$..."></div>
-          <div style="display:flex;gap:8px;margin-top:4px">
-            <button class="btn-save" onclick="saveJsonBinCredentials()" style="flex:1">Save Credentials</button>
-            <button class="btn-outline" onclick="testJsonBinConnection()">Test</button>
-          </div>
-          <div style="margin-top:12px;background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.2);border-radius:10px;padding:12px;font-size:12px;color:var(--gray);line-height:1.7">
-            <b style="color:var(--accent)">How to set up (free, 2 minutes):</b><br>
-            1. Go to <b style="color:var(--light)">jsonbin.io</b> and create a free account<br>
-            2. Click <b style="color:var(--light)">New Bin</b>, paste <code style="background:var(--card2);padding:1px 4px;border-radius:3px">{}</code>, save it<br>
-            3. Copy the <b style="color:var(--light)">Bin ID</b> from the URL<br>
-            4. Go to <b style="color:var(--light)">API Keys</b> in your account, create a key<br>
-            5. Paste both here and tap <b style="color:var(--light)">Save Credentials</b>
-          </div>
+          <button class="btn-outline" onclick="testCloudSync()" style="width:100%">Test Connection</button>
           <button class="btn-save" onclick="pushConfigToCloud()" style="width:100%;margin-top:12px;background:linear-gradient(135deg,#22c55e,#16a34a)">⬆️ Push Config to Cloud (apply to all users)</button>
           <button class="btn-outline" onclick="pullConfigFromCloud()" style="width:100%;margin-top:8px">⬇️ Pull Latest Config from Cloud</button>
         </div>
@@ -483,11 +460,9 @@ const BOT_WORKER_URL = "https://sportswearminibot.amantifekede14.workers.dev";
 // To add another owner, just add their ID to this array.
 const OWNER_IDS = ["5158823198"];
 
-// ── JSONBIN CLOUD SYNC — hardcoded so ALL users fetch config automatically ──
-// Every user (phone, PC, any device) will pull the latest config on startup.
-// Only the owner can push changes — but everyone reads from the same bin.
-const JBIN_ID  = "6a3628d0f5f4af5e2912fb43";
-const JBIN_KEY = "$2a$10$wF98eMYcbolP1B1yowmL/edktVJLbByoYqhE3lPRJ.2nGkf7yzv52";
+// ── CLOUD SYNC — goes through BOT_WORKER_URL, not a client-side key ──
+// The Worker verifies each admin's Telegram signature server-side before accepting a
+// config write. No credential capable of writing shop data is ever shipped to the browser.
 
 // ═══════════════════════════════════════════
 // DEFAULT CONFIG — unchanged from original
@@ -874,43 +849,52 @@ function mergeLeagues(saved, defaults) {
 }
 
 // ── CLOUD SYNC (JSONBin) ──────────────────────────
-const JBIN_CREDS_KEY = 'emartzon_jbin';
-function getJBinCreds(){ try{ return JSON.parse(localStorage.getItem(JBIN_CREDS_KEY)||'null'); }catch(e){ return null; } }
-function hasCloudSync(){ return true; /* hardcoded creds always available */ }
+function hasCloudSync(){ return true; /* Worker is always reachable; pushes just require a verified Telegram session */ }
+
+let _lastSyncError=null;
+function describeSyncError(){
+  if(!_lastSyncError) return '';
+  const {status,statusText,body}=_lastSyncError;
+  if(status==='empty') return `— ${statusText}.`;
+  if(status===403) return `(403) — this Telegram account isn't an admin.`;
+  if(status===0) return `(${statusText})`;
+  return `(${status} ${statusText}${body?': '+body:''})`;
+}
 
 async function fetchCloudConfig(){
-  // Use saved credentials if available, otherwise fall back to hardcoded ones.
-  // This means ALL users automatically sync — not just the admin's device.
-  const c=getJBinCreds();
-  const binId  = (c&&c.binId)  ? c.binId  : JBIN_ID;
-  const apiKey = (c&&c.apiKey) ? c.apiKey : JBIN_KEY;
-  if(!binId||!apiKey) return null;
   const controller=new AbortController();
   const timeoutId=setTimeout(()=>controller.abort(),5000); // never let login hang forever on a stalled request
   try{
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`,{headers:{'X-Master-Key':apiKey,'X-Bin-Meta':'false'},signal:controller.signal});
-    if(!res.ok) return null;
+    const res=await fetch(BOT_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'pull_config'}),signal:controller.signal});
+    if(!res.ok){ let body=''; try{ body=(await res.text()).slice(0,150); }catch(e){} _lastSyncError={status:res.status,statusText:res.statusText,body}; return null; }
     const data=await res.json();
-    return (typeof data==='object'&&data!==null&&!Array.isArray(data)&&Object.keys(data).length>2)?data:null;
-  }catch(e){ return null; }
+    if(!data.ok){ _lastSyncError={status:'error',statusText:data.error||'Worker returned an error',body:''}; return null; }
+    if(!data.config){ _lastSyncError={status:'empty',statusText:'No config has been pushed to the cloud yet',body:''}; return null; }
+    _lastSyncError=null;
+    return (typeof data.config==='object'&&data.config!==null&&!Array.isArray(data.config)&&Object.keys(data.config).length>2)?data.config:null;
+  }catch(e){ _lastSyncError={status:0,statusText:e.name==='AbortError'?'Timed out reaching the Worker':(e.message||'Network error'),body:''}; return null; }
   finally{ clearTimeout(timeoutId); }
 }
 
-// ── CHANGE 1 of 4: stamp _lastUpdated on every push ──
 async function pushCloudConfig(showMsg=true){
-  const c=getJBinCreds();
-  const binId  = (c&&c.binId)  ? c.binId  : JBIN_ID;
-  const apiKey = (c&&c.apiKey) ? c.apiKey : JBIN_KEY;
-  if(!binId||!apiKey){ showMsg&&showToast('Cloud sync not configured'); return false; }
+  if(!tgInitData){
+    setSyncStatus('❌ Sync requires opening this app inside Telegram','#ef4444');
+    showMsg&&showToast('Cloud sync needs your verified Telegram session — open this app from inside Telegram, not a plain browser.');
+    return false;
+  }
   setSyncStatus('⏳ Syncing to cloud…','#ffffff');
   const controller=new AbortController();
   const timeoutId=setTimeout(()=>controller.abort(),8000);
   try{
     cfg._lastUpdated=Date.now();
-    const res=await fetch(`https://api.jsonbin.io/v3/b/${binId}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':apiKey,'X-Bin-Versioning':'false'},body:JSON.stringify(cfg),signal:controller.signal});
-    if(res.ok){ setSyncStatus('✅ Synced to cloud — all users will see changes','#22c55e'); showMsg&&showToast('Config pushed to all users! ✅'); _lastKnownRemoteTs=cfg._lastUpdated; return true; }
-    else{ setSyncStatus('❌ Sync failed — check your credentials','#ef4444'); showMsg&&showToast('Sync failed. Check your Bin ID & API key.'); return false; }
-  }catch(e){ setSyncStatus('❌ Network error during sync','#ef4444'); showMsg&&showToast('Network error during sync'); return false; }
+    const res=await fetch(BOT_WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'push_config',initData:tgInitData,config:cfg}),signal:controller.signal});
+    const data=await res.json().catch(()=>null);
+    if(res.ok&&data&&data.ok){ setSyncStatus('✅ Synced to cloud — all users will see changes','#22c55e'); showMsg&&showToast('Config pushed to all users! ✅'); _lastKnownRemoteTs=cfg._lastUpdated; return true; }
+    else{
+      const reason=(data&&data.error)?data.error:`HTTP ${res.status} ${res.statusText}`;
+      setSyncStatus('❌ Sync failed — '+reason,'#ef4444'); showMsg&&showToast('Sync failed: '+reason); return false;
+    }
+  }catch(e){ const msg=e.name==='AbortError'?'Timed out reaching the Worker':(e.message||'Network error'); setSyncStatus('❌ '+msg,'#ef4444'); showMsg&&showToast('Network error during sync: '+msg); return false; }
   finally{ clearTimeout(timeoutId); }
 }
 
@@ -920,26 +904,12 @@ function setSyncStatus(msg,color){
   clearTimeout(el._t); if(color==='#22c55e') el._t=setTimeout(()=>{ el.style.display='none'; },5000);
 }
 
-// ── CHANGE 2 of 4: start polling after credentials saved ──
-function saveJsonBinCredentials(){
-  const binId=(document.getElementById('jsonbin-bin-id-setup')?.value||document.getElementById('jsonbin-bin-id')?.value||'').trim();
-  const apiKey=(document.getElementById('jsonbin-api-key-setup')?.value||document.getElementById('jsonbin-api-key')?.value||'').trim();
-  if(!binId||!apiKey){ showToast('Enter both Bin ID and API Key'); return; }
-  localStorage.setItem(JBIN_CREDS_KEY,JSON.stringify({binId,apiKey}));
-  ['jsonbin-bin-id','jsonbin-bin-id-setup'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=binId; });
-  ['jsonbin-api-key','jsonbin-api-key-setup'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=apiKey; });
-  document.getElementById('jsonbin-setup-notice')?.style?.display && (document.getElementById('jsonbin-setup-notice').style.display='none');
-  showToast('Credentials saved! Now tap Push Config to Cloud.');
-  updateSyncStatusPanel();
-  startLiveSyncPolling();
-}
-
-async function testJsonBinConnection(){
-  const c=getJBinCreds(); if(!c){ showToast('Save credentials first'); return; }
+async function testCloudSync(){
   setSyncStatus('⏳ Testing connection…','#ffffff');
   const result=await fetchCloudConfig();
-  if(result!==null){ setSyncStatus('✅ Connection successful!','#22c55e'); }
-  else{ setSyncStatus('❌ Connection failed — check credentials','#ef4444'); }
+  if(result!==null){ setSyncStatus('✅ Connected — pulled the current cloud config','#22c55e'); }
+  else if(_lastSyncError&&_lastSyncError.status==='empty'){ setSyncStatus('✅ Worker reachable — nothing pushed yet, tap "Push Config to Cloud" below','#22c55e'); }
+  else{ setSyncStatus('❌ Connection failed '+describeSyncError(),'#ef4444'); }
 }
 
 async function pushConfigToCloud(){ await pushCloudConfig(true); }
@@ -1012,10 +982,8 @@ document.addEventListener('visibilitychange',()=>{
 
 function updateSyncStatusPanel(){
   const el=document.getElementById('sync-current-status'); if(!el) return;
-  const c=getJBinCreds();
-  if(c&&c.binId&&c.apiKey){ el.innerHTML=`<span style="color:#22c55e;font-weight:700">☁️ Cloud Sync ENABLED</span><br>Bin: <code style="background:var(--card);padding:1px 5px;border-radius:4px">${c.binId}</code><br>Every save pushes to all users automatically.`; }
-  else { el.innerHTML=`<span style="color:#ffffff;font-weight:700">⚠️ Cloud Sync NOT configured</span><br>Your changes only apply to your device.`; }
-  if(c){ ['jsonbin-bin-id','jsonbin-bin-id-setup'].forEach(id=>{ const e=document.getElementById(id); if(e&&!e.value) e.value=c.binId||''; }); ['jsonbin-api-key','jsonbin-api-key-setup'].forEach(id=>{ const e=document.getElementById(id); if(e&&!e.value) e.value=c.apiKey||''; }); }
+  if(tgInitData){ el.innerHTML=`<span style="color:#22c55e;font-weight:700">☁️ Cloud Sync ENABLED</span><br>Synced through your secure Worker — no keys are stored in this app.<br>Every save pushes to all users automatically.`; }
+  else { el.innerHTML=`<span style="color:#ffffff;font-weight:700">⚠️ Pushing requires Telegram</span><br>You're viewing this outside Telegram, so identity can't be verified — reading still works, but pushing changes needs the real Telegram app.`; }
 }
 
 let savedCfg=JSON.parse(localStorage.getItem('emartzon_cfg')||'null');
@@ -2080,7 +2048,7 @@ function showProfile(){
   else { ol.innerHTML=[...uOrders].reverse().map(o=>`<div style="padding:13px 14px;border-bottom:1px solid var(--border)"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><div style="font-size:13px;font-weight:700">#${o.id}</div><div style="font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;background:${o.method==='pickup'?'rgba(46,204,113,.12)':'rgba(245,166,35,.12)'};color:${o.method==='pickup'?'#2ecc71':'var(--accent)'}">${o.methodIcon} ${o.methodName}</div></div><div style="font-size:11px;color:var(--gray);margin-bottom:4px">${o.date} · ${o.itemCount} item${o.itemCount!==1?'s':''} · ${o.paymentMethod||''}</div><div style="font-size:14px;font-weight:700;color:var(--accent)">${fmt(o.total)}</div></div>`).join(''); }
   document.getElementById('profile-admin-section').style.display=isAdmin()?'block':'none';
   document.getElementById('profile-owner-section').style.display=isOwner()?'block':'none';
-  if(isAdmin()){ populatePadmForms(); updateSyncStatusPanel(); const notice=document.getElementById('jsonbin-setup-notice'); if(notice) notice.style.display=hasCloudSync()?'none':'block'; }
+  if(isAdmin()){ populatePadmForms(); updateSyncStatusPanel(); }
   if(isOwner()){ renderManageAdmins(); const oid=document.getElementById('owner-id-display'); const mid=document.getElementById('owner-my-id-copy'); if(oid) oid.textContent=OWNER_IDS.join(", "); if(mid) mid.textContent=String(u.id);
     const oName=document.getElementById('owner-row-name'); const oAv=document.getElementById('owner-row-avatar');
     if(oName) oName.textContent=[u.first_name,u.last_name].filter(Boolean).join(' ')||'You (Owner)';
