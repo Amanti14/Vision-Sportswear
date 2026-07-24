@@ -976,6 +976,13 @@ function applyRemoteConfig(remote){
 // ── Early variable declarations needed by polling ──
 let _pendingOrder=null;
 let cart=[];
+// showTxnProofScreen() replaces #checkout-scroll's entire innerHTML with the payment-
+// verification UI (ship options, address form, pay cards, and the place-order button all
+// live inside it). Snapshot the original markup now, before anything touches it, so it can
+// be restored — otherwise showCheckout() later tries to update elements that no longer
+// exist, throws, and silently stops the "Proceed to Checkout" button from doing anything.
+const CHECKOUT_SCROLL_TEMPLATE=document.getElementById('checkout-scroll').innerHTML;
+function restoreCheckoutScroll(){ document.getElementById('checkout-scroll').innerHTML=CHECKOUT_SCROLL_TEMPLATE; }
 let tgUser=null;
 let tgInitData=null; // raw Telegram WebApp initData — used to prove identity to the Worker for admin-only calls
 
@@ -1952,7 +1959,7 @@ function cartChgQty(idx, delta){
   saveCart(); updateBadge(); showCart();
 }
 
-function showCheckout(){ if(!curShipping) curShipping=cfg.shipping[0]; renderShipOpts(); selectPayment(selectedPayment); updateCheckoutSummary(); showPage('checkout'); }
+function showCheckout(){ restoreCheckoutScroll(); if(!curShipping) curShipping=cfg.shipping[0]; renderShipOpts(); renderPickupCard(); selectPayment(selectedPayment); updateCheckoutSummary(); showPage('checkout'); }
 function updateCheckoutSummary(){
   const sub=cart.reduce((a,i)=>a+i.price*i.qty,0); const ship=(curShipping||cfg.shipping[0])?.price||0;
   const payLabels={cbe:'CBE Birr',telebirr:'Telebirr',cash:'Pay at Store'};
